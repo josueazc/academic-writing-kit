@@ -225,22 +225,37 @@ class Doc:
 
     def table(self, rows):
         header, data = rows[0], rows[1:]
+        n = len(header)
         border = '<w:{0} w:val="single" w:sz="6" w:space="0" w:color="000000"/>'
-        out = ['<w:tbl><w:tblPr><w:tblStyle w:val="TablaAPA"/><w:tblW w:w="5000" w:type="pct"/>'
+        # ancho total = ancho de página menos márgenes; columnas proporcionales al texto más largo
+        page_w = 12240 if self.m["papel"] == "carta" else 11906
+        total = page_w - 2 * int(float(self.m["margen_cm"]) * CM)
+        def col(i):
+            return [str(header[i])] + [str(r[i]) for r in data if i < len(r)]
+        # peso = lo que pide la palabra más larga (no se corta) o la mitad del texto más largo
+        pesos = [max(max(len(w) for c in col(i) for w in (c.split() or [""])) + 2,
+                     min(max(len(c) for c in col(i)), 60) / 2) for i in range(n)]
+        widths = [int(total * p / sum(pesos)) for p in pesos]
+        out = ['<w:tbl><w:tblPr><w:tblStyle w:val="TablaAPA"/>'
+               f'<w:tblW w:w="{total}" w:type="dxa"/><w:tblLayout w:type="fixed"/>'
                '<w:tblBorders>' + border.format("top") + border.format("bottom") +
                '</w:tblBorders></w:tblPr><w:tblGrid>' +
-               "".join("<w:gridCol/>" for _ in header) + "</w:tblGrid>"]
+               "".join(f'<w:gridCol w:w="{w}"/>' for w in widths) + "</w:tblGrid>"]
 
-        def cell(text, bold=False, bottom=False, center=False):
-            tcpr = "<w:tcBorders>" + border.format("bottom") + "</w:tcBorders>" if bottom else ""
-            p = para(runs(text, bold=bold), style="CeldaTabla", align="center" if center else None)
+        def cell(text, width, bold=False, bottom=False, center=False, keep=True):
+            tcpr = f'<w:tcW w:w="{width}" w:type="dxa"/>'
+            if bottom:
+                tcpr += "<w:tcBorders>" + border.format("bottom") + "</w:tcBorders>"
+            # keepNext en todas las filas menos la última: la tabla no se parte entre páginas si cabe en una
+            p = para(runs(text, bold=bold), style="CeldaTabla", align="center" if center else None, keep_next=keep)
             return f"<w:tc><w:tcPr>{tcpr}</w:tcPr>{p}</w:tc>"
 
-        out.append('<w:tr><w:trPr><w:tblHeader/></w:trPr>' +
-                   "".join(cell(h, bottom=True, center=True) for h in header) + "</w:tr>")
+        out.append('<w:tr><w:trPr><w:cantSplit/><w:tblHeader/></w:trPr>' +
+                   "".join(cell(h, widths[i], bottom=True, center=True) for i, h in enumerate(header)) + "</w:tr>")
         for r in data:
-            r = (r + [""] * len(header))[:len(header)]
-            out.append("<w:tr>" + "".join(cell(c) for c in r) + "</w:tr>")
+            r = (r + [""] * n)[:n]
+            out.append("<w:tr><w:trPr><w:cantSplit/></w:trPr>" +
+                       "".join(cell(c, widths[i]) for i, c in enumerate(r)) + "</w:tr>")  # también la última: la Nota queda pegada
         out.append("</w:tbl>")
         self.body.append("".join(out))
 
