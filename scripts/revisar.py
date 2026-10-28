@@ -84,11 +84,12 @@ def year_of(s):
 # ---------------------------------------------------------------- lectura
 def read_md(path):
     text = open(path, encoding="utf-8").read()
+    blocks, buf = [], []
     if text.startswith("---"):
         end = text.find("\n---", 3)
         if end != -1:
+            blocks.append(("meta", 0, text[3:end]))  # portada: autores, curso, docente…
             text = text[end + 4:]
-    blocks, buf = [], []
 
     def flush():
         if buf:
@@ -147,6 +148,8 @@ def split_sections(blocks):
     sections, refs, mode = [], [], "body"
     cur = ["Introducción", 0, []]
     for kind, level, text in blocks:
+        if kind == "meta":
+            continue
         if kind == "h":
             t = norm(text)
             if t in REF_TITLES:
@@ -314,6 +317,10 @@ def review(blocks, rubrica=None, palabras=None, es_md=False):
             for s in re.split(r"(?<=[.!?])\s+", p):
                 if words(s) > 40:
                     long_sent += 1
+    for kind, _, text in blocks:
+        if kind == "meta":
+            for m in PENDING.finditer(text):
+                H["CRÍTICO"].append(f"Pendiente sin resolver «{m.group(0)}» en la portada (encabezado del archivo).")
     for r in refs_raw:
         for m in PENDING.finditer(r):
             H["CRÍTICO"].append(f"Pendiente sin resolver «{m.group(0)}» en Referencias.")
