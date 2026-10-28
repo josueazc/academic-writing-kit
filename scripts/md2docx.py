@@ -35,7 +35,43 @@ DEFAULTS = {
     "numerar_titulos": False,           # True = 1, 1.1, 1.1.1 (ingeniería, informes técnicos, IEEE)
     "papel": "carta",                   # carta | a4
     "idioma": "es-CR",
+    "pie_texto": "",                    # texto fijo a la izquierda del pie/encabezado (p. ej., título corto)
+    "comillas": "inglesas",             # inglesas “” | latinas «» | rectas ""
+    "modo": "apa",                      # apa | completo
 }
+
+# "Trabajo escrito completo": portada institucional completa, índice, número de página
+# en el pie, cada sección principal en página nueva.
+COMPLETO = {
+    "portada": "completa",
+    "toc": True,
+    "numero_pagina": "abajo-derecha",
+    "numerar_portada": False,
+    "salto_por_seccion": True,
+    "repetir_titulo": False,
+}
+
+COMILLAS = {"inglesas": ("\u201c", "\u201d"), "latinas": ("\u00ab", "\u00bb")}
+_comillas = COMILLAS["inglesas"]
+
+
+def tipografia(text):
+    """Comillas rectas → tipográficas, sin tocar URLs."""
+    if not _comillas:
+        return text
+    partes = re.split(r"(https?://\S+)", text)
+    for k in range(0, len(partes), 2):
+        s, out, abierta = partes[k], [], False
+        for i, ch in enumerate(s):
+            if ch == '"':
+                prev = s[i - 1] if i else " "
+                abre = prev.isspace() or prev in "([{¿¡—–-/" or (not abierta and i == 0)
+                out.append(_comillas[0] if abre else _comillas[1])
+                abierta = abre
+            else:
+                out.append(ch)
+        partes[k] = "".join(out)
+    return "".join(partes)
 
 UNNUMBERED = {"resumen", "abstract", "referencias", "bibliografía", "bibliografia", "anexos", "apéndices",
               "apendices", "agradecimientos", "dedicatoria", "tabla de contenidos", "índice", "indice"}
@@ -74,7 +110,9 @@ def parse_frontmatter(text):
 
 
 def _scalar(v):
-    v = v.strip().strip('"').strip("'")
+    v = v.strip()
+    if len(v) >= 2 and v[0] == v[-1] and v[0] in "\"'":
+        return v[1:-1]  # entre comillas: siempre texto ("01" no se convierte en 1)
     low = v.lower()
     if low in ("true", "sí", "si", "yes"):
         return True
@@ -112,10 +150,12 @@ def runs(text, bold=False, italic=False):
     return "".join(out)
 
 
-def run(text, bold=False, italic=False):
-    rpr = ("<w:b/>" if bold else "") + ("<w:i/>" if italic else "")
+def run(text, bold=False, italic=False, size=None, caps=False):
+    rpr = ("<w:b/>" if bold else "") + ("<w:i/>" if italic else "") + ("<w:caps/>" if caps else "")
+    if size:
+        rpr += f'<w:sz w:val="{int(size * 2)}"/><w:szCs w:val="{int(size * 2)}"/>'
     rpr = f"<w:rPr>{rpr}</w:rPr>" if rpr else ""
-    return f'<w:r>{rpr}<w:t xml:space="preserve">{escape(text)}</w:t></w:r>'
+    return f'<w:r>{rpr}<w:t xml:space="preserve">{escape(tipografia(text))}</w:t></w:r>'
 
 
 def para(content, style=None, align=None, ind=None, page_break=False, keep_next=False, spacing=None):
@@ -160,7 +200,12 @@ def image_size(path):
 # ---------------------------------------------------------------- builder
 class Doc:
     def __init__(self, meta, base_dir):
-        self.m = {**DEFAULTS, **meta}
+        global _comillas
+        preset = COMPLETO if str(meta.get("modo", "")).lower() == "completo" else {}
+        self.m = {**DEFAULTS, **preset, **meta}
+        _comillas = COMILLAS.get(str(self.m["comillas"]).lower())
+        self.toc_entries = []
+        self.toc_at = None
         self.base = base_dir
         self.body = []
         self.images = []  # (rid, filename, bytes)
@@ -189,7 +234,12 @@ class Doc:
             self.first_body_heading = False
             if text.strip().lower() in PAGE_BREAK_TITLES:
                 brk = True
-        self.body.append(para(runs(self.number(level, text)), style=f"Heading{level}", page_break=brk))
+        if level == 2 and re.match(r"(anexo|apéndice|apendice)\s", text.strip().lower()):
+            brk = True  # cada anexo en página nueva
+        texto = self.number(level, text)
+        if level <= 3:
+            self.toc_entries.append((level, re.sub(r"[*_`]", "", texto)))
+        self.body.append(para(runs(texto), style=f"Heading{level}", page_break=brk))
 
     def run_in(self, level, title, text):
         """Niveles 4 y 5: título en la misma línea que el párrafo."""
@@ -259,13 +309,13 @@ class Doc:
         out.append("</w:tbl>")
         self.body.append("".join(out))
 
-    def image(self, path, alt):
+    def image(self, path, alt, center=False, max_cm=15.0):
         full = os.path.join(self.base, path)
         if not os.path.exists(full):
             self.paragraph(f"[IMAGEN NO ENCONTRADA: {path}]", no_indent=True)
             return
         w, h, kind = image_size(full)
-        max_w = 15.0  # cm
+        max_w = max_cm
         cw = min(max_w, w / 96 * 2.54)
         ch = cw * h / w
         emu_w, emu_h = int(cw * 360000), int(ch * 360000)
@@ -285,16 +335,29 @@ class Doc:
             f'<pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="{emu_w}" cy="{emu_h}"/></a:xfrm>'
             '<a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic>'
             '</a:graphicData></a:graphic></wp:inline></w:drawing></w:r>')
-        self.body.append(para(drawing, style="Normal", ind='<w:ind w:firstLine="0"/>', keep_next=True))
+        self.body.append(para(drawing, style="Normal", ind='<w:ind w:firstLine="0"/>', keep_next=True,
+                              align="center" if center else None))
 
     def toc(self):
         self.body.append(para(run("Tabla de Contenidos", bold=True), style="TituloSinNivel", page_break=True))
-        fld = ('<w:r><w:fldChar w:fldCharType="begin"/></w:r>'
-               '<w:r><w:instrText xml:space="preserve"> TOC \\o "1-3" \\h \\z \\u </w:instrText></w:r>'
-               '<w:r><w:fldChar w:fldCharType="separate"/></w:r>'
-               + run("Clic derecho → Actualizar campo para generar la tabla de contenidos.") +
-               '<w:r><w:fldChar w:fldCharType="end"/></w:r>')
-        self.body.append(para(fld, style="Normal", ind='<w:ind w:firstLine="0"/>'))
+        self.toc_at = len(self.body)  # se completa en fill_toc() cuando ya se conocen los títulos
+
+    def fill_toc(self):
+        """Campo TOC de Word con los títulos ya escritos (Word, LibreOffice y Docs lo muestran;
+        Word agrega los números de página al actualizar campos)."""
+        if self.toc_at is None:
+            return
+        entries = self.toc_entries or [(1, "Actualizá el índice: clic derecho → Actualizar campo")]
+        begin = ('<w:r><w:fldChar w:fldCharType="begin"/></w:r>'
+                 '<w:r><w:instrText xml:space="preserve"> TOC \\o "1-3" \\h \\z \\u </w:instrText></w:r>'
+                 '<w:r><w:fldChar w:fldCharType="separate"/></w:r>')
+        end = '<w:r><w:fldChar w:fldCharType="end"/></w:r>'
+        paras = []
+        for k, (lvl, texto) in enumerate(entries):
+            content = (begin if k == 0 else "") + run(texto) + '<w:r><w:tab/></w:r>' + \
+                      (end if k == len(entries) - 1 else "")
+            paras.append(para(content, style=f"TOC{lvl}"))
+        self.body[self.toc_at:self.toc_at] = paras
 
     def title_page(self):
         m = self.m
@@ -315,10 +378,56 @@ class Doc:
                     lines.append(para(runs(str(item)), style="Portada"))
         self.body.extend(lines)
 
+    def title_page_completa(self):
+        """Portada institucional con los datos del usuario (ver 07-plantillas/mi-perfil.yaml)."""
+        m = self.m
+
+        def linea(texto, **kw):
+            self.body.append(para(run(str(texto), **kw), style="PortadaCompleta"))
+
+        def vacia(n=1):
+            for _ in range(n):
+                self.body.append(para("", style="PortadaCompleta"))
+
+        if m.get("logo"):
+            self.image(str(m["logo"]), "Logo", center=True, max_cm=4.0)
+        for k, kw in (("institucion", {"bold": True, "caps": True}), ("facultad", {}), ("escuela", {}), ("carrera", {})):
+            if m.get(k):
+                linea(m[k], **kw)
+        vacia(2)
+        if m.get("curso"):
+            linea(m["curso"])
+        vacia(2)
+        linea(m.get("titulo", "[COMPLETAR: Título]"), bold=True, size=16)
+        if m.get("subtitulo"):
+            linea(m["subtitulo"], italic=True)
+        if m.get("tipo_trabajo"):
+            vacia()
+            linea(m["tipo_trabajo"])
+        vacia(2)
+        autores = m.get("autores") or ["[COMPLETAR: Autor]"]
+        autores = autores if isinstance(autores, list) else [autores]
+        linea("Presentado por:", bold=True)
+        for a in autores:
+            linea(a)
+        if m.get("docente"):
+            vacia()
+            linea("Docente:", bold=True)
+            linea(m["docente"])
+        if m.get("grupo"):
+            vacia()
+            linea(f"Grupo: {m['grupo']}")
+        vacia(2)
+        lugar_fecha = ", ".join(str(x) for x in (m.get("lugar"), m.get("fecha")) if x)
+        if lugar_fecha:
+            linea(lugar_fecha)
+
     # ------------------------------------------------------------ parse body
     def build(self, body):
         if self.m["portada"] == "apa":
             self.title_page()
+        elif self.m["portada"] == "completa":
+            self.title_page_completa()
         if self.m["toc"]:
             self.toc()
         lines = body.splitlines()
@@ -465,6 +574,8 @@ class Doc:
         ]
         extra = [
             style("Portada", "Portada", '<w:ind w:firstLine="0"/><w:jc w:val="center"/>'),
+            style("PortadaCompleta", "Portada completa",
+                  '<w:spacing w:before="0" w:after="0" w:line="300" w:lineRule="auto"/><w:ind w:firstLine="0"/><w:jc w:val="center"/>'),
             style("TituloSinNivel", "Título sin nivel", '<w:ind w:firstLine="0"/><w:jc w:val="center"/>', "<w:b/>"),
             style("Referencia", "Referencia", f'<w:ind w:left="{ind}" w:hanging="{ind}"/><w:jc w:val="left"/>'),
             # nombres que usa Pandoc cuando este .docx se pasa como --reference-doc
@@ -495,17 +606,29 @@ class Doc:
 
     def header_footer(self):
         pos = self.m["numero_pagina"]
-        if pos == "ninguno":
+        texto = str(self.m.get("pie_texto") or "")
+        if pos == "ninguno" and not texto:
             return None, None
-        align = "right" if "derecha" in pos else "center"
         fld = ('<w:r><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:instrText xml:space="preserve"> PAGE </w:instrText></w:r>'
                '<w:r><w:fldChar w:fldCharType="separate"/></w:r><w:r><w:t>1</w:t></w:r><w:r><w:fldChar w:fldCharType="end"/></w:r>')
-        p = f'<w:p><w:pPr><w:spacing w:line="240" w:lineRule="auto"/><w:jc w:val="{align}"/></w:pPr>{fld}</w:p>'
+        if pos == "ninguno":
+            fld, pos = "", "abajo-derecha"
+        page_w = 12240 if self.m["papel"] == "carta" else 11906
+        ancho = page_w - 2 * int(float(self.m["margen_cm"]) * CM)
+        if texto:  # texto a la izquierda, número a la derecha
+            contenido = run(texto, size=10) + '<w:r><w:tab/></w:r>' + fld
+            ppr = f'<w:tabs><w:tab w:val="right" w:pos="{ancho}"/></w:tabs><w:spacing w:line="240" w:lineRule="auto"/>'
+        else:
+            align = "right" if "derecha" in pos else "center"
+            contenido = fld
+            ppr = f'<w:spacing w:line="240" w:lineRule="auto"/><w:jc w:val="{align}"/>'
+        p = f'<w:p><w:pPr>{ppr}</w:pPr>{contenido}</w:p>'
         ns = 'xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"'
         kind = "hdr" if pos.startswith("arriba") else "ftr"
         return kind, f'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:{kind} {ns}>{p}</w:{kind}>'
 
     def save(self, out):
+        self.fill_toc()
         m = self.m
         w, h = (12240, 15840) if m["papel"] == "carta" else (11906, 16838)
         mar = int(float(m["margen_cm"]) * CM)
@@ -579,18 +702,103 @@ class Doc:
                 z.writestr(f"word/media/{name}", data)
 
 
+def buscar_perfil(carpeta):
+    """mi-perfil.yaml en la carpeta del trabajo, sus carpetas superiores o la raíz del kit."""
+    raiz = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    actual = carpeta
+    for _ in range(4):
+        p = os.path.join(actual, "mi-perfil.yaml")
+        if os.path.isfile(p):
+            return p
+        actual = os.path.dirname(actual)
+    p = os.path.join(raiz, "mi-perfil.yaml")
+    return p if os.path.isfile(p) else None
+
+
+def exportar_pdf(docx):
+    """PDF con LibreOffice (cualquier sistema) o con Microsoft Word en macOS (actualiza el índice)."""
+    import platform
+    import shutil
+    import subprocess
+    docx = os.path.abspath(docx)
+    pdf = os.path.splitext(docx)[0] + ".pdf"
+    soffice = shutil.which("soffice") or shutil.which("libreoffice")
+    if soffice:
+        subprocess.run([soffice, "--headless", "--convert-to", "pdf", "--outdir", os.path.dirname(docx), docx],
+                       capture_output=True, timeout=180)
+        if os.path.exists(pdf):
+            print(f"PDF: {pdf}")
+            return
+    if platform.system() == "Darwin" and os.path.isdir("/Applications/Microsoft Word.app"):
+        # Word (sandbox) solo puede abrir sin permisos los archivos de su propia carpeta
+        cont = os.path.expanduser("~/Library/Containers/com.microsoft.Word/Data/Documents")
+        os.makedirs(cont, exist_ok=True)
+        tmp_docx = os.path.join(cont, "_md2docx_tmp.docx")
+        tmp_pdf = os.path.join(cont, "_md2docx_tmp.pdf")
+        sin_aviso = tmp_docx + ".x"
+        # copia sin la marca updateFields para que Word no muestre el diálogo; el índice se actualiza por script
+        with zipfile.ZipFile(docx) as zin, zipfile.ZipFile(sin_aviso, "w", zipfile.ZIP_DEFLATED) as zout:
+            for item in zin.namelist():
+                data = zin.read(item)
+                if item == "word/settings.xml":
+                    data = data.replace(b'<w:updateFields w:val="true"/>', b"")
+                zout.writestr(item, data)
+        os.replace(sin_aviso, tmp_docx)
+        script = f'''with timeout of 150 seconds
+tell application "Microsoft Word"
+open (POSIX file "{tmp_docx}")
+delay 5
+set d to document 1
+set r to ""
+try
+set n to count of tables of contents of d
+if n > 0 then
+update table of contents (table of contents 1 of d)
+delay 1
+update (table of contents 1 of d)
+set r to "indice-actualizado"
+end if
+on error e
+set r to "indice-error: " & e
+end try
+save as d file name "{tmp_pdf}" file format format PDF
+close d saving no
+return r
+end tell
+end timeout'''
+        r = subprocess.run(["osascript", "-e", script], capture_output=True, text=True, timeout=200)
+        if "indice-error" in r.stdout:
+            print(f"Aviso: Word no actualizó el índice ({r.stdout.strip()})", file=sys.stderr)
+        if os.path.exists(tmp_pdf):
+            shutil.move(tmp_pdf, pdf)
+            os.remove(tmp_docx)
+            print(f"PDF: {pdf}")
+            return
+        print(f"Word no pudo exportar: {r.stderr.strip()}", file=sys.stderr)
+    print("Sin LibreOffice ni Word: abrí el .docx y exportá a PDF desde tu procesador de texto.", file=sys.stderr)
+
+
 def main():
     ap = argparse.ArgumentParser(description="Markdown → .docx con formato APA 7")
     ap.add_argument("entrada")
     ap.add_argument("-o", "--salida")
+    ap.add_argument("--pdf", action="store_true", help="exportar también a PDF (LibreOffice o Word en macOS)")
     args = ap.parse_args()
     with open(args.entrada, encoding="utf-8") as f:
         meta, body = parse_frontmatter(f.read())
+    perfil = buscar_perfil(os.path.dirname(os.path.abspath(args.entrada)))
+    if perfil:
+        with open(perfil, encoding="utf-8") as f:
+            datos, _ = parse_frontmatter("---\n" + f.read() + "\n---\n")
+        meta = {**datos, **meta}  # lo del trabajo manda sobre el perfil
+        print(f"Perfil: {perfil}")
     doc = Doc(meta, os.path.dirname(os.path.abspath(args.entrada)))
     doc.build(body)
     out = args.salida or os.path.splitext(args.entrada)[0] + ".docx"
     doc.save(out)
     print(f"Listo: {out}")
+    if args.pdf:
+        exportar_pdf(out)
 
 
 if __name__ == "__main__":
