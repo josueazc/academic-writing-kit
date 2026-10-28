@@ -1,0 +1,22 @@
+# Perfil del usuario para la portada.
+# Copiá este archivo como `mi-perfil.yaml` en la raíz del repo (está en .gitignore: no se publica)
+# y la IA lo usará en cada trabajo sin volver a preguntar.
+# Los valores entre comillas se usan tal cual (por ejemplo, "01" no se convierte en 1).
+
+institucion: "Universidad Ejemplo"
+facultad: "Facultad de Ciencias Sociales"
+escuela: ""
+carrera: "Bachillerato en Ciencias de la Comunicación"
+autores:
+  - "Nombre Apellido Apellido — Carné 000000"
+lugar: "San José, Costa Rica"
+logo: ""                 # ruta a un PNG o JPG del logo (opcional)
+
+# Preferencias de formato por defecto (se pueden cambiar en cada trabajo)
+modo: completo           # completo | apa
+fuente: "Times New Roman"
+tamano: 12
+interlineado: 2          # 2 = doble, 1.5
+alineacion: izquierda    # izquierda | justificada
+comillas: inglesas       # inglesas “” | latinas «»
+estilo_citas: APA 7
