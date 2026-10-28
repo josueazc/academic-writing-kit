@@ -27,7 +27,7 @@ Usalo en tres pasadas: **contenido → citas → formato**. Antes, corré `pytho
 - [ ] Citas textuales con página o párrafo.
 - [ ] 3+ autores con "et al." desde la primera cita.
 - [ ] Lista en orden alfabético, sangría francesa, doble espacio.
-- [ ] URLs/DOI funcionan (abrir cada uno).
+- [ ] URLs/DOI funcionan y corresponden a la referencia (`python3 scripts/verificar_referencias.py trabajo.md`).
 - [ ] Ninguna fuente sin verificar (sobre todo si una IA la sugirió).
 
 ## 4. Formato

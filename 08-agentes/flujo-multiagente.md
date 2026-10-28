@@ -18,7 +18,7 @@ Brief + rúbrica
 [3] Redactor (sección por sección, usando esquema + fuentes)
    │
    ▼
-[4] Citador APA ──► revisa cita↔referencia, arma la lista
+[4] Citador APA ──► revisa cita↔referencia, arma la lista ──► scripts/verificar_referencias.py
    │
    ▼
 [5] scripts/revisar.py ──► Revisor (Bloom + rúbrica + estilo) ──► revisiones/AAAA-MM-DD.md
