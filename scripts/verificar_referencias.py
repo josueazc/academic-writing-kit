@@ -49,6 +49,19 @@ def anio_crossref(msg):
     return min(anios) if anios else None
 
 
+def anios_crossref(msg):
+    """Todos los años de publicación (en línea, impreso, número): APA usa el del número si ya salió."""
+    out = set()
+    for k in ("published-print", "published-online", "published", "issued", "journal-issue"):
+        d = msg.get(k) or {}
+        if k == "journal-issue":
+            d = d.get("published-print") or d.get("published-online") or {}
+        parts = d.get("date-parts") or [[None]]
+        if parts[0] and parts[0][0]:
+            out.add(int(parts[0][0]))
+    return out
+
+
 def tokens(s):
     return {w for w in norm(s).split() if len(w) > 3}
 
@@ -85,11 +98,12 @@ def check_doi(doi, ref):
     real_year = anio_crossref(msg)
     sim = similar(titulo_de(ref), real_title)
     ym = YEAR_RE.search(ref)
-    year_ok = not ym or not real_year or abs(int(ym.group(1)) - int(real_year)) <= 1
+    anios = anios_crossref(msg) or ({real_year} if real_year else set())
+    year_ok = not ym or not anios or any(abs(int(ym.group(1)) - a) <= 1 for a in anios)
     if sim < 0.35:
         return "importante", f"El DOI {doi} existe pero corresponde a otro trabajo: «{real_title}» ({real_year})."
     if not year_ok:
-        return "importante", f"Año distinto: la referencia dice {ym.group(1)} y el DOI {doi} es de {real_year}."
+        return "importante", f"Año distinto: la referencia dice {ym.group(1)} y el DOI {doi} es de {'/'.join(map(str, sorted(anios)))}."
     return "ok", f"DOI verificado: «{real_title[:80]}»."
 
 

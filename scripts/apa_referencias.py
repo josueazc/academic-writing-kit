@@ -10,7 +10,7 @@ Uso directo: python3 scripts/apa_referencias.py trabajo.md
 import re
 import sys
 
-AUTOR_PERSONA = re.compile(r"^[A-ZÁÉÍÓÚÑÜ][\wÁÉÍÓÚÑÜáéíóúñü'’ -]+, [A-ZÁÉÍÓÚÑ][a-z]?\.")
+AUTOR_PERSONA = re.compile(r"^(?:(?:de|del|la|las|los|van|von|der|den|ten|ter|da|das|do|dos|di|du|le|y)\s+)*[A-ZÁÉÍÓÚÑÜ][\wÁÉÍÓÚÑÜáéíóúñü'’ -]+, [A-ZÁÉÍÓÚÑ][a-z]?\.")
 FECHA = re.compile(r"\((?:\d{4}[a-z]?(?:[–-]\d{4})?(?:, [^)]+)?|s\. f\.(?:-[a-z])?|en prensa)\)\.")
 ARTICULO = re.compile(r"\d+\*?\(\d+[-–]?\d*\)|\*?,\s*\d+\*?,\s*(?:\d+[-–]\d+|e\d+|art)")
 

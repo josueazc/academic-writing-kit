@@ -52,4 +52,4 @@ Severidades:
 - **Importante**: sección corta para su peso, verbo de Bloom por debajo de lo pedido, incoherencia objetivo–conclusión, formato APA incorrecto, referencias sin cita.
 - **Menor**: estilo, muletillas, oraciones largas, consistencia de mayúsculas.
 
-Guardá cada revisión con fecha en `revisiones/` dentro de la carpeta del trabajo. En la siguiente revisión, empezá por comprobar qué hallazgos anteriores siguen abiertos.
+Guardá cada revisión con fecha en `revisiones/` dentro de la carpeta del trabajo, con el título exacto `## Veredicto por objetivo` sobre la tabla: `revisar.py` la busca ahí y avisa mientras no esté completa. En la siguiente revisión, empezá por comprobar qué hallazgos anteriores siguen abiertos.

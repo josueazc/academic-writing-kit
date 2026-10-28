@@ -15,6 +15,9 @@ Antes de planear o redactar, hacé el [cuestionario inicial](07-plantillas/cuest
 
 **Trabajo escrito completo** = portada completa con los datos del usuario, tabla de contenidos, número de página en el pie, todas las secciones del tipo (objetivos, marco teórico, marco metodológico, conclusiones, recomendaciones, referencias, anexos…), Word y PDF. Ver [03-estructuras/trabajo-escrito-completo.md](03-estructuras/trabajo-escrito-completo.md).
 
+## Dónde guardar
+Cada trabajo va en su propia carpeta, `trabajos/AAAA-MM-<tema>/` (trabajo.md, trabajo.docx, revisiones/), **dentro de la carpeta en la que está trabajando el usuario** o la que él indique. Nunca dentro de la carpeta donde está instalado el kit o la skill (por ejemplo `~/.claude/skills/…`): se mezcla con la herramienta y se pierde al actualizarla. Si no sabés cuál es la carpeta del usuario, preguntá.
+
 ## Flujo
 1. **Identificá el tipo de trabajo** (estructura en `03-estructuras/`) y **la materia o área** ([12-materias/guia-por-area.md](12-materias/guia-por-area.md): estilo de cita, persona gramatical, convenciones). Si no está claro, preguntá (máximo 3 preguntas).
 2. **Mapeá la rúbrica** (si hay) a secciones, pesos y requisitos numéricos.
@@ -49,7 +52,7 @@ Antes de planear o redactar, hacé el [cuestionario inicial](07-plantillas/cuest
 ## Entrega
 1. `trabajo.md` (fuente) y `trabajo.docx` (si pudiste ejecutar el script).
 2. Reporte de `revisar.py` (o, si no pudiste ejecutarlo, lista de `[COMPLETAR]` y `[VERIFICAR]` pendientes).
-3. **Veredicto por objetivo** del revisor (tabla de `08-agentes/prompts/5-revisor.md`), con evidencia por celda.
+3. **Veredicto por objetivo** del revisor (tabla de `08-agentes/prompts/5-revisor.md`), con evidencia por celda, guardado en `revisiones/` bajo el título `## Veredicto por objetivo`. `revisar.py` avisa mientras falte y trae la plantilla.
 4. Conteo de palabras por sección.
 5. Si hubo rúbrica: autoevaluación criterio por criterio.
 

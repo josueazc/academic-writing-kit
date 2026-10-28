@@ -125,12 +125,18 @@ def read_docx(path):
     z = zipfile.ZipFile(path)
     root = ET.fromstring(z.read("word/document.xml"))
     blocks = []
+    en_tabla = {id(p) for tbl in root.iter(W + "tbl") for p in tbl.iter(W + "p")}
     for p in root.iter(W + "p"):
         style = p.find(f"{W}pPr/{W}pStyle")
         sid = style.get(W + "val") if style is not None else ""
         text = "".join(t.text or "" for t in p.iter(W + "t")).strip()
-        if not text or sid in ("Portada",):
+        if not text:
             continue
+        if (sid or "").startswith("Portada"):
+            blocks.append(("meta", 0, text))  # portada: sus pendientes se reportan como de la portada
+            continue
+        if id(p) in en_tabla:
+            text = "| " + text  # celda de tabla: la fuente suele estar en la nota o en otra columna
         m = re.search(r"(?:Heading|Ttulo|Titulo|Title)(\d)", sid or "", re.I)
         if m:
             level = int(m.group(1))
@@ -193,6 +199,7 @@ def parse_refs(refs):
 
 
 PAREN = re.compile(r"\(([^()]*?(?:%s)[^()]*)\)" % YEAR)
+NARR_VARIOS = re.compile(r"\b([A-ZÁÉÍÓÚÑ][\wÁÉÍÓÚÑáéíóúñü'’-]+)(?:,\s+[A-ZÁÉÍÓÚÑ][\wÁÉÍÓÚÑáéíóúñü'’-]+)+,\s+et al\.\s*\((%s)[^)]*\)" % YEAR)  # APA: "Zuniga, Peck, et al. (2019)"
 NARR = re.compile(r"((?:[A-ZÁÉÍÓÚÑ][\wÁÉÍÓÚÑáéíóúñü'’-]*\.?(?:\s+|$))(?:(?:[A-ZÁÉÍÓÚÑ][\wÁÉÍÓÚÑáéíóúñü'’-]*|de|del|la|las|los|y|e|&|et al\.)\s+)*)\((%s)[^)]*\)" % YEAR)
 
 
@@ -216,6 +223,8 @@ def parse_cites(sections):
                         aliases[norm(al.group(1))] = norm(who[:al.start()])
                         who = who[:al.start()].strip()
                     cites.append({"lead": lead_of(who), "year": year_of(ym.group(1)), "texto": part, "seccion": title})
+            for m in NARR_VARIOS.finditer(p):
+                cites.append({"lead": m.group(1), "year": year_of(m.group(2)), "texto": m.group(0), "seccion": title})
             for m in NARR.finditer(p):
                 who = m.group(1).strip()
                 toks = who.split()
@@ -327,7 +336,8 @@ def review(blocks, rubrica=None, palabras=None, es_md=False, secciones=None):
                     H["IMPORTANTE"].append(f"Cita textual sin página o localizador en «{title}»: «{q.group(1)[:60]}…» → agregar (p. X) o (párr. X).")
                 if qw >= 40:
                     H["IMPORTANTE"].append(f"Cita textual de {qw} palabras entre comillas en «{title}»: con 40 o más va en bloque, sin comillas.")
-            if not re.search(r"m[eé]todo|metodolog|resultado|resumen|abstract|objetivo", norm(title)):
+            es_tabla = p.lstrip().startswith("|") or re.match(r"\*?Nota\.", p)
+            if not es_tabla and not re.search(r"m[eé]todo|metodolog|resultado|resumen|abstract|objetivo", norm(title)):
                 for s in re.split(r"(?<=[.!?])\s+(?=[A-ZÁÉÍÓÚÑ¿¡])", p):
                     dato = re.search(r"\d+(?:[.,]\d+)?\s?%|\b\d{1,3}(?:[ .]\d{3})+\b|\b\d+[.,]\d+\b|\b(?!1[5-9]\d\d\b|20\d\d\b)\d{3,}\b", s)
                     citado = re.search(r"\((?:[^()]*?)(?:%s)" % YEAR, s) or NARR.search(s)
@@ -345,7 +355,7 @@ def review(blocks, rubrica=None, palabras=None, es_md=False, secciones=None):
     for kind, _, text in blocks:
         if kind == "meta":
             for m in PENDING.finditer(text):
-                H["CRÍTICO"].append(f"Pendiente sin resolver «{m.group(0)}» en la portada (encabezado del archivo).")
+                H["CRÍTICO"].append(f"Pendiente sin resolver «{m.group(0)}» en la portada.")
     for r in refs_raw:
         for m in PENDING.finditer(r):
             H["CRÍTICO"].append(f"Pendiente sin resolver «{m.group(0)}» en Referencias.")
@@ -363,6 +373,13 @@ def review(blocks, rubrica=None, palabras=None, es_md=False, secciones=None):
 
     # extensión por sección
     por_seccion = [(t, lv, sum(words(p) for p in ps)) for t, lv, ps in sections]
+    con_hijos = []  # misma lista, pero cada sección suma las palabras de sus subtítulos (para la rúbrica)
+    for i, (t, lv, w) in enumerate(por_seccion):
+        for _, lv2, w2 in por_seccion[i + 1:]:
+            if lv2 <= lv:
+                break
+            w += w2
+        con_hijos.append((t, lv, w))
 
     # rúbrica
     rub_rows = []
@@ -375,7 +392,7 @@ def review(blocks, rubrica=None, palabras=None, es_md=False, secciones=None):
             if any(k in low for k in TRANSVERSAL) and not c["seccion"]:
                 rub_rows.append((c, "todo el documento", None, None))
                 continue
-            sec = find_section(c, por_seccion)
+            sec = find_section(c, con_hijos)
             esperado = round(objetivo * c["pts"] / tot_pts)
             if not sec:
                 H["CRÍTICO"].append(f"Criterio sin sección que lo cubra: {c['id']} «{c['criterio']}» ({c['pts']} pts).")
@@ -401,6 +418,33 @@ def review(blocks, rubrica=None, palabras=None, es_md=False, secciones=None):
     stats = {"palabras": total, "citas": len(cites), "referencias": len(refs), "secciones": por_seccion,
              "matriz": matriz, "objetivos": objetivos}
     return H, stats, rub_rows
+
+
+def veredicto_guardado(archivo, salida=None):
+    """¿Hay, junto al trabajo o en revisiones/, un veredicto por objetivo del revisor ya completado?"""
+    base = os.path.dirname(os.path.abspath(archivo))
+    candidatos = []
+    for d in (base, os.path.join(base, "revisiones")):
+        if os.path.isdir(d):
+            candidatos += [os.path.join(d, f) for f in os.listdir(d) if f.endswith(".md")]
+    for f in candidatos:
+        if os.path.abspath(f) in (os.path.abspath(archivo), os.path.abspath(salida or "")):
+            continue
+        texto = open(f, encoding="utf-8", errors="ignore").read()
+        m = re.search(r"^#+\s*Veredicto por objetivo\s*$(.*?)(?=^#|\Z)", texto, re.M | re.S | re.I)
+        if m and re.search(r"^\|[^\n]*\|\s*\**(s[ií]|parcial|no)\b", m.group(1), re.M | re.I):
+            return f
+    return None
+
+
+def plantilla_veredicto(matriz):
+    out = ["## Plantilla: veredicto por objetivo (la completa el revisor)", "",
+           "Copiala en `revisiones/AAAA-MM-DD-revision.md` bajo el título `## Veredicto por objetivo` y llená cada celda con sí / parcial / no + evidencia "
+           "(criterios en 08-agentes/prompts/5-revisor.md). revisar.py la busca ahí y avisa mientras falte.", "",
+           "| Objetivo | Verbo y nivel pedido | Nivel logrado | Cubre el general | Método adecuado | Conclusión responde, respaldada y sin datos nuevos |",
+           "|---|---|---|---|---|---|"]
+    out += [f"| OE{m['n']} {m['objetivo'][:50]} | {m['verbo']} ({m['nivel']}) |  |  |  |  |" for m in matriz]
+    return out + [""]
 
 
 def rubric_lines(path):
@@ -532,6 +576,8 @@ def report(path, H, stats, rub_rows, anterior=None):
     if stats.get("objetivos"):
         import coherencia
         out += coherencia.reporte_matriz(stats["matriz"], stats["objetivos"])
+        if not stats.get("veredicto"):
+            out += plantilla_veredicto(stats["matriz"])
     if rub_rows:
         out += ["## Rúbrica", "", "| ID | Criterio | Pts | Sección | Palabras | Esperadas |", "|---|---|---|---|---|---|"]
         for c, sec, got, exp in rub_rows:
@@ -545,7 +591,7 @@ def report(path, H, stats, rub_rows, anterior=None):
 
 def main():
     ap = argparse.ArgumentParser(description="Revisión automática de un trabajo académico (.md o .docx)")
-    ap.add_argument("archivo")
+    ap.add_argument("archivo", help=".md, .docx o .pdf")
     ap.add_argument("--rubrica", help="Markdown con una tabla (ID | Criterio | Puntaje | Sección) o el .docx del docente (primera tabla)")
     ap.add_argument("--anterior", help="reporte .md de una revisión anterior, para ver qué se resolvió")
     ap.add_argument("--secciones", help="secciones obligatorias separadas por coma (también se leen de 'secciones:' en el encabezado)")
@@ -558,11 +604,26 @@ def main():
     ap.add_argument("--justificado", action="store_true", help="(.docx) la institución pide texto justificado")
     ap.add_argument("-o", "--salida", help="guardar el reporte en este archivo .md")
     a = ap.parse_args()
-    es_md = not a.archivo.lower().endswith(".docx")
-    blocks = read_md(a.archivo) if es_md else read_docx(a.archivo)
+    ext = os.path.splitext(a.archivo)[1].lower()
+    es_md = ext not in (".docx", ".pdf")
+    if ext == ".pdf":
+        import leer_pdf
+        try:
+            blocks = leer_pdf.leer(a.archivo)
+        except RuntimeError as e:
+            sys.exit(str(e))
+    else:
+        blocks = read_md(a.archivo) if es_md else read_docx(a.archivo)
     extra = [s.strip() for s in a.secciones.split(",")] if a.secciones else None
     H, stats, rub = review(blocks, a.rubrica, a.palabras, es_md, extra)
-    if not es_md:
+    if stats.get("objetivos"):
+        stats["veredicto"] = veredicto_guardado(a.archivo, a.salida)
+        if not stats["veredicto"]:
+            H["IMPORTANTE"].append("Falta el veredicto por objetivo del revisor (08-agentes/prompts/5-revisor.md): sin él no está revisado "
+                                   "si el texto analiza, si el método sirve ni si las conclusiones responden. Plantilla al final de este reporte.")
+    if ext == ".pdf":
+        H["MENOR"].append("Leído desde PDF: los títulos se deducen y no se ven cursivas ni estilos. Para revisar el formato de página, pasá el .docx.")
+    elif not es_md:
         import formato_docx
         HF, _ = formato_docx.validar(a.archivo, a.fuente, None, a.interlineado, a.margen, a.justificado)
         for sev, hs in HF.items():

@@ -724,8 +724,11 @@ def exportar_pdf(docx):
     pdf = os.path.splitext(docx)[0] + ".pdf"
     soffice = shutil.which("soffice") or shutil.which("libreoffice")
     if soffice:
-        subprocess.run([soffice, "--headless", "--convert-to", "pdf", "--outdir", os.path.dirname(docx), docx],
-                       capture_output=True, timeout=180)
+        try:
+            subprocess.run([soffice, "--headless", "--convert-to", "pdf", "--outdir", os.path.dirname(docx), docx],
+                           capture_output=True, timeout=180)
+        except subprocess.TimeoutExpired:
+            print("LibreOffice no respondió en 3 minutos.", file=sys.stderr)
         if os.path.exists(pdf):
             print(f"PDF: {pdf}")
             return
@@ -744,7 +747,8 @@ def exportar_pdf(docx):
                     data = data.replace(b'<w:updateFields w:val="true"/>', b"")
                 zout.writestr(item, data)
         os.replace(sin_aviso, tmp_docx)
-        script = f'''with timeout of 150 seconds
+        espera = int(os.environ.get("MD2DOCX_PDF_TIMEOUT", "120"))
+        script = f'''with timeout of {espera} seconds
 tell application "Microsoft Word"
 open (POSIX file "{tmp_docx}")
 delay 5
@@ -766,7 +770,21 @@ close d saving no
 return r
 end tell
 end timeout'''
-        r = subprocess.run(["osascript", "-e", script], capture_output=True, text=True, timeout=200)
+        try:
+            r = subprocess.run(["osascript", "-e", script], capture_output=True, text=True, timeout=espera + 30)
+        except subprocess.TimeoutExpired:
+            # casi siempre es un diálogo de Word esperando respuesta (permisos, activación, recuperar documentos)
+            try:
+                subprocess.run(["osascript", "-e", 'tell application "Microsoft Word" to close (every document whose name is "_md2docx_tmp.docx") saving no'],
+                               capture_output=True, timeout=20)
+            except subprocess.TimeoutExpired:
+                pass
+            print(f"Word no respondió en {espera + 30} s (seguramente hay un diálogo abierto en Word). El .docx está listo: "
+                  "abrilo, aceptá actualizar los campos del índice y exportá a PDF desde Word. "
+                  "Podés dar más tiempo con MD2DOCX_PDF_TIMEOUT=300.", file=sys.stderr)
+            if os.path.exists(tmp_docx):
+                os.remove(tmp_docx)
+            return
         if "indice-error" in r.stdout:
             print(f"Aviso: Word no actualizó el índice ({r.stdout.strip()})", file=sys.stderr)
         if os.path.exists(tmp_pdf):

@@ -10,6 +10,9 @@ Base de conocimiento + herramientas para convertir un tema o información en un 
 ## Paso 0 — Preguntar primero
 Antes de escribir, hacé el cuestionario de `07-plantillas/cuestionario-inicial.md` (usá preguntas con opciones si tu herramienta las tiene): tipo de trabajo, ¿trabajo escrito completo?, formato, secciones a incluir o quitar, extensión y datos de portada (o leé `mi-perfil.yaml`). Un **trabajo escrito completo** lleva portada completa con los datos del usuario, tabla de contenidos, número de página en el pie, objetivos, marco teórico, marco metodológico, conclusiones, recomendaciones, referencias y anexos (`03-estructuras/trabajo-escrito-completo.md`).
 
+## Dónde guardar
+En `trabajos/AAAA-MM-<tema>/` dentro de la carpeta del usuario, nunca dentro de la carpeta de esta skill.
+
 ## Flujo
 1. **Tipo de trabajo** → estructura en `03-estructuras/`. **Materia** → `12-materias/guia-por-area.md` (estilo de cita y convenciones). ¿Hay rúbrica? → `01-formato/adaptador-de-rubricas.md`. ¿Quiere aprender en vez de recibir el texto? → `08-agentes/prompts/7-mentor.md`.
 2. **Planear** con `08-agentes/prompts/1-planificador.md`: perspectivas → objetivos (Bloom: `06-bloom/taxonomia-bloom.md`) → esquema → mapa afirmación-evidencia. Pedir aprobación.

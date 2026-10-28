@@ -70,7 +70,7 @@ Consulta OpenAlex (y Crossref si falla). Ver [02-citas-y-referencias/fuentes-y-b
 python3 scripts/revisar.py trabajo.md
 python3 scripts/revisar.py trabajo.docx --rubrica rubrica.md --palabras 2500 -o revisiones/2026-11-01.md
 ```
-Lee .md o .docx (cualquier .docx con estilos de título de Word, no solo los de md2docx) y reporta en **Crítico / Importante / Menor**:
+Lee .md, .docx (cualquier .docx con estilos de título de Word, no solo los de md2docx) o **.pdf** (con `pdftotext` o, en macOS, sin instalar nada; en un PDF los títulos se deducen y no se ven cursivas ni formato de página) y reporta en **Crítico / Importante / Menor**:
 
 | Revisa | Severidad |
 |---|---|
@@ -97,7 +97,7 @@ Lee .md o .docx (cualquier .docx con estilos de título de Word, no solo los de 
 | C2 | Marco teórico con autores actuales | 20 | |
 | C3 | Referencias en APA 7 | 5 | |
 ```
-Sale con código 1 si hay críticos. El reporte incluye una **matriz de coherencia por objetivo** (verbo, nivel de Bloom, si aparece en metodología y en conclusiones).
+Sale con código 1 si hay críticos. Si el trabajo tiene objetivos y no encuentra en la carpeta del trabajo (o en `revisiones/`) un `## Veredicto por objetivo` completado por el revisor, avisa y agrega la plantilla al final del reporte. El reporte incluye una **matriz de coherencia por objetivo** (verbo, nivel de Bloom, si aparece en metodología y en conclusiones).
 
 **Qué no puede decidir:** si el texto realmente analiza, si el método sirve para cada objetivo, si los específicos cubren el general o si la conclusión sale del desarrollo. Esas son pistas; el veredicto lo da el [revisor](../08-agentes/prompts/5-revisor.md), que es obligatorio. Tampoco juzga si la fuente dice lo que se afirma (`verificar_afirmaciones.py`).
 
@@ -144,6 +144,8 @@ Crea `trabajos/<nombre>/` con brief, rúbrica y carpeta de revisiones, y lista l
 - `revisar.py --rubrica rubrica.docx`: lee la rúbrica directo del Word del docente (primera tabla).
 - `revisar.py --anterior revisiones/2026-11-01.md`: compara con la revisión anterior (resueltos, nuevos, siguen).
 - `fuentes.py buscar … --descargar carpeta/`: baja los PDF de acceso abierto (solo PDF reales).
+
+**PDF con Word:** si Word no responde (casi siempre por un diálogo abierto), `--pdf` se corta a los 2,5 minutos y deja el .docx listo; `MD2DOCX_PDF_TIMEOUT=300` da más tiempo.
 
 ## Pruebas
 `python3 -m unittest discover -s tests` (sin red). Corren solas en GitHub Actions en cada push.

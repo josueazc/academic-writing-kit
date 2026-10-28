@@ -273,6 +273,81 @@ class TestFormatoDocx(unittest.TestCase):
                 self.assertIn(e, todo)
 
 
+class TestFallasDeLasPruebas(unittest.TestCase):
+    """Falsos positivos y huecos encontrados al probar el kit con ChatGPT y Claude (2026-10-28)."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def revisar_md(self, texto, nombre="t.md", **kw):
+        md = os.path.join(self.tmp.name, nombre)
+        with open(md, "w", encoding="utf-8") as f:
+            f.write(texto)
+        H, stats, filas = revisar.review(revisar.read_md(md), es_md=True, **kw)
+        return "\n".join(h for v in H.values() for h in v), stats, filas
+
+    def test_cita_con_desambiguacion_y_lugar_antes_de_et_al(self):
+        todo, _, _ = self.revisar_md("# Intro\nZuniga, Peck, et al. (2019) midieron. En África, Tripathi et al. (2022) editaron.\n"
+                                     "# Referencias\nTripathi, L., & Ntui, V. O. (2022). *Banano*. Editorial.\n"
+                                     "Zuniga, J. M., & Peck, J. L. (2019). *Prótesis*. Editorial.\n")
+        self.assertNotIn("sin referencia", todo)
+        self.assertNotIn("sin cita en el texto", todo)
+
+    def test_particula_en_apellido(self):
+        import apa_referencias
+        ref = "ten Kate, J., & Smit, G. (2017). Prostheses: A review. *Disability, 12*(3), 300–314. https://doi.org/10.1080/1"
+        self.assertEqual(apa_referencias.revisar_una(ref), [])
+
+    def test_anio_impreso_o_en_linea(self):
+        import verificar_referencias as v
+        msg = {"published-online": {"date-parts": [[2020, 12]]}, "published-print": {"date-parts": [[2022, 7]]}}
+        self.assertEqual(v.anios_crossref(msg), {2020, 2022})
+
+    def test_tabla_y_rubrica_con_subtitulos(self):
+        rub = os.path.join(self.tmp.name, "r.md")
+        with open(rub, "w", encoding="utf-8") as f:
+            f.write("| ID | Criterio | Puntaje |\n|---|---|---|\n| C1 | Marco teórico | 10 |\n")
+        texto = ("# Marco teórico\n## Uno\n" + "palabra " * 120 + "\n## Dos\n" + "palabra " * 120 +
+                 "\n\n| Diseño | Costo |\n|---|---|\n| X-Limb | 200 USD |\n# Referencias\n")
+        todo, _, filas = self.revisar_md(texto, rubrica=rub, palabras=240)
+        self.assertNotIn("Dato sin cita", todo)
+        self.assertGreaterEqual(filas[0][2], 240)  # antes contaba 0: no sumaba los subtítulos
+
+    def test_portada_del_docx_y_veredicto(self):
+        md = os.path.join(self.tmp.name, "trabajo.md")
+        with open(md, "w", encoding="utf-8") as f:
+            f.write(INCOHERENTE.replace("titulo: Prueba", "modo: completo\ninstitucion: \"[COMPLETAR: universidad]\"\ntitulo: Prueba"))
+        out = os.path.join(self.tmp.name, "trabajo.docx")
+        self.assertEqual(run(os.path.join(SCRIPTS, "md2docx.py"), md, "-o", out).returncode, 0)
+        r = run(os.path.join(SCRIPTS, "revisar.py"), out)
+        self.assertIn("«[COMPLETAR: universidad]» en la portada", r.stdout)
+        self.assertIn("Falta el veredicto por objetivo", r.stdout)
+        self.assertIn("## Plantilla: veredicto por objetivo", r.stdout)
+        os.makedirs(os.path.join(self.tmp.name, "revisiones"))
+        with open(os.path.join(self.tmp.name, "revisiones", "r.md"), "w", encoding="utf-8") as f:
+            f.write("## Veredicto por objetivo\n| Objetivo | Nivel logrado |\n|---|---|\n| OE1 | **Parcial**: describe más de lo que analiza |\n")
+        self.assertNotIn("Falta el veredicto", run(os.path.join(SCRIPTS, "revisar.py"), out).stdout)
+
+    def test_pdf_reconstruido(self):
+        import leer_pdf
+        linea = "Texto de una línea larga del cuerpo del trabajo que ocupa casi todo el ancho de la página y sigue"
+        texto = ("[COMPLETAR: universidad]\nTítulo del trabajo\n\f"
+                 "Introducción\n" + (linea + "\n") * 3 + "Fin del párrafo (Zuniga, 2019).\n"
+                 "Objetivos específicos\n1. Comparar diseños de prótesis.\n2\n\f"
+                 "Referencias\nSprink, T. (2023). Genome editing. En A.\nRicroch, D. Eriksson, & E. Woźniak (Eds.), *Roadmap* (pp. 1–2). Springer.\n"
+                 "Zuniga, J. M. (2019). Functional changes. Disability, 14(1), 68–74. https://doi.org/10.1080/17483107.2017.\n1398279\n")
+        b = leer_pdf.bloques(texto)
+        self.assertEqual(b[0][0], "meta")
+        self.assertIn(("h", 1, "Introducción"), b)
+        self.assertIn(("h", 2, "Objetivos específicos"), b)
+        refs = [t for k, _, t in b if k == "p" and re.match(r"(Sprink|Zuniga),", t)]
+        self.assertEqual(len(refs), 2)
+        self.assertIn("Ricroch", refs[0])
+
+
 class TestTareas(unittest.TestCase):
     def test_fechas(self):
         import tareas
