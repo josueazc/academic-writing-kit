@@ -63,3 +63,34 @@ python3 scripts/fuentes.py buscar "tema" --formato md > trabajos/x/fuentes.md
 python3 scripts/fuentes.py doi 10.xxxx/yyyy
 ```
 Consulta OpenAlex (y Crossref si falla). Ver [02-citas-y-referencias/fuentes-y-busqueda.md](../02-citas-y-referencias/fuentes-y-busqueda.md). Revisá a mano: apellidos compuestos, mayúsculas del título y cursivas.
+
+## revisar.py — verificación automática antes de entregar
+
+```bash
+python3 scripts/revisar.py trabajo.md
+python3 scripts/revisar.py trabajo.docx --rubrica rubrica.md --palabras 2500 -o revisiones/2026-11-01.md
+```
+Lee .md o .docx (cualquier .docx con estilos de título de Word, no solo los de md2docx) y reporta en **Crítico / Importante / Menor**:
+
+| Revisa | Severidad |
+|---|---|
+| Cita en el texto sin referencia (parentéticas, narrativas, "et al.", siglas como `(ICT, 2024)` resueltas con `[ICT]`) | Crítico |
+| `[COMPLETAR]`, `[VERIFICAR]`, `[FUENTE]`, `TODO` sin resolver | Crítico |
+| Criterio de la rúbrica sin sección que lo cubra | Crítico |
+| Referencia que nadie cita · año distinto entre cita y referencia · orden alfabético · fechas "(6 de marzo de 2024)" | Importante |
+| Sección corta para su peso en la rúbrica · extensión total fuera de lo pedido | Importante |
+| Artefactos (`\%`, `**`, `#`) en el .docx | Importante |
+| Muletillas de IA (importante si superan 4 por cada 1000 palabras) | Menor / Importante |
+| Apellidos casi iguales · oraciones de más de 40 palabras | Menor |
+
+**Rúbrica:** un Markdown con una tabla. Columnas reconocidas: `ID`, `Criterio`, `Puntaje`/`Puntos`/`Peso`, y opcional `Sección` (si no está, se empareja por palabras del título). Criterios de ortografía, formato, APA o referencias se marcan como transversales.
+```markdown
+| ID | Criterio | Puntaje | Sección |
+|---|---|---|---|
+| C1 | Justificación del problema | 10 | Justificación |
+| C2 | Marco teórico con autores actuales | 20 | |
+| C3 | Referencias en APA 7 | 5 | |
+```
+Sale con código 1 si hay críticos. No juzga la calidad del argumento ni si la fuente dice lo que se afirma: eso es trabajo del [revisor](../08-agentes/prompts/5-revisor.md).
+
+Ideas tomadas de [rubric-driven](https://github.com/JosephBano/rubric-driven) y [RefMatch](https://github.com/zhongzhengshen/RefMatch-Skill) (MIT); implementación propia sin dependencias.
