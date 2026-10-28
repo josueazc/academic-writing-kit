@@ -1,6 +1,6 @@
 <div align="center">
 
-# ScholarForge
+# academic-writing-kit
 
 ### Give your AI a method for academic writing.
 
@@ -14,9 +14,9 @@ A knowledge base and Python toolkit for turning ideas and notes into structured,
 
 ## The idea
 
-AI can generate text, but academic writing also needs structure, reliable sources, consistent citations, and attention to assignment requirements. ScholarForge brings those pieces together in a reusable workspace.
+AI can generate text, but academic writing also needs structure, reliable sources, consistent citations, and attention to assignment requirements. academic-writing-kit brings those pieces together in a reusable workspace.
 
-It combines writing guides, templates, and agent instructions with practical tools for finding sources, checking references, reviewing drafts, and exporting Word documents. You choose the AI model; ScholarForge provides the method.
+It combines writing guides, templates, and agent instructions with practical tools for finding sources, checking references, reviewing drafts, and exporting Word documents. You choose the AI model; academic-writing-kit provides the method.
 
 ## What it does
 
@@ -33,8 +33,8 @@ The knowledge base is primarily in Spanish and includes guidance for writing in 
 Clone the repository and open it with an AI agent that can read local files:
 
 ```bash
-git clone https://github.com/josueazc/ScholarForge.git
-cd ScholarForge
+git clone https://github.com/josueazc/academic-writing-kit.git
+cd academic-writing-kit
 ```
 
 Ask the agent to read [AGENTS.md](AGENTS.md), then share your topic, notes, and assignment requirements. For a regular chat, use [PROMPT-UNIVERSAL.md](PROMPT-UNIVERSAL.md) as context.
