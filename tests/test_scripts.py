@@ -348,6 +348,33 @@ class TestFallasDeLasPruebas(unittest.TestCase):
         self.assertIn("Ricroch", refs[0])
 
 
+class TestPaquetesNavegador(unittest.TestCase):
+    def test_paquetes_y_colab(self):
+        import json
+        import shutil
+        r = run(os.path.join(SCRIPTS, "empaquetar.py"))
+        self.assertEqual(r.returncode, 0, r.stderr)
+        dist = os.path.join(RAIZ, "dist")
+        nombres = zipfile.ZipFile(os.path.join(dist, "escritura-academica-skill.zip")).namelist()
+        self.assertIn("escritura-academica/SKILL.md", nombres)
+        self.assertFalse([n for n in nombres if "/tests/" in n or "/trabajos/" in n or n.endswith(".docx")])
+        chat = zipfile.ZipFile(os.path.join(dist, "kit-para-chats.zip"))
+        self.assertLessEqual(len(chat.namelist()), 20)  # límite de archivos de un GPT personalizado
+        self.assertLess(len(chat.read("INSTRUCCIONES.md").decode()), 8000)  # límite de instrucciones de un GPT
+        with tempfile.TemporaryDirectory() as d:  # como el Python de un chat: solo los archivos subidos, sin el repo
+            chat.extractall(d)
+            r = subprocess.run([sys.executable, "-I", "md2docx.py", "ejemplo-md2docx.md"], cwd=d, capture_output=True, text=True)
+            self.assertEqual(r.returncode, 0, r.stderr)
+            r = subprocess.run([sys.executable, "-I", "revisar.py", "ejemplo-md2docx.docx"], cwd=d, capture_output=True, text=True)
+            self.assertIn("Resumen:", r.stdout, r.stderr)
+        shutil.rmtree(dist)
+        nb = json.load(open(os.path.join(RAIZ, "colab", "kit-academico.ipynb"), encoding="utf-8"))
+        codigo = "\n".join("".join(c["source"]) for c in nb["cells"] if c["cell_type"] == "code")
+        compile(codigo, "kit-academico.ipynb", "exec")
+        for script in ("md2docx.py", "revisar.py", "verificar_referencias.py"):
+            self.assertIn(script, codigo)
+
+
 class TestTareas(unittest.TestCase):
     def test_fechas(self):
         import tareas

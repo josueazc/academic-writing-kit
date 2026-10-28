@@ -4,6 +4,8 @@ tema: integraciones
 ---
 # Asistentes de chat
 
+**¿Querés el Word ya formateado desde el navegador?** Seguí [navegador.md](navegador.md): GPT personalizado, skill de Claude.ai y Colab para las IAs que no ejecutan Python.
+
 Patrón común: **(1)** crear un proyecto/espacio, **(2)** subir los `.md` de la base (o un ZIP del repo), **(3)** pegar `PROMPT-UNIVERSAL.md` como instrucciones, **(4)** en cada trabajo, mandar el brief + la rúbrica + tu información. Revisado el 2026-10-28; los nombres de menús cambian seguido; si algo no coincide, buscá "instrucciones personalizadas" o "conocimiento/archivos del proyecto".
 
 | Herramienta | Dónde va la base | Busca en la web | Ejecuta Python (→ .docx) | Notas |

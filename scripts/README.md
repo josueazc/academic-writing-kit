@@ -147,6 +147,9 @@ Crea `trabajos/<nombre>/` con brief, rúbrica y carpeta de revisiones, y lista l
 
 **PDF con Word:** si Word no responde (casi siempre por un diálogo abierto), `--pdf` se corta a los 2,5 minutos y deja el .docx listo; `MD2DOCX_PDF_TIMEOUT=300` da más tiempo.
 
+## empaquetar.py — paquetes para usar el kit desde el navegador
+`python3 scripts/empaquetar.py` arma en `dist/` el zip de la skill de Claude.ai, el paquete para chats (GPT personalizado, Gems, proyectos) y `md2docx.py` suelto. GitHub Actions lo corre en cada push y los publica en la versión `paquetes`. Guía por herramienta: [navegador.md](../11-integraciones-ia/navegador.md). Para las IAs sin Python: [cuaderno de Colab](../colab/kit-academico.ipynb).
+
 ## Pruebas
 `python3 -m unittest discover -s tests` (sin red). Corren solas en GitHub Actions en cada push.
 

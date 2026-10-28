@@ -1,0 +1,24 @@
+name: Paquetes
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  paquetes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Armar los paquetes para chats y Claude.ai
+        run: python scripts/empaquetar.py
+      - name: Publicarlos en la versión "paquetes"
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view paquetes >/dev/null 2>&1 || gh release create paquetes --title "Paquetes para usar el kit desde el navegador" \
+            --notes "Se actualizan solos en cada cambio de main. Guía: https://github.com/josueazc/academic-writing-kit/blob/main/11-integraciones-ia/navegador.md"
+          gh release upload paquetes dist/escritura-academica-skill.zip dist/kit-para-chats.zip dist/md2docx.py --clobber

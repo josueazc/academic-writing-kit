@@ -24,6 +24,7 @@ It combines writing guides, templates, and agent instructions with practical too
 - Guides writing around a rubric, discipline, and citation style, with APA 7 as the default.
 - Searches OpenAlex and Crossref and checks DOI and URL references.
 - Reviews drafts for missing references, unfinished sections, and word-count issues.
+- Works from the browser too: a custom GPT, a Claude.ai skill, or a Google Colab notebook turn the draft into a formatted Word file ([guide](11-integraciones-ia/navegador.md)).
 - Checks objective coherence (Bloom verb, coverage in methods and conclusions, new data in conclusions), heading levels, APA reference syntax, and page format of any .docx; the reviewer prompt then gives a mandatory per-objective verdict.
 - Asks before writing: document type, format, sections, length, and title-page details (remembered in `mi-perfil.yaml`).
 - Builds complete papers: full title page, table of contents with page numbers, page numbers in the footer, all required sections and appendices, in `.docx` and PDF.

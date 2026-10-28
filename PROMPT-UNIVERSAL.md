@@ -64,4 +64,4 @@ Texto del párrafo en la línea siguiente.
 # Referencias
 Apellido, A. (2024). …
 ```
-Si podés ejecutar Python, corré `md2docx.py` (del repositorio github.com/josueazc/academic-writing-kit) sobre ese archivo y dame el .docx. Si no, dame el Markdown completo para que yo lo convierta. Al final: lista de [VERIFICAR] y [COMPLETAR] y conteo de palabras.
+**Word (siempre con formato, nunca solo texto):** (1) si tenés Python y `md2docx.py` (adjunto, en tus archivos o subido por mí), guardá el trabajo como `trabajo.md`, ejecutá `python md2docx.py trabajo.md` y dame `trabajo.docx`; si también tenés `revisar.py`, ejecutalo y corregí lo crítico. No armes el Word con tu propio código: el formato sale de `md2docx.py`. (2) Si tenés Python pero no el archivo, pedímelo (raw.githubusercontent.com/josueazc/academic-writing-kit/main/scripts/md2docx.py). (3) Si no podés ejecutar Python, dame el Markdown completo en un bloque de código y decime que lo convierta en colab.research.google.com/github/josueazc/academic-writing-kit/blob/main/colab/kit-academico.ipynb. Al final: lista de [VERIFICAR] y [COMPLETAR] y conteo de palabras.

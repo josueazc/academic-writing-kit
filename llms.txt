@@ -32,6 +32,10 @@ Si solo tenés este enlace y no podés seguir rutas relativas, abrí las URL dir
 - [08-agentes/prompts/5-revisor.md](https://raw.githubusercontent.com/josueazc/academic-writing-kit/main/08-agentes/prompts/5-revisor.md): veredicto por objetivo (sentido) separado del formato
 - [05-redaccion/checklist-revision.md](https://raw.githubusercontent.com/josueazc/academic-writing-kit/main/05-redaccion/checklist-revision.md)
 
+## Word desde el navegador
+- [11-integraciones-ia/navegador.md](https://raw.githubusercontent.com/josueazc/academic-writing-kit/main/11-integraciones-ia/navegador.md): GPT personalizado, skill de Claude.ai y Colab
+- [scripts/md2docx.py](https://raw.githubusercontent.com/josueazc/academic-writing-kit/main/scripts/md2docx.py): generador de Word, un solo archivo sin dependencias
+
 ## Herramientas
 - [SKILL.md](https://raw.githubusercontent.com/josueazc/academic-writing-kit/main/SKILL.md): entrada como Agent Skill
 - [scripts/README.md](https://raw.githubusercontent.com/josueazc/academic-writing-kit/main/scripts/README.md): md2docx.py, fuentes.py, revisar.py, coherencia.py, apa_referencias.py, formato_docx.py

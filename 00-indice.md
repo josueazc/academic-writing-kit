@@ -76,7 +76,7 @@ Empezá por [AGENTS.md](AGENTS.md) (agentes), [SKILL.md](SKILL.md) (Agent Skill)
 - [Prompt universal para chats web](PROMPT-UNIVERSAL.md)
 
 ## 11 · Integraciones con IA
-- [Resumen por modo](11-integraciones-ia/README.md) · [Chats](11-integraciones-ia/chats.md) · [Agentes](11-integraciones-ia/agentes.md) · [Modelos locales](11-integraciones-ia/modelos-locales.md) · [Herramientas externas](11-integraciones-ia/herramientas-externas.md)
+- [Resumen por modo](11-integraciones-ia/README.md) · [Chats](11-integraciones-ia/chats.md) · [Word desde el navegador](11-integraciones-ia/navegador.md) · [Agentes](11-integraciones-ia/agentes.md) · [Modelos locales](11-integraciones-ia/modelos-locales.md) · [Herramientas externas](11-integraciones-ia/herramientas-externas.md)
 
 ## 12 · Materias
 - [Cómo cambia la escritura según el área (resumen)](12-materias/guia-por-area.md)

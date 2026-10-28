@@ -29,6 +29,8 @@ import unicodedata
 import zipfile
 from xml.etree import ElementTree as ET
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))  # módulos hermanos aunque se corra desde otra carpeta
+
 W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
 YEAR = r"(?:1[5-9]\d\d|20\d\d)[a-z]?|s\.\s?f\.?"
 REF_TITLES = ("referencias", "bibliografia", "referencias bibliograficas", "fuentes consultadas")
