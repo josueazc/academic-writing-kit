@@ -39,6 +39,7 @@ Empezá por [AGENTS.md](AGENTS.md) (agentes), [SKILL.md](SKILL.md) (Agent Skill)
 - [Análisis de texto y humanidades](03-estructuras/analisis-de-texto-y-humanidades.md)
 - [Negocios y técnicos (plan de negocios, informe técnico, documentación de software)](03-estructuras/negocios-y-tecnicos.md)
 - [Reflexivos y breves (reflexión, portafolio, resumen, síntesis, reseña)](03-estructuras/reflexivos-y-breves.md)
+- [Publicar en revista o congreso](03-estructuras/publicar-en-revista.md)
 
 ## 04 · Secciones
 - [Resumen y Abstract](04-secciones/resumen-y-abstract.md)
@@ -56,6 +57,7 @@ Empezá por [AGENTS.md](AGENTS.md) (agentes), [SKILL.md](SKILL.md) (Agent Skill)
 - [Checklist de revisión](05-redaccion/checklist-revision.md)
 - [Integridad e IA](05-redaccion/integridad-e-ia.md)
 - [Muletillas de IA](05-redaccion/muletillas-de-ia.md)
+- [Escribir en inglés académico](05-redaccion/escribir-en-ingles.md)
 
 ## 06 · Bloom
 - [Taxonomía de Bloom revisada](06-bloom/taxonomia-bloom.md)
@@ -68,7 +70,7 @@ Empezá por [AGENTS.md](AGENTS.md) (agentes), [SKILL.md](SKILL.md) (Agent Skill)
 
 ## 08 · Agentes
 - [Flujo multiagente](08-agentes/flujo-multiagente.md)
-- Prompts: [planificador](08-agentes/prompts/1-planificador.md) · [investigador](08-agentes/prompts/2-investigador.md) · [redactor](08-agentes/prompts/3-redactor.md) · [citador](08-agentes/prompts/4-citador-apa.md) · [revisor](08-agentes/prompts/5-revisor.md) · [formateador](08-agentes/prompts/6-formateador.md) · [mentor](08-agentes/prompts/7-mentor.md)
+- Prompts: [planificador](08-agentes/prompts/1-planificador.md) · [investigador](08-agentes/prompts/2-investigador.md) · [redactor](08-agentes/prompts/3-redactor.md) · [citador](08-agentes/prompts/4-citador-apa.md) · [revisor](08-agentes/prompts/5-revisor.md) · [formateador](08-agentes/prompts/6-formateador.md) · [mentor](08-agentes/prompts/7-mentor.md) · [revisión por pares](08-agentes/prompts/8-revision-por-pares.md) · [responder correcciones](08-agentes/prompts/9-responder-correcciones.md) · [integrar apuntes](08-agentes/prompts/10-integrar-apuntes.md)
 - [Prompt universal para chats web](PROMPT-UNIVERSAL.md)
 
 ## 09 · Análisis
@@ -78,10 +80,11 @@ Empezá por [AGENTS.md](AGENTS.md) (agentes), [SKILL.md](SKILL.md) (Agent Skill)
 - [Resumen por modo](11-integraciones-ia/README.md) · [Chats](11-integraciones-ia/chats.md) · [Agentes](11-integraciones-ia/agentes.md) · [Modelos locales](11-integraciones-ia/modelos-locales.md) · [Herramientas externas](11-integraciones-ia/herramientas-externas.md)
 
 ## 12 · Materias
-- [Cómo cambia la escritura según el área](12-materias/guia-por-area.md)
+- [Cómo cambia la escritura según el área (resumen)](12-materias/guia-por-area.md)
+- [Salud](12-materias/salud.md) · [Ciencias y matemáticas](12-materias/ciencias-y-matematicas.md) · [Ingenierías y tecnología](12-materias/ingenierias-y-tecnologia.md) · [Sociales, económicas y jurídicas](12-materias/sociales-economicas-y-juridicas.md) · [Educación, humanidades y artes](12-materias/educacion-humanidades-y-artes.md) · [Agro, ambiente, deporte y oficios](12-materias/agro-ambiente-deporte-y-oficios.md) · [Raras, emergentes y absurdas](12-materias/raras-emergentes-y-absurdas.md)
 
 ## Herramientas
-- [scripts/README.md](scripts/README.md) — md2docx.py (Markdown → .docx APA), fuentes.py (búsqueda de fuentes) y revisar.py (verificación automática)
+- [scripts/README.md](scripts/README.md) — md2docx.py (Markdown → .docx APA), fuentes.py (búsqueda y descarga de fuentes), revisar.py (revisión automática), verificar_referencias.py (¿existen las fuentes?) y tareas.py (seguimiento de entregas)
 
 ## 10 · Fuentes
 - [Fuentes de esta base](10-fuentes.md)

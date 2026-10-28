@@ -18,10 +18,17 @@ No asumas ninguna rúbrica ni institución: si no te las dan, usá APA 7 de estu
 5. **Fuentes**: si podés ejecutar código, usá `python3 scripts/fuentes.py buscar "<tema>"` (OpenAlex/Crossref); si tenés navegación, buscá en los índices de [02-citas-y-referencias/fuentes-y-busqueda.md](02-citas-y-referencias/fuentes-y-busqueda.md). Abrí cada fuente antes de usarla.
 6. **Redactá sección por sección** con `04-secciones/` y [05-redaccion/estilo-academico.md](05-redaccion/estilo-academico.md).
 7. **Citá** según `02-citas-y-referencias/`: elegí el tipo de cita adecuado ([tipos-de-citas.md](02-citas-y-referencias/tipos-de-citas.md): directa/indirecta, parentética/narrativa, corta/en bloque) y la referencia por tipo de fuente ([apa7-referencias-por-tipo.md](02-citas-y-referencias/apa7-referencias-por-tipo.md)). Toda cita ↔ referencia; toda cita directa con página.
-8. **Revisá**: ejecutá `python3 scripts/revisar.py trabajo.md [--rubrica rubrica.md] [--palabras N]`, corregí todo lo crítico y completá con el [revisor](08-agentes/prompts/5-revisor.md) y el [checklist](05-redaccion/checklist-revision.md). Evitá las [muletillas de IA](05-redaccion/muletillas-de-ia.md).
+8. **Revisá**: ejecutá `python3 scripts/verificar_referencias.py trabajo.md` (comprueba que cada DOI y URL exista y corresponda a la referencia; eliminá o corregí toda referencia crítica) y `python3 scripts/revisar.py trabajo.md [--rubrica rubrica.md|.docx] [--palabras N] [--anterior revision-previa.md]`, corregí todo lo crítico y completá con el [revisor](08-agentes/prompts/5-revisor.md) y el [checklist](05-redaccion/checklist-revision.md). Evitá las [muletillas de IA](05-redaccion/muletillas-de-ia.md).
 9. **Generá el documento**: escribí `trabajo.md` con el frontmatter de [scripts/README.md](scripts/README.md) y ejecutá `python3 scripts/md2docx.py trabajo.md`. Si no podés ejecutar código, entregá ese Markdown y decile al usuario el comando. Si el usuario trabaja en Google Docs, LibreOffice, Pages u Overleaf, indicale los ajustes de [01-formato/procesadores-de-texto.md](01-formato/procesadores-de-texto.md).
 
-**Modo mentor:** si el usuario quiere aprender o la IA está limitada en su curso, no redactes: seguí [08-agentes/prompts/7-mentor.md](08-agentes/prompts/7-mentor.md).
+**Otros modos** (según lo que pida el usuario):
+- Aprender sin que la IA escriba → [mentor](08-agentes/prompts/7-mentor.md)
+- Evaluar el trabajo de otra persona → [revisión por pares](08-agentes/prompts/8-revision-por-pares.md)
+- Le devolvieron el trabajo con observaciones → [responder correcciones](08-agentes/prompts/9-responder-correcciones.md)
+- Tiene apuntes, chats o notas sueltas → [integrar apuntes](08-agentes/prompts/10-integrar-apuntes.md)
+- Va a una revista o congreso → [publicar en revista](03-estructuras/publicar-en-revista.md)
+- Escribe en inglés → [escribir en inglés](05-redaccion/escribir-en-ingles.md)
+- Varios trabajos a la vez → `python3 scripts/tareas.py nueva|estado`
 
 ## Reglas no negociables
 - **No inventes fuentes, autores, DOI, URL, cifras ni citas textuales.** Lo no verificado lleva `[VERIFICAR]`. Una referencia inventada es el error más grave posible.

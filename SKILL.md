@@ -13,8 +13,11 @@ Base de conocimiento + herramientas para convertir un tema o información en un 
 3. **Fuentes reales**: `python3 scripts/fuentes.py buscar "<tema>" --todas --formato md` y `python3 scripts/fuentes.py doi <DOI>`. Más índices en `02-citas-y-referencias/fuentes-y-busqueda.md`.
 4. **Redactar** sección por sección con `04-secciones/<sección>.md` y `05-redaccion/estilo-academico.md`.
 5. **Citar** con `02-citas-y-referencias/tipos-de-citas.md` (directa/indirecta, parentética/narrativa, corta/bloque, casos especiales), `apa7-referencias.md` y `apa7-referencias-por-tipo.md` (otro estilo: `01-formato/perfiles/otros-estilos.md`).
-6. **Revisar**: `python3 scripts/revisar.py trabajo.md [--rubrica rubrica.md] [--palabras N]` y luego `08-agentes/prompts/5-revisor.md`. Corregir todo lo crítico.
+6. **Revisar**: `python3 scripts/verificar_referencias.py trabajo.md` (¿existen los DOI/URL?), `python3 scripts/revisar.py trabajo.md [--rubrica rubrica.md|.docx] [--palabras N] [--anterior previa.md]` y luego `08-agentes/prompts/5-revisor.md`. Corregir todo lo crítico.
 7. **Generar Word**: `python3 scripts/md2docx.py trabajo.md` (sintaxis en `scripts/README.md`). Para Google Docs, LibreOffice, Pages u Overleaf: `01-formato/procesadores-de-texto.md`.
+
+## Otros modos
+Mentor (`7-mentor`), revisión por pares (`8-revision-por-pares`), responder correcciones (`9-responder-correcciones`), integrar apuntes (`10-integrar-apuntes`) en `08-agentes/prompts/`; revista o congreso: `03-estructuras/publicar-en-revista.md`; inglés: `05-redaccion/escribir-en-ingles.md`; seguimiento de entregas: `scripts/tareas.py`.
 
 ## Reglas duras
 - Nunca inventar fuentes, DOI, URL, cifras, citas ni resultados: `[VERIFICAR]` / `[COMPLETAR: …]`.

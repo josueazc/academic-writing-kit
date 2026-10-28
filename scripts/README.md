@@ -99,3 +99,27 @@ Ideas tomadas de [rubric-driven](https://github.com/JosephBano/rubric-driven) y 
 - `md2docx.py`: `numerar_titulos: true` numera títulos (1., 1.1, 1.1.1) para ingeniería, informes técnicos e IEEE (no numera Resumen, Referencias ni Anexos). El .docx incluye además los estilos que usa Pandoc (`Body Text`, `First Paragraph`, `Bibliography`), así que sirve como `--reference-doc` ([pandoc-y-quarto.md](../01-formato/pandoc-y-quarto.md)).
 - `fuentes.py buscar … --todas`: combina OpenAlex y Crossref y quita duplicados por DOI.
 - `revisar.py`: detecta citas textuales sin página o párrafo, citas de 40+ palabras entre comillas (deben ir en bloque) y exceso de citas textuales (> 20 % del texto).
+
+## verificar_referencias.py — ¿existen las fuentes?
+
+```bash
+python3 scripts/verificar_referencias.py trabajo.md        # o trabajo.docx
+python3 scripts/verificar_referencias.py trabajo.docx -o revisiones/referencias.md
+```
+Para cada referencia: si tiene **DOI**, lo consulta en Crossref y avisa si no existe (🔴, posible referencia inventada) o si pertenece a otro trabajo o año (🟠); si tiene **URL**, comprueba que responda (404 = enlace roto); si no tiene ninguno, la busca en Crossref y sugiere el DOI cuando coinciden título, autor y año. Libros, leyes y sitios locales suelen no estar en Crossref: quedan como "verificar a mano". Necesita internet.
+
+## tareas.py — seguimiento de entregas
+
+```bash
+python3 scripts/tareas.py nueva ensayo-ia --fecha 2026-11-15 --tipo ensayo --tema "IA en educación" --materia Educación
+python3 scripts/tareas.py estado
+```
+Crea `trabajos/<nombre>/` con brief, rúbrica y carpeta de revisiones, y lista los trabajos por fecha de entrega con su etapa y los críticos de la última revisión (⚠️ a 3 días o menos). `trabajos/` no se publica.
+
+## Más opciones nuevas
+- `revisar.py --rubrica rubrica.docx`: lee la rúbrica directo del Word del docente (primera tabla).
+- `revisar.py --anterior revisiones/2026-11-01.md`: compara con la revisión anterior (resueltos, nuevos, siguen).
+- `fuentes.py buscar … --descargar carpeta/`: baja los PDF de acceso abierto (solo PDF reales).
+
+## Pruebas
+`python3 -m unittest discover -s tests` (sin red). Corren solas en GitHub Actions en cada push.

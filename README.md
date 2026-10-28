@@ -20,6 +20,7 @@ Base de conocimiento en Markdown + herramientas para que **cualquier IA** convie
 - Funciona con Claude, ChatGPT, Gemini, Grok, Perplexity, Copilot, Cursor, Codex, Windsurf, Cline, Aider, DeepSeek, Qwen, Kimi, Le Chat, modelos locales y cualquier agente que lea `AGENTS.md`.
 - Genera **.docx** con estilos APA reales (`scripts/md2docx.py`).
 - Busca **fuentes reales** en índices con cientos de millones de trabajos y devuelve la referencia APA (`scripts/fuentes.py`).
+- **Detecta referencias inventadas**: comprueba en Crossref que cada DOI exista y corresponda al título y año citados, y que las URL respondan (`scripts/verificar_referencias.py`).
 - **Revisa con código** el trabajo terminado (.md o .docx): citas sin referencia, años y apellidos que no coinciden, pendientes, muletillas de IA y cobertura de la rúbrica según el peso de cada criterio (`scripts/revisar.py`).
 - Se instala como **Agent Skill** (`SKILL.md`) en Claude Code, Codex, Cursor, Copilot y otros.
 - Es también una **bóveda de Obsidian** (abrí la carpeta con *Open folder as vault*).
@@ -63,8 +64,16 @@ Guías por herramienta: [11-integraciones-ia/](11-integraciones-ia/README.md).
 - `08-agentes/` — flujo multiagente y prompts por rol
 - `09-analisis/` — lecciones de trabajos reales
 - `11-integraciones-ia/` — cómo conectar cada IA y herramientas externas (Zotero MCP, Paper Search MCP)
-- `12-materias/` — convenciones por área de estudio
-- `scripts/` — md2docx.py, fuentes.py y revisar.py (Python 3, sin dependencias)
+- `12-materias/` — convenciones de más de 200 materias, de medicina a estudios de videojuegos, zombis y pseudociencias como objeto de estudio
+- `scripts/` — md2docx.py, fuentes.py, revisar.py, verificar_referencias.py y tareas.py (Python 3, sin dependencias; con pruebas en `tests/`)
+
+## Hoja de ruta (lo que todavía no hace)
+- Servidor **MCP** propio (en diseño; mientras tanto se recomiendan Zotero MCP y Paper Search MCP).
+- Instalación como **plugin** con un comando (`claude plugin install`).
+- Exportar **PDF** directamente (hoy: abrir el .docx y exportar desde Word, Docs o LibreOffice).
+- Salida **LaTeX**/Overleaf (hoy: guía en `01-formato/procesadores-de-texto.md`).
+- Búsqueda semántica en tu biblioteca y citas a la página exacta (lo hace Zotero MCP).
+- Generación de figuras y diagramas.
 
 ## Contribuir
 Perfiles de más universidades, estilos y correcciones son bienvenidos: [CONTRIBUTING.md](CONTRIBUTING.md). Licencia CC BY 4.0 ([LICENSE](LICENSE)).
