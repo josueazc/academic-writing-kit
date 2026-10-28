@@ -27,7 +27,7 @@ import urllib.request
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from revisar import norm, read_docx, read_md, split_sections  # noqa: E402
 
-UA = "escritura-academica/1.0 (https://github.com/josueazc/escritura-academica)"
+UA = "escritura-academica/1.0 (https://github.com/josueazc/academic-writing-kit)"
 DOI_RE = re.compile(r"10\.\d{4,9}/[^\s\"<>]+", re.I)
 URL_RE = re.compile(r"https?://[^\s<>\"]+")
 YEAR_RE = re.compile(r"\((\d{4})")

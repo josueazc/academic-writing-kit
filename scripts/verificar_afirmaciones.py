@@ -31,7 +31,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from revisar import (NARR, PAREN, YEAR, lead_of, match, norm, parse_refs, read_docx,  # noqa: E402
                      read_md, split_sections, year_of)
 
-UA = "escritura-academica/1.0 (https://github.com/josueazc/escritura-academica)"
+UA = "escritura-academica/1.0 (https://github.com/josueazc/academic-writing-kit)"
 DOI_RE = re.compile(r"10\.\d{4,9}/[^\s\"<>]+", re.I)
 VACIAS = set("""el la los las un una unos unas de del al y o u e en con por para que se su sus es son fue
 fueron como mas pero sin sobre entre desde hasta este esta estos estas ese esa eso lo le les ya muy

@@ -1,84 +1,55 @@
-# Escritura académica — knowledge base para IA
+<div align="center">
 
-## ¿Qué es esto?
-No es una IA nueva: es lo que hace que **cualquier IA** escriba trabajos académicos bien hechos. Tiene cuatro capas:
+# academic-writing-kit
 
-| Capa | Qué es | Archivo |
-|---|---|---|
-| **Base de conocimiento** | Reglas de APA 7 y otros estilos, tipos de citas, estructuras de 15+ tipos de trabajo, guías por sección y por materia, Bloom, errores reales | carpetas `01`–`12` |
-| **Herramientas** | Programas que hacen lo que una IA hace mal: generar el Word con formato real, buscar fuentes que existen y revisar con código | `scripts/` |
-| **Skill / instrucciones de agente** | El empaque para que Claude Code, Codex, Cursor, Copilot y otros la usen solos | `SKILL.md`, `AGENTS.md` |
-| **Prompt universal** | La versión compacta para cualquier chat | `PROMPT-UNIVERSAL.md` |
+### Give your AI a method for academic writing.
 
-La IA (Claude, ChatGPT, Gemini, la que uses) pone el lenguaje; esta base pone el método, las reglas y las herramientas. Un servidor MCP sería una quinta capa opcional.
+A knowledge base and Python toolkit for turning ideas and notes into structured, cited, and formatted academic documents.
 
-Base de conocimiento en Markdown + herramientas para que **cualquier IA** convierta un tema o información en bruto en un **trabajo académico completo, citado y formateado en Word**: ensayos, proyectos de investigación, proyectos aplicados, artículos, informes, monografías y TFG/tesis, en **APA 7** (y guía para Vancouver, IEEE, Chicago, MLA).
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Markdown](https://img.shields.io/badge/Markdown-181717?style=for-the-badge&logo=markdown&logoColor=white)
+![APA 7](https://img.shields.io/badge/APA-7th_Edition-2563EB?style=for-the-badge)
 
-- Se adapta a **cualquier rúbrica, tipo de trabajo y materia**: ensayo, proyecto, revisión de literatura, artículo IMRyD, estudio de caso, anteproyecto, análisis de texto, plan de negocios, informe técnico, documentación de software, reflexivos, TFG; con convenciones de salud, derecho, ingeniería, humanidades y más.
-- Cubre **todos los tipos de cita**: directas e indirectas, parentéticas y narrativas, cortas y en bloque, cita de cita, comunicaciones personales, leyes, IA, en APA, MLA, Chicago, Vancouver e IEEE; y **60+ tipos de fuente** en referencias.
-- Sirve para **Word, Google Docs, LibreOffice, Pages y Overleaf**.
-- Funciona con Claude, ChatGPT, Gemini, Grok, Perplexity, Copilot, Cursor, Codex, Windsurf, Cline, Aider, DeepSeek, Qwen, Kimi, Le Chat, modelos locales y cualquier agente que lea `AGENTS.md`.
-- **Pregunta antes de escribir** (tipo, formato, secciones, extensión, datos de portada) y recuerda tus datos en `mi-perfil.yaml`.
-- Genera el **trabajo escrito completo**: portada completa con tus datos, tabla de contenidos con números de página, número de página en el pie, todas las secciones y anexos, en **.docx y PDF** (`scripts/md2docx.py --pdf`), con gráficos (`scripts/figuras.py`).
-- Busca **fuentes reales** en índices con cientos de millones de trabajos y devuelve la referencia APA (`scripts/fuentes.py`).
-- **Comprueba que las fuentes respalden lo que se afirma**: matriz de lectura que compara cada frase citada con el resumen o el texto completo de su fuente y detecta números que la fuente no contiene (`scripts/verificar_afirmaciones.py`).
-- **Detecta referencias inventadas**: comprueba en Crossref que cada DOI exista y corresponda al título y año citados, y que las URL respondan (`scripts/verificar_referencias.py`).
-- **Revisa con código** el trabajo terminado (.md o .docx): citas sin referencia, años y apellidos que no coinciden, pendientes, muletillas de IA y cobertura de la rúbrica según el peso de cada criterio (`scripts/revisar.py`).
-- **Puntúa** cada trabajo de 0 a 100 y trae **evals** para comparar IAs con las mismas tareas (`scripts/evaluar.py`, `evals/`).
-- Se instala como **Agent Skill** (`SKILL.md`) en Claude Code, Codex, Cursor, Copilot y otros.
-- Es también una **bóveda de Obsidian** (abrí la carpeta con *Open folder as vault*).
+</div>
 
-## Empezar en 1 minuto
+## The idea
 
-**Con un agente que abre carpetas** (Claude Code, Codex, Cursor, Copilot, Gemini CLI…):
+AI can generate text, but academic writing also needs structure, reliable sources, consistent citations, and attention to assignment requirements. academic-writing-kit brings those pieces together in a reusable workspace.
+
+It combines writing guides, templates, and agent instructions with practical tools for finding sources, checking references, reviewing drafts, and exporting Word documents. You choose the AI model; academic-writing-kit provides the method.
+
+## What it does
+
+- Helps plan essays, research papers, literature reviews, reports, and theses.
+- Guides writing around a rubric, discipline, and citation style, with APA 7 as the default.
+- Searches OpenAlex and Crossref and checks DOI and URL references.
+- Reviews drafts for missing references, unfinished sections, and word-count issues.
+- Asks before writing: document type, format, sections, length, and title-page details (remembered in `mi-perfil.yaml`).
+- Builds complete papers: full title page, table of contents with page numbers, page numbers in the footer, all required sections and appendices, in `.docx` and PDF.
+- Checks that cited sources support each claim (reading matrix with evidence and number checks) and scores each paper from 0 to 100.
+- Converts Markdown into formatted Word documents (`.docx`) and creates charts from real data.
+
+The knowledge base is primarily in Spanish and includes guidance for writing in English. Automated checks support your review; they do not replace reading the sources or assessing the argument.
+
+## How to use it
+
+Clone the repository and open it with an AI agent that can read local files:
+
 ```bash
-git clone https://github.com/josueazc/escritura-academica.git
-cd escritura-academica
-```
-Abrí el agente ahí y pedí: *"Leé AGENTS.md. Hacé un ensayo de 5 páginas sobre [tema] con esta información: […]. Generá el .docx."*
-
-**Con un chat** (ChatGPT, Gemini, Grok, Perplexity…): pegá [`PROMPT-UNIVERSAL.md`](PROMPT-UNIVERSAL.md), después tu tema/información y la rúbrica si hay. Para el .docx, subí también `scripts/md2docx.py` (si el chat ejecuta Python) o corrélo vos:
-```bash
-python3 scripts/md2docx.py trabajo.md
+git clone https://github.com/josueazc/academic-writing-kit.git
+cd academic-writing-kit
 ```
 
-**Como Agent Skill** (se carga sola cuando pedís un trabajo académico):
-```bash
-git clone https://github.com/josueazc/escritura-academica.git ~/.claude/skills/escritura-academica   # Claude Code
-```
-Otras rutas (Codex, Cursor, Copilot) en [11-integraciones-ia/agentes.md](11-integraciones-ia/agentes.md).
+Ask the agent to read [AGENTS.md](AGENTS.md), then share your topic, notes, and assignment requirements. For a regular chat, use [PROMPT-UNIVERSAL.md](PROMPT-UNIVERSAL.md) as context.
 
-**Revisar antes de entregar:**
-```bash
-python3 scripts/revisar.py trabajo.docx --rubrica rubrica.md --palabras 2500
-```
+The Python tools use the standard library and require no external dependencies (only the optional chart tool, `figuras.py`, needs matplotlib). Source searches and reference checks need internet access.
 
-Guías por herramienta: [11-integraciones-ia/](11-integraciones-ia/README.md).
+[Explore the guides](00-indice.md) · [Python tools](scripts/README.md) · [AI integrations](11-integraciones-ia/README.md)
 
-## Mapa
-- [00-indice.md](00-indice.md) — índice completo
-- `01-formato/` — APA 7, títulos, tablas y figuras, **procesadores de texto** (Word, Google Docs, LibreOffice, Pages, Overleaf), Pandoc/Quarto, **adaptador de rúbricas**, perfiles de universidades (ULACIT, Fidélitas, privadas y públicas de CR) y otros estilos
-- `02-citas-y-referencias/` — **tipos de citas**, referencias (60+ tipos de fuente), errores frecuentes, **dónde buscar fuentes**
-- `03-estructuras/` — esqueleto de cada tipo de trabajo
-- `04-secciones/` — cómo escribir cada sección
-- `05-redaccion/` — estilo, conectores, checklist, integridad e IA
-- `06-bloom/` — taxonomía de Bloom revisada
-- `07-plantillas/` — brief, plantillas y ejemplo para md2docx
-- `08-agentes/` — flujo multiagente y prompts por rol
-- `11-integraciones-ia/` — cómo conectar cada IA y herramientas externas (Zotero MCP, Paper Search MCP)
-- `12-materias/` — convenciones de más de 200 materias, de medicina a estudios de videojuegos, zombis y pseudociencias como objeto de estudio
-- `scripts/` — md2docx.py, fuentes.py, revisar.py, verificar_referencias.py, verificar_afirmaciones.py, evaluar.py, figuras.py y tareas.py (Python 3; solo figuras.py necesita matplotlib; pruebas en `tests/`)
-- `evals/` — tareas fijas para comparar IAs
+## Built with
 
-## Hoja de ruta (lo que todavía no hace)
-- Servidor **MCP** propio (en espera; mientras tanto se recomiendan Zotero MCP y Paper Search MCP).
-- Instalación como **plugin** con un comando (`claude plugin install`).
-- Salida **LaTeX**/Overleaf (hoy: guía en `01-formato/procesadores-de-texto.md`).
-- Búsqueda semántica en tu biblioteca y citas a la página exacta (lo hace Zotero MCP).
-- Diagramas (flujos, mapas conceptuales); hoy solo gráficos de datos.
-- Leer PDF de pago o detrás de inicio de sesión (la matriz de lectura usa resúmenes y texto abierto).
+Python · Markdown · Office Open XML · OpenAlex · Crossref
 
-## Contribuir
-Perfiles de más universidades, estilos y correcciones son bienvenidos: [CONTRIBUTING.md](CONTRIBUTING.md). Licencia CC BY 4.0 ([LICENSE](LICENSE)).
+## License
 
-> No contiene trabajos originales ni datos personales de estudiantes; solo reglas y ejemplos anonimizados.
+[CC BY 4.0](LICENSE) — created by [Josué Azofeifa](https://github.com/josueazc).

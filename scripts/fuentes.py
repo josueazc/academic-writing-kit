@@ -22,7 +22,7 @@ import sys
 import urllib.parse
 import urllib.request
 
-UA = "escritura-academica/1.0 (https://github.com/josueazc/escritura-academica)"
+UA = "escritura-academica/1.0 (https://github.com/josueazc/academic-writing-kit)"
 
 
 def get(url, accept="application/json"):
