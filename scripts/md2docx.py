@@ -101,8 +101,8 @@ def runs(text, bold=False, italic=False):
             i, t = True, part[1:-1]
         elif part.startswith("`") and part.endswith("`"):
             t = part[1:-1]
-        elif part.startswith("["):
-            m = re.match(r"\[([^\]]+)\]\(([^)]+)\)", part)
+        elif part.startswith("[") and re.fullmatch(r"\[([^\]]+)\]\(([^)]+)\)", part):
+            m = re.fullmatch(r"\[([^\]]+)\]\(([^)]+)\)", part)
             t = m.group(1) if m.group(1) == m.group(2) else f"{m.group(1)} ({m.group(2)})"
         out.append(run(t, b, i))
     return "".join(out)
@@ -406,6 +406,8 @@ class Doc:
                 i += 1
                 continue
             paragraph_buf.append(s)
+            if section in ("referencias", "bibliografía", "bibliografia"):
+                flush()  # en Referencias cada línea es una entrada
             i += 1
         flush()
 
