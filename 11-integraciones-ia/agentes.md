@@ -27,6 +27,18 @@ mkdir -p trabajos/2026-11-ensayo-ia
 | Jules (Google) / Devin / agentes en la nube | Conectar el repo de GitHub | `AGENTS.md` |
 | OpenCode, Goose, Amp, Kiro y similares | Abrir la carpeta | `AGENTS.md` |
 
+## Instalar como Agent Skill
+`SKILL.md` sigue el estándar abierto de Agent Skills: el agente lee solo la descripción y carga la base cuando la tarea es académica.
+
+| Agente | Comando |
+|---|---|
+| Claude Code | `git clone https://github.com/josueazc/escritura-academica.git ~/.claude/skills/escritura-academica` |
+| Codex | `git clone … ~/.codex/skills/escritura-academica` |
+| Cursor | `git clone … ~/.cursor/skills/escritura-academica` |
+| GitHub Copilot | `git clone … ~/.copilot/skills/escritura-academica` |
+
+Las rutas de skills cambian entre versiones; si tu agente usa otra carpeta, revisá su documentación. Para actualizar: `git -C <ruta> pull`.
+
 ## Pedido típico
 ```
 Leé AGENTS.md. Trabajá en trabajos/2026-11-ensayo-ia/.

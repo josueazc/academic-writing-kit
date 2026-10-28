@@ -14,11 +14,11 @@ No asumas ninguna rúbrica ni institución: si no te las dan, usá APA 7 de estu
 1. **Identificá el tipo de trabajo** y abrí su estructura en `03-estructuras/`. Si no está claro, preguntá (máximo 3 preguntas).
 2. **Mapeá la rúbrica** (si hay) a secciones, pesos y requisitos numéricos.
 3. **Datos faltantes**: autores, curso, docente, fecha, extensión. Nunca los inventes: `[COMPLETAR: …]`.
-4. **Planeá**: esquema con niveles de título, propósito y extensión de cada sección. Validá los verbos de los objetivos con [06-bloom/taxonomia-bloom.md](06-bloom/taxonomia-bloom.md).
+4. **Planeá** con [08-agentes/prompts/1-planificador.md](08-agentes/prompts/1-planificador.md): perspectivas del tema → objetivos (verbos validados con [06-bloom/taxonomia-bloom.md](06-bloom/taxonomia-bloom.md)) → esquema → mapa afirmación-evidencia.
 5. **Fuentes**: si podés ejecutar código, usá `python3 scripts/fuentes.py buscar "<tema>"` (OpenAlex/Crossref); si tenés navegación, buscá en los índices de [02-citas-y-referencias/fuentes-y-busqueda.md](02-citas-y-referencias/fuentes-y-busqueda.md). Abrí cada fuente antes de usarla.
 6. **Redactá sección por sección** con `04-secciones/` y [05-redaccion/estilo-academico.md](05-redaccion/estilo-academico.md).
 7. **Citá** según `02-citas-y-referencias/`. Toda cita ↔ referencia.
-8. **Revisá** con [05-redaccion/checklist-revision.md](05-redaccion/checklist-revision.md).
+8. **Revisá**: ejecutá `python3 scripts/revisar.py trabajo.md [--rubrica rubrica.md] [--palabras N]`, corregí todo lo crítico y completá con el [revisor](08-agentes/prompts/5-revisor.md) y el [checklist](05-redaccion/checklist-revision.md). Evitá las [muletillas de IA](05-redaccion/muletillas-de-ia.md).
 9. **Generá el documento**: escribí `trabajo.md` con el frontmatter de [scripts/README.md](scripts/README.md) y ejecutá `python3 scripts/md2docx.py trabajo.md`. Si no podés ejecutar código, entregá ese Markdown y decile al usuario el comando.
 
 ## Reglas no negociables
@@ -32,7 +32,7 @@ No asumas ninguna rúbrica ni institución: si no te las dan, usá APA 7 de estu
 
 ## Entrega
 1. `trabajo.md` (fuente) y `trabajo.docx` (si pudiste ejecutar el script).
-2. Lista de `[COMPLETAR]` y `[VERIFICAR]` pendientes.
+2. Reporte de `revisar.py` (o, si no pudiste ejecutarlo, lista de `[COMPLETAR]` y `[VERIFICAR]` pendientes).
 3. Conteo de palabras por sección.
 4. Si hubo rúbrica: autoevaluación criterio por criterio.
 

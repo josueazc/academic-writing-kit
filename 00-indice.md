@@ -3,7 +3,7 @@ tipo: indice
 ---
 # Índice — Escritura académica
 
-Empezá por [AGENTS.md](AGENTS.md) (agentes) o [README.md](README.md) (personas).
+Empezá por [AGENTS.md](AGENTS.md) (agentes), [SKILL.md](SKILL.md) (Agent Skill) o [README.md](README.md) (personas).
 
 ## 01 · Formato
 - [APA 7 — formato de página](01-formato/apa7-formato-pagina.md)
@@ -44,6 +44,7 @@ Empezá por [AGENTS.md](AGENTS.md) (agentes) o [README.md](README.md) (personas)
 - [Conectores](05-redaccion/conectores.md)
 - [Checklist de revisión](05-redaccion/checklist-revision.md)
 - [Integridad e IA](05-redaccion/integridad-e-ia.md)
+- [Muletillas de IA](05-redaccion/muletillas-de-ia.md)
 
 ## 06 · Bloom
 - [Taxonomía de Bloom revisada](06-bloom/taxonomia-bloom.md)
@@ -66,7 +67,7 @@ Empezá por [AGENTS.md](AGENTS.md) (agentes) o [README.md](README.md) (personas)
 - [Resumen por modo](11-integraciones-ia/README.md) · [Chats](11-integraciones-ia/chats.md) · [Agentes](11-integraciones-ia/agentes.md) · [Modelos locales](11-integraciones-ia/modelos-locales.md)
 
 ## Herramientas
-- [scripts/README.md](scripts/README.md) — md2docx.py (Markdown → .docx APA) y fuentes.py (búsqueda de fuentes)
+- [scripts/README.md](scripts/README.md) — md2docx.py (Markdown → .docx APA), fuentes.py (búsqueda de fuentes) y revisar.py (verificación automática)
 
 ## 10 · Fuentes
 - [Fuentes de esta base](10-fuentes.md)

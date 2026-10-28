@@ -13,4 +13,5 @@
 - [02-citas-y-referencias/fuentes-y-busqueda.md](02-citas-y-referencias/fuentes-y-busqueda.md)
 
 ## Herramientas
-- [scripts/README.md](scripts/README.md): md2docx.py y fuentes.py
+- [SKILL.md](SKILL.md): entrada como Agent Skill
+- [scripts/README.md](scripts/README.md): md2docx.py, fuentes.py y revisar.py

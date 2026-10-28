@@ -17,6 +17,7 @@ Para generar el .docx, el modelo necesita ejecutar Python (`scripts/md2docx.py`)
 ## Archivos de instrucciones incluidos en el repo
 | Archivo | Lo lee |
 |---|---|
+| `SKILL.md` | Agentes compatibles con Agent Skills (Claude Code, Codex, Cursor, Copilot…) instalados en su carpeta de skills |
 | `AGENTS.md` | Codex, Jules, Copilot (agente), Cursor, Zed, Amp, OpenCode, Devin y la mayoría de agentes nuevos (estándar abierto) |
 | `CLAUDE.md` | Claude Code |
 | `GEMINI.md` | Gemini CLI / Gemini Code Assist |
