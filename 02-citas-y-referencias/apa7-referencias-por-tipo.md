@@ -69,6 +69,7 @@ APA remite al estilo Bluebook para casos legales de EE. UU.; en Costa Rica se us
 | Tipo | Plantilla |
 |---|---|
 | Película | Director, A. (Director). (Año). *Título* [Película]. Productora. |
+| Serie completa | Productor, A. (Productor ejecutivo). (Año–año). *Título* [Serie de televisión]. Productora; Cadena. |
 | Episodio de serie | Guionista, A. (Guionista), & Director, B. (Director). (Año, día de mes). Título del episodio (Temporada 1, Episodio 2) [Episodio de serie de TV]. En C. Productor (Productor ejecutivo), *Serie*. Productora. |
 | Video de YouTube | Canal o Autor. (Año, día de mes). *Título del video* [Video]. YouTube. URL |
 | Podcast (episodio) | Presentador, A. (Presentador). (Año, día de mes). Título del episodio (n.º X) [Episodio de pódcast]. En *Nombre del Pódcast*. Productora. URL |
@@ -76,6 +77,11 @@ APA remite al estilo Bluebook para casos legales de EE. UU.; en Costa Rica se us
 | Charla TED | Orador, A. (Año, mes). *Título* [Video]. TED Conferences. URL |
 | Webinar | Institución. (Año, día de mes). *Título* [Webinar]. Plataforma. URL |
 | Entrevista publicada | Se cita según dónde se publicó (artículo, video, pódcast), con el entrevistador como autor si así aparece. |
+
+### Citar una escena concreta de una serie, película o cómic
+- **Episodio específico** (preferible a citar la serie entera cuando se describe una escena): referencia del episodio y, en el texto, la marca de tiempo: (Apellido, Año, 12:30).
+- **Manga o cómic:** citá el tomo o capítulo concreto: Autor. (Año). *Título* (Vol. 3) [Manga]. Editorial. En el texto: (Apellido, Año, p. 45) o (cap. 12).
+- Si no podés precisar episodio o página, describí la escena de forma general y citá la serie; no inventes números de episodio.
 
 ## Imágenes y obras visuales
 | Tipo | Plantilla |

@@ -141,6 +141,28 @@ Encuestas, entrevistas o pruebas que hiciste: no se citan; se describen en la me
 
 Proporción sana en ciencias sociales: ≥ 80 % indirectas. Cada cita directa necesita análisis después.
 
+## 6b. Número de autores, instituciones y casos frecuentes (APA 7)
+| Autores | Parentética | Narrativa |
+|---|---|---|
+| 1 | (Siles, 2020) | Siles (2020) |
+| 2 | (Méndez & Arteaga, 2025) | Méndez y Arteaga (2025) |
+| 3 o más | (Zumbado et al., 2022) — **desde la primera cita** | Zumbado et al. (2022) |
+| Autor institucional (1.ª vez) | (Instituto Costarricense de Turismo [ICT], 2024) | Instituto Costarricense de Turismo (ICT, 2024) |
+| Autor institucional (siguientes) | (ICT, 2024) | ICT (2024) |
+| Sin autor | ("Título breve del artículo", 2023) / (*Título del Libro*, 2023) | |
+| Sin fecha | (Poder Judicial, s. f.) | |
+| Varias obras | (Castells, 2012; Reguillo, 2017) — orden alfabético | |
+| Mismo autor y año | (ICT, 2025a, 2025b) | |
+
+> En textos en español: "y" en citas narrativas; "&" dentro del paréntesis y en referencias (APA en inglés). Algunas guías en español usan "y" en todo: seguí lo que pida el docente y sé consistente.
+
+## 6c. Errores frecuentes al citar
+- Citar con nombre completo: "(Esteban Arrieta, 2019)" → (Arrieta, 2019).
+- Citar "(Salazar Carranza et al., 2023)" pero referenciar "Salazar, L., Castro…" → el apellido debe coincidir exactamente.
+- Atribuir a "Revista Summa" en la cita y "Revistas Summa" en la referencia.
+- Poner la cita sin año: "(Ley General de la Persona Joven, p. 1)".
+- Citas textuales sin página.
+
 ## 7. La misma cita en otros estilos
 | Tipo | APA 7 | MLA 9 | Chicago autor-fecha | Chicago notas | Vancouver | IEEE |
 |---|---|---|---|---|---|---|

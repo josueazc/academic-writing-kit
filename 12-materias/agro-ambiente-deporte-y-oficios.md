@@ -5,6 +5,8 @@ area: Agro, ambiente, deporte, técnicos y oficios
 ---
 # Agro, ambiente, deporte, carreras técnicas y oficios
 
+> **Orientativo.** Los estilos de cita y convenciones de esta tabla son los habituales en el área (revisión de 2026-10-28), no una norma. Manda lo que pida el docente, la escuela o la revista.
+
 En carreras técnicas y oficios el trabajo escrito suele ser **práctico**: informe de práctica, manual de procedimiento, ficha técnica, bitácora, plan de negocio. APA 7 por defecto, lenguaje claro, pasos numerados, seguridad primero.
 
 ## Agro y ambiente

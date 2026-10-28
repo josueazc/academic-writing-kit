@@ -5,6 +5,8 @@ area: Ciencias naturales y exactas
 ---
 # Ciencias naturales y exactas
 
+> **Orientativo.** Los estilos de cita y convenciones de esta tabla son los habituales en el área (revisión de 2026-10-28), no una norma. Manda lo que pida el docente, la escuela o la revista.
+
 Convenciones comunes: IMRyD; impersonal y pasado en método/resultados; unidades del SI con espacio (25 °C); incertidumbre y cifras significativas; nombres científicos en cursiva; figuras con ejes rotulados; estilo de la revista del área (ACS, AIP, CSE) o APA.
 
 | Materia | Estilo habitual | Trabajos típicos | Claves propias |

@@ -4,6 +4,8 @@ tema: materias
 ---
 # Cómo cambia la escritura según la materia
 
+> **Orientativo.** Los estilos de cita y convenciones de esta tabla son los habituales en el área (revisión de 2026-10-28), no una norma. Manda lo que pida el docente, la escuela o la revista.
+
 ## Catálogo detallado (más de 200 materias)
 | Archivo | Áreas |
 |---|---|

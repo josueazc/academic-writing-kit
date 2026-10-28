@@ -18,10 +18,13 @@ Base de conocimiento en Markdown + herramientas para que **cualquier IA** convie
 - Cubre **todos los tipos de cita**: directas e indirectas, parentéticas y narrativas, cortas y en bloque, cita de cita, comunicaciones personales, leyes, IA, en APA, MLA, Chicago, Vancouver e IEEE; y **60+ tipos de fuente** en referencias.
 - Sirve para **Word, Google Docs, LibreOffice, Pages y Overleaf**.
 - Funciona con Claude, ChatGPT, Gemini, Grok, Perplexity, Copilot, Cursor, Codex, Windsurf, Cline, Aider, DeepSeek, Qwen, Kimi, Le Chat, modelos locales y cualquier agente que lea `AGENTS.md`.
-- Genera **.docx** con estilos APA reales (`scripts/md2docx.py`).
+- **Pregunta antes de escribir** (tipo, formato, secciones, extensión, datos de portada) y recuerda tus datos en `mi-perfil.yaml`.
+- Genera el **trabajo escrito completo**: portada completa con tus datos, tabla de contenidos con números de página, número de página en el pie, todas las secciones y anexos, en **.docx y PDF** (`scripts/md2docx.py --pdf`), con gráficos (`scripts/figuras.py`).
 - Busca **fuentes reales** en índices con cientos de millones de trabajos y devuelve la referencia APA (`scripts/fuentes.py`).
+- **Comprueba que las fuentes respalden lo que se afirma**: matriz de lectura que compara cada frase citada con el resumen o el texto completo de su fuente y detecta números que la fuente no contiene (`scripts/verificar_afirmaciones.py`).
 - **Detecta referencias inventadas**: comprueba en Crossref que cada DOI exista y corresponda al título y año citados, y que las URL respondan (`scripts/verificar_referencias.py`).
 - **Revisa con código** el trabajo terminado (.md o .docx): citas sin referencia, años y apellidos que no coinciden, pendientes, muletillas de IA y cobertura de la rúbrica según el peso de cada criterio (`scripts/revisar.py`).
+- **Puntúa** cada trabajo de 0 a 100 y trae **evals** para comparar IAs con las mismas tareas (`scripts/evaluar.py`, `evals/`).
 - Se instala como **Agent Skill** (`SKILL.md`) en Claude Code, Codex, Cursor, Copilot y otros.
 - Es también una **bóveda de Obsidian** (abrí la carpeta con *Open folder as vault*).
 
@@ -62,18 +65,18 @@ Guías por herramienta: [11-integraciones-ia/](11-integraciones-ia/README.md).
 - `06-bloom/` — taxonomía de Bloom revisada
 - `07-plantillas/` — brief, plantillas y ejemplo para md2docx
 - `08-agentes/` — flujo multiagente y prompts por rol
-- `09-analisis/` — lecciones de trabajos reales
 - `11-integraciones-ia/` — cómo conectar cada IA y herramientas externas (Zotero MCP, Paper Search MCP)
 - `12-materias/` — convenciones de más de 200 materias, de medicina a estudios de videojuegos, zombis y pseudociencias como objeto de estudio
-- `scripts/` — md2docx.py, fuentes.py, revisar.py, verificar_referencias.py y tareas.py (Python 3, sin dependencias; con pruebas en `tests/`)
+- `scripts/` — md2docx.py, fuentes.py, revisar.py, verificar_referencias.py, verificar_afirmaciones.py, evaluar.py, figuras.py y tareas.py (Python 3; solo figuras.py necesita matplotlib; pruebas en `tests/`)
+- `evals/` — tareas fijas para comparar IAs
 
 ## Hoja de ruta (lo que todavía no hace)
-- Servidor **MCP** propio (en diseño; mientras tanto se recomiendan Zotero MCP y Paper Search MCP).
+- Servidor **MCP** propio (en espera; mientras tanto se recomiendan Zotero MCP y Paper Search MCP).
 - Instalación como **plugin** con un comando (`claude plugin install`).
-- Exportar **PDF** directamente (hoy: abrir el .docx y exportar desde Word, Docs o LibreOffice).
 - Salida **LaTeX**/Overleaf (hoy: guía en `01-formato/procesadores-de-texto.md`).
 - Búsqueda semántica en tu biblioteca y citas a la página exacta (lo hace Zotero MCP).
-- Generación de figuras y diagramas.
+- Diagramas (flujos, mapas conceptuales); hoy solo gráficos de datos.
+- Leer PDF de pago o detrás de inicio de sesión (la matriz de lectura usa resúmenes y texto abierto).
 
 ## Contribuir
 Perfiles de más universidades, estilos y correcciones son bienvenidos: [CONTRIBUTING.md](CONTRIBUTING.md). Licencia CC BY 4.0 ([LICENSE](LICENSE)).

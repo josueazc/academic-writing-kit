@@ -13,19 +13,18 @@ Empezá por [AGENTS.md](AGENTS.md) (agentes), [SKILL.md](SKILL.md) (Agent Skill)
 - [Otros estilos (Vancouver, IEEE, Chicago, MLA)](01-formato/perfiles/otros-estilos.md)
 - [Portada y tabla de contenidos](01-formato/portada-y-contenidos.md)
 - [Tablas y figuras](01-formato/tablas-y-figuras.md)
-- [Configurar Word y Google Docs](01-formato/configurar-word-y-docs.md)
 - [Procesadores de texto: Word, Google Docs, LibreOffice, Pages, Overleaf](01-formato/procesadores-de-texto.md)
 - [Citas automáticas con Pandoc o Quarto](01-formato/pandoc-y-quarto.md)
 
 ## 02 · Citas y referencias
 - [Tipos de citas (directa, indirecta, parentética, narrativa, corta, en bloque, especiales; APA y otros estilos)](02-citas-y-referencias/tipos-de-citas.md)
-- [Citas en el texto (APA 7)](02-citas-y-referencias/apa7-citas.md)
 - [Lista de referencias](02-citas-y-referencias/apa7-referencias.md)
 - [Referencias por tipo de fuente (catálogo ampliado)](02-citas-y-referencias/apa7-referencias-por-tipo.md)
 - [Errores frecuentes](02-citas-y-referencias/errores-frecuentes.md)
 - [Dónde buscar fuentes](02-citas-y-referencias/fuentes-y-busqueda.md)
 
 ## 03 · Estructuras por tipo de trabajo
+- [Trabajo escrito completo (qué incluye siempre)](03-estructuras/trabajo-escrito-completo.md)
 - [Proyecto de investigación](03-estructuras/proyecto-de-investigacion.md)
 - [Proyecto aplicado / tecnológico](03-estructuras/proyecto-aplicado-tecnologico.md)
 - [Artículo de divulgación / noticia científica](03-estructuras/articulo-divulgacion-y-noticia.md)
@@ -58,11 +57,14 @@ Empezá por [AGENTS.md](AGENTS.md) (agentes), [SKILL.md](SKILL.md) (Agent Skill)
 - [Integridad e IA](05-redaccion/integridad-e-ia.md)
 - [Muletillas de IA](05-redaccion/muletillas-de-ia.md)
 - [Escribir en inglés académico](05-redaccion/escribir-en-ingles.md)
+- [Voz propia y detectores de IA](05-redaccion/voz-propia-y-detectores.md)
 
 ## 06 · Bloom
 - [Taxonomía de Bloom revisada](06-bloom/taxonomia-bloom.md)
 
 ## 07 · Plantillas
+- [Cuestionario inicial (lo que la IA pregunta antes de escribir)](07-plantillas/cuestionario-inicial.md)
+- [Perfil del usuario para la portada](07-plantillas/perfil-ejemplo.yaml)
 - [Brief del trabajo](07-plantillas/brief-del-trabajo.md)
 - [Plantilla de proyecto](07-plantillas/plantilla-proyecto.md)
 - [Plantilla de ensayo / artículo](07-plantillas/plantilla-ensayo-y-articulo.md)
@@ -73,9 +75,6 @@ Empezá por [AGENTS.md](AGENTS.md) (agentes), [SKILL.md](SKILL.md) (Agent Skill)
 - Prompts: [planificador](08-agentes/prompts/1-planificador.md) · [investigador](08-agentes/prompts/2-investigador.md) · [redactor](08-agentes/prompts/3-redactor.md) · [citador](08-agentes/prompts/4-citador-apa.md) · [revisor](08-agentes/prompts/5-revisor.md) · [formateador](08-agentes/prompts/6-formateador.md) · [mentor](08-agentes/prompts/7-mentor.md) · [revisión por pares](08-agentes/prompts/8-revision-por-pares.md) · [responder correcciones](08-agentes/prompts/9-responder-correcciones.md) · [integrar apuntes](08-agentes/prompts/10-integrar-apuntes.md)
 - [Prompt universal para chats web](PROMPT-UNIVERSAL.md)
 
-## 09 · Análisis
-- [Análisis de los trabajos de referencia](09-analisis/analisis-trabajos.md)
-
 ## 11 · Integraciones con IA
 - [Resumen por modo](11-integraciones-ia/README.md) · [Chats](11-integraciones-ia/chats.md) · [Agentes](11-integraciones-ia/agentes.md) · [Modelos locales](11-integraciones-ia/modelos-locales.md) · [Herramientas externas](11-integraciones-ia/herramientas-externas.md)
 
@@ -84,7 +83,10 @@ Empezá por [AGENTS.md](AGENTS.md) (agentes), [SKILL.md](SKILL.md) (Agent Skill)
 - [Salud](12-materias/salud.md) · [Ciencias y matemáticas](12-materias/ciencias-y-matematicas.md) · [Ingenierías y tecnología](12-materias/ingenierias-y-tecnologia.md) · [Sociales, económicas y jurídicas](12-materias/sociales-economicas-y-juridicas.md) · [Educación, humanidades y artes](12-materias/educacion-humanidades-y-artes.md) · [Agro, ambiente, deporte y oficios](12-materias/agro-ambiente-deporte-y-oficios.md) · [Raras, emergentes y absurdas](12-materias/raras-emergentes-y-absurdas.md)
 
 ## Herramientas
-- [scripts/README.md](scripts/README.md) — md2docx.py (Markdown → .docx APA), fuentes.py (búsqueda y descarga de fuentes), revisar.py (revisión automática), verificar_referencias.py (¿existen las fuentes?) y tareas.py (seguimiento de entregas)
+- [scripts/README.md](scripts/README.md) — md2docx.py (Markdown → .docx APA), fuentes.py (búsqueda y descarga de fuentes), revisar.py (revisión automática), verificar_referencias.py (¿existen las fuentes?), verificar_afirmaciones.py (¿respaldan lo que se afirma?), figuras.py (gráficos), evaluar.py (puntaje 0–100) y tareas.py (seguimiento de entregas)
+
+## Evals
+- [Comparar IAs con tareas fijas](evals/README.md) · [Tareas](evals/tareas.md)
 
 ## 10 · Fuentes
 - [Fuentes de esta base](10-fuentes.md)

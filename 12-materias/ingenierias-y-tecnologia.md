@@ -5,6 +5,8 @@ area: Ingenierías y tecnología
 ---
 # Ingenierías y tecnología
 
+> **Orientativo.** Los estilos de cita y convenciones de esta tabla son los habituales en el área (revisión de 2026-10-28), no una norma. Manda lo que pida el docente, la escuela o la revista.
+
 Convenciones comunes: **IEEE** o APA; títulos numerados (`numerar_titulos: true`); ecuaciones numeradas y variables definidas; unidades del SI; normas citadas con número (ISO, IEEE, INTECO, ASTM, NFPA); diagramas como figuras; código en anexos o repositorio citado.
 
 | Materia | Estilo habitual | Trabajos típicos | Claves propias |

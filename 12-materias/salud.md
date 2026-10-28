@@ -5,6 +5,8 @@ area: Ciencias de la salud
 ---
 # Ciencias de la salud
 
+> **Orientativo.** Los estilos de cita y convenciones de esta tabla son los habituales en el área (revisión de 2026-10-28), no una norma. Manda lo que pida el docente, la escuela o la revista.
+
 Convenciones comunes: **Vancouver** (numérico) o APA; impersonal; pregunta PICO; niveles de evidencia; ética y confidencialidad; términos MeSH/DeCS; unidades del SI; nombres genéricos de fármacos. Bases: PubMed, Cochrane, BVS/LILACS, SciELO, UpToDate (consulta), guías OMS/OPS/CCSS.
 
 | Materia | Estilo habitual | Trabajos típicos | Claves propias |

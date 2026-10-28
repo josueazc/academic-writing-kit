@@ -5,6 +5,8 @@ area: Educación, humanidades, comunicación y artes
 ---
 # Educación, humanidades, comunicación y artes
 
+> **Orientativo.** Los estilos de cita y convenciones de esta tabla son los habituales en el área (revisión de 2026-10-28), no una norma. Manda lo que pida el docente, la escuela o la revista.
+
 ## Educación
 | Materia | Estilo | Trabajos típicos | Claves propias |
 |---|---|---|---|

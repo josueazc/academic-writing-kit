@@ -64,6 +64,48 @@ class TestMd2Docx(unittest.TestCase):
             self.assertNotIn("1. Resumen", doc)
 
 
+class TestTrabajoCompleto(unittest.TestCase):
+    def test_portada_indice_pie_y_comillas(self):
+        md = """---
+modo: completo
+institucion: Universidad Ejemplo
+carrera: Biotecnología
+curso: BIO-101 Curso
+titulo: Título de Prueba
+tipo_trabajo: Proyecto de investigación
+autores: ["Ana Pérez — Carné 123"]
+docente: Prof. Juan Mora
+grupo: "01"
+lugar: San José, Costa Rica
+fecha: 1 de noviembre de 2026
+pie_texto: Prueba
+---
+# Introducción
+Texto con "comillas" y https://ejemplo.com/"x".
+# Objetivos
+Texto.
+# Anexos
+## Anexo A Instrumento
+Texto.
+"""
+        with tempfile.TemporaryDirectory() as d:
+            src, out = os.path.join(d, "c.md"), os.path.join(d, "c.docx")
+            open(src, "w", encoding="utf-8").write(md)
+            self.assertEqual(run(os.path.join(SCRIPTS, "md2docx.py"), src, "-o", out).returncode, 0)
+            z = zipfile.ZipFile(out)
+            doc = z.read("word/document.xml").decode()
+            self.assertIn("Universidad Ejemplo", doc)  # en mayúsculas por formato (caps), el texto queda igual
+            self.assertIn("Carné 123", doc)
+            self.assertIn("Grupo: 01", doc)
+            self.assertIn("Presentado por:", doc)
+            self.assertIn(" TOC ", doc)
+            self.assertIn('w:val="TOC2"', doc)  # el índice ya trae los títulos
+            self.assertIn("\u201ccomillas\u201d", doc)
+            self.assertIn("word/footer1.xml", z.namelist())
+            self.assertIn("Prueba", z.read("word/footer1.xml").decode())
+            self.assertIn("<w:titlePg/>", doc)  # portada sin número
+
+
 class TestRevisar(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
@@ -106,6 +148,18 @@ class TestRevisar(unittest.TestCase):
         todo = "\n".join(h for v in H.values() for h in v)
         self.assertIn("C2 «Marco teórico»", todo)
         self.assertIn("C1 poco desarrollado", todo)
+
+    def test_dato_sin_cita_y_secciones(self):
+        md = os.path.join(self.tmp.name, "d.md")
+        open(md, "w", encoding="utf-8").write("---\nsecciones: [Introducción, Marco teórico]\n---\n# Introducción\n"
+                                              "El 87 % de los jóvenes usa redes. Según INEC (2024), el 40 % trabaja.\n# Referencias\n"
+                                              "Instituto Nacional de Estadística y Censos. (2024). *Encuesta*.\n")
+        H, _, _ = revisar.review(revisar.read_md(md), es_md=True)
+        todo = "\n".join(h for v in H.values() for h in v)
+        self.assertIn("Dato sin cita", todo)
+        self.assertIn("87 %", todo)
+        self.assertNotIn("el 40 %", todo)
+        self.assertIn("Falta la sección exigida «Marco teórico»", todo)
 
     def test_docx_igual_que_md(self):
         out = os.path.join(self.tmp.name, "roto.docx")

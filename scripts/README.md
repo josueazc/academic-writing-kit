@@ -123,3 +123,35 @@ Crea `trabajos/<nombre>/` con brief, rúbrica y carpeta de revisiones, y lista l
 
 ## Pruebas
 `python3 -m unittest discover -s tests` (sin red). Corren solas en GitHub Actions en cada push.
+
+## Trabajo escrito completo (md2docx)
+Con `modo: completo` en el encabezado se activan: **portada completa** (institución, facultad, escuela, carrera, curso, título, subtítulo, tipo de trabajo, autores, docente, grupo, lugar, fecha y `logo` opcional), **tabla de contenidos** con los títulos ya escritos (Word agrega los números de página; `--pdf` los actualiza solo), **número de página en el pie** (portada sin número), cada sección principal en página nueva y cada `## Anexo …` en página nueva.
+
+Otras opciones nuevas: `pie_texto: "Título corto"` (texto a la izquierda del pie), `comillas: inglesas | latinas | rectas` (convierte "…" en “…” o «…», sin tocar URLs), `secciones: [...]` (lista que `revisar.py` exige), y los valores entre comillas se respetan tal cual ("01").
+
+`mi-perfil.yaml` (copiá `07-plantillas/perfil-ejemplo.yaml`): datos fijos de portada y preferencias; md2docx los lee solo desde la carpeta del trabajo, sus superiores o la raíz del kit. No se publica.
+
+`python3 scripts/md2docx.py trabajo.md --pdf`: genera también el PDF con LibreOffice o, en macOS, con Microsoft Word (actualiza la tabla de contenidos antes de exportar).
+
+## verificar_afirmaciones.py — matriz de lectura
+```bash
+python3 scripts/verificar_afirmaciones.py trabajo.md -o revisiones/matriz-de-lectura.md
+```
+Para cada oración con cita busca, en el resumen (OpenAlex) y en el texto completo de acceso abierto de la fuente, la oración más parecida (compara raíces de palabras, así funciona entre español e inglés) y comprueba que los **números** de la afirmación estén en la fuente. Veredictos: ✅ probable respaldo · 🟡 revisar · 🔴 sin respaldo aparente (cifra que no aparece) · ⚪ no verificable (sin DOI o sin texto). Es una ayuda: cada fila trae la evidencia para que la IA o vos confirmen.
+
+## figuras.py — gráficos con datos reales
+```bash
+python3 scripts/figuras.py barras --datos "Sí:29.3,No:70.7" --titulo "…" --eje-y "Porcentaje" --nota "Elaboración propia (n = 249)." -o figuras/fig1.png
+```
+Tipos: `barras`, `barras-h`, `pastel`, `lineas` (con `--csv`, `--x`, `--y`). Imprime el bloque de figura APA para pegar en el Markdown. Necesita `python3 -m pip install matplotlib`.
+
+## evaluar.py — puntaje 0–100
+```bash
+python3 scripts/evaluar.py trabajo.md --palabras 2500 --red
+```
+Estructura, citas y referencias, pendientes y datos sin fuente, estilo, extensión y (con `--red`) fuentes reales y afirmaciones respaldadas. Mide control de calidad, no la calidad del argumento.
+
+## revisar.py: novedades
+- **Dato sin cita**: cifras y porcentajes sin fuente en la misma oración (excepto en métodos y resultados propios).
+- **Secciones exigidas**: `--secciones "Objetivos,Marco teórico,…"` o la lista `secciones:` del encabezado.
+- `--ortografia`: ortografía y gramática con LanguageTool. **Envía el texto a api.languagetool.org**; usalo solo si estás de acuerdo.

@@ -5,6 +5,8 @@ area: Materias raras, emergentes, interdisciplinarias y "absurdas"
 ---
 # Materias raras, emergentes y "absurdas"
 
+> **Orientativo.** Los estilos de cita y convenciones de esta tabla son los habituales en el área (revisión de 2026-10-28), no una norma. Manda lo que pida el docente, la escuela o la revista.
+
 Existen cursos reales sobre temas que suenan a broma (zombis, superhéroes, Beyoncé, Harry Potter, cestería subacuática como chiste universitario). Se escriben **con el mismo rigor**: el tema puede ser lúdico; el método no. La regla de oro: **el objeto de estudio puede ser cualquier cosa; la pregunta y la evidencia tienen que ser académicas.**
 
 ## Cómo escribir sobre un tema "absurdo"

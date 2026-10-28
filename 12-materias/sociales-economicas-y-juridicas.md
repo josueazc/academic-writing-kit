@@ -5,6 +5,8 @@ area: Ciencias sociales, económicas, administrativas y jurídicas
 ---
 # Ciencias sociales, económicas, administrativas y jurídicas
 
+> **Orientativo.** Los estilos de cita y convenciones de esta tabla son los habituales en el área (revisión de 2026-10-28), no una norma. Manda lo que pida el docente, la escuela o la revista.
+
 Convenciones comunes: **APA 7** (Chicago en algunas); marco teórico con autores en diálogo; métodos cualitativos y cuantitativos explícitos; datos oficiales con fuente (INEC, BCCR, Estado de la Nación, CEPAL).
 
 ## Ciencias sociales y del comportamiento
