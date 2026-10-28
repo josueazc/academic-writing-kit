@@ -240,7 +240,21 @@ def match(cite, ref, aliases):
     return c.upper().replace(" ", "") == initials(ref["autores"]).upper() and len(c) >= 2
 
 
-def review(blocks, rubrica=None, palabras=None, es_md=False):
+def secciones_exigidas(blocks, extra=None):
+    req = list(extra or [])
+    for kind, _, text in blocks:
+        if kind == "meta":
+            m = re.search(r"^secciones:\s*\[(.*?)\]", text, re.M)
+            if m:
+                req += [x.strip().strip('"\'') for x in m.group(1).split(",") if x.strip()]
+            else:
+                bloque = re.search(r"^secciones:\s*\n((?:\s*-\s*.+\n?)+)", text, re.M)
+                if bloque:
+                    req += [x.strip().lstrip("-").strip().strip('"\'') for x in bloque.group(1).splitlines() if x.strip()]
+    return req
+
+
+def review(blocks, rubrica=None, palabras=None, es_md=False, secciones=None):
     sections, refs_raw = split_sections(blocks)
     refs = parse_refs(refs_raw)
     cites, aliases = parse_cites(sections)
@@ -309,6 +323,13 @@ def review(blocks, rubrica=None, palabras=None, es_md=False):
                     H["IMPORTANTE"].append(f"Cita textual sin página o localizador en «{title}»: «{q.group(1)[:60]}…» → agregar (p. X) o (párr. X).")
                 if qw >= 40:
                     H["IMPORTANTE"].append(f"Cita textual de {qw} palabras entre comillas en «{title}»: con 40 o más va en bloque, sin comillas.")
+            if not re.search(r"m[eé]todo|metodolog|resultado|resumen|abstract|objetivo", norm(title)):
+                for s in re.split(r"(?<=[.!?])\s+(?=[A-ZÁÉÍÓÚÑ¿¡])", p):
+                    dato = re.search(r"\d+(?:[.,]\d+)?\s?%|\b\d{1,3}(?:[ .]\d{3})+\b|\b\d+[.,]\d+\b|\b(?!1[5-9]\d\d\b|20\d\d\b)\d{3,}\b", s)
+                    citado = re.search(r"\((?:[^()]*?)(?:%s)" % YEAR, s) or NARR.search(s)
+                    propio = re.search(r"encuesta|entrevista|muestra|n\s?=|tabla \d|figura \d|anexo", s, re.I)
+                    if dato and not citado and not propio:
+                        H["IMPORTANTE"].append(f"Dato sin cita en «{title}»: «{s[:90]}…» → agregar la fuente o quitar el dato.")
             low = " " + p.lower() + " "
             for mm in MULETILLAS:
                 n = len(re.findall(r"(?<!\w)" + re.escape(mm) + r"(?!\w)", low))
@@ -364,6 +385,11 @@ def review(blocks, rubrica=None, palabras=None, es_md=False):
         H["IMPORTANTE"].append(f"Extensión corta: {total} palabras frente a {palabras} pedidas.")
     if palabras and total > 1.15 * palabras:
         H["MENOR"].append(f"Extensión larga: {total} palabras frente a {palabras} pedidas.")
+    titulos = [norm(text) for kind, _, text in blocks if kind == "h"]
+    for s in secciones_exigidas(blocks, secciones):
+        clave = norm(s)
+        if not any(clave in tt or tt in clave for tt in titulos if tt):
+            H["CRÍTICO"].append(f"Falta la sección exigida «{s}».")
     stats = {"palabras": total, "citas": len(cites), "referencias": len(refs), "secciones": por_seccion}
     return H, stats, rub_rows
 
@@ -424,6 +450,41 @@ def find_section(c, por_seccion):
     return best if score >= 0.5 else None
 
 
+def ortografia(blocks, H, idioma="es"):
+    """Revisión ortográfica y gramatical con la API pública de LanguageTool (envía el texto a un servicio externo)."""
+    import json
+    import urllib.parse
+    import urllib.request
+    texto = "\n\n".join(text for kind, _, text in blocks if kind == "p")
+    trozos, actual = [], ""
+    for parrafo in texto.split("\n\n"):
+        if len(actual) + len(parrafo) > 15000:
+            trozos.append(actual)
+            actual = ""
+        actual += parrafo + "\n\n"
+    trozos.append(actual)
+    vistos = 0
+    for trozo in trozos:
+        data = urllib.parse.urlencode({"text": trozo, "language": idioma}).encode()
+        req = urllib.request.Request("https://api.languagetool.org/v2/check", data=data,
+                                     headers={"User-Agent": "escritura-academica/1.0"})
+        try:
+            res = json.load(urllib.request.urlopen(req, timeout=60))
+        except Exception as e:  # noqa: BLE001
+            H["MENOR"].append(f"No se pudo usar LanguageTool ({type(e).__name__}).")
+            return
+        for m in res.get("matches", []):
+            regla = m.get("rule", {}).get("issueType", "")
+            frag = trozo[max(0, m["offset"] - 25):m["offset"] + m["length"] + 25].replace("\n", " ")
+            sug = ", ".join(r["value"] for r in m.get("replacements", [])[:3])
+            sev = "IMPORTANTE" if regla == "misspelling" else "MENOR"
+            H[sev].append(f"Ortografía/gramática: {m.get('message')} «…{frag}…»" + (f" → {sug}" if sug else ""))
+            vistos += 1
+            if vistos >= 60:
+                H["MENOR"].append("Más de 60 avisos de LanguageTool: se muestran los primeros 60.")
+                return
+
+
 def compare(prev_path, H):
     """Compara con un reporte anterior de revisar.py: qué se resolvió, qué es nuevo y qué sigue."""
     prev = set()
@@ -475,12 +536,18 @@ def main():
     ap.add_argument("archivo")
     ap.add_argument("--rubrica", help="Markdown con una tabla (ID | Criterio | Puntaje | Sección) o el .docx del docente (primera tabla)")
     ap.add_argument("--anterior", help="reporte .md de una revisión anterior, para ver qué se resolvió")
+    ap.add_argument("--secciones", help="secciones obligatorias separadas por coma (también se leen de 'secciones:' en el encabezado)")
+    ap.add_argument("--ortografia", action="store_true",
+                    help="revisar ortografía con LanguageTool (ENVÍA el texto a api.languagetool.org)")
     ap.add_argument("--palabras", type=int, help="extensión pedida (palabras del cuerpo)")
     ap.add_argument("-o", "--salida", help="guardar el reporte en este archivo .md")
     a = ap.parse_args()
     es_md = not a.archivo.lower().endswith(".docx")
     blocks = read_md(a.archivo) if es_md else read_docx(a.archivo)
-    H, stats, rub = review(blocks, a.rubrica, a.palabras, es_md)
+    extra = [s.strip() for s in a.secciones.split(",")] if a.secciones else None
+    H, stats, rub = review(blocks, a.rubrica, a.palabras, es_md, extra)
+    if a.ortografia:
+        ortografia(blocks, H)
     rep = report(a.archivo, H, stats, rub, a.anterior)
     if a.salida:
         os.makedirs(os.path.dirname(os.path.abspath(a.salida)), exist_ok=True)
