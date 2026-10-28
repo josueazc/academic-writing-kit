@@ -55,4 +55,4 @@ Texto del párrafo en la línea siguiente.
 # Referencias
 Apellido, A. (2024). …
 ```
-Si podés ejecutar Python, corré `md2docx.py` (del repositorio github.com/josueazc/escritura-academica) sobre ese archivo y dame el .docx. Si no, dame el Markdown completo para que yo lo convierta. Al final: lista de [VERIFICAR] y [COMPLETAR] y conteo de palabras.
+Si podés ejecutar Python, corré `md2docx.py` (del repositorio github.com/josueazc/ScholarForge) sobre ese archivo y dame el .docx. Si no, dame el Markdown completo para que yo lo convierta. Al final: lista de [VERIFICAR] y [COMPLETAR] y conteo de palabras.

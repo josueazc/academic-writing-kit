@@ -7,8 +7,8 @@ tema: integraciones
 Cloná el repo y abrí el agente **dentro** de la carpeta. Trabajá cada encargo en `trabajos/<fecha-tema>/` (está en `.gitignore`).
 
 ```bash
-git clone https://github.com/josueazc/escritura-academica.git
-cd escritura-academica
+git clone https://github.com/josueazc/ScholarForge.git
+cd ScholarForge
 mkdir -p trabajos/2026-11-ensayo-ia
 ```
 
@@ -32,7 +32,7 @@ mkdir -p trabajos/2026-11-ensayo-ia
 
 | Agente | Comando |
 |---|---|
-| Claude Code | `git clone https://github.com/josueazc/escritura-academica.git ~/.claude/skills/escritura-academica` |
+| Claude Code | `git clone https://github.com/josueazc/ScholarForge.git ~/.claude/skills/escritura-academica` |
 | Codex | `git clone … ~/.codex/skills/escritura-academica` |
 | Cursor | `git clone … ~/.cursor/skills/escritura-academica` |
 | GitHub Copilot | `git clone … ~/.copilot/skills/escritura-academica` |
