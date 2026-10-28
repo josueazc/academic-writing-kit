@@ -1,0 +1,16 @@
+# Escritura académica
+
+> Base de conocimiento en Markdown para que cualquier IA redacte, cite (APA 7) y formatee trabajos académicos en español, con generador de .docx y buscador de fuentes.
+
+## Instrucciones
+- [AGENTS.md](AGENTS.md): reglas para agentes
+- [PROMPT-UNIVERSAL.md](PROMPT-UNIVERSAL.md): versión compacta para chats
+
+## Formato y citas
+- [00-indice.md](00-indice.md): índice completo
+- [01-formato/apa7-formato-pagina.md](01-formato/apa7-formato-pagina.md)
+- [02-citas-y-referencias/apa7-referencias.md](02-citas-y-referencias/apa7-referencias.md)
+- [02-citas-y-referencias/fuentes-y-busqueda.md](02-citas-y-referencias/fuentes-y-busqueda.md)
+
+## Herramientas
+- [scripts/README.md](scripts/README.md): md2docx.py y fuentes.py
