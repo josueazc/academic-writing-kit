@@ -14,10 +14,14 @@ Empezá por [AGENTS.md](AGENTS.md) (agentes), [SKILL.md](SKILL.md) (Agent Skill)
 - [Portada y tabla de contenidos](01-formato/portada-y-contenidos.md)
 - [Tablas y figuras](01-formato/tablas-y-figuras.md)
 - [Configurar Word y Google Docs](01-formato/configurar-word-y-docs.md)
+- [Procesadores de texto: Word, Google Docs, LibreOffice, Pages, Overleaf](01-formato/procesadores-de-texto.md)
+- [Citas automáticas con Pandoc o Quarto](01-formato/pandoc-y-quarto.md)
 
 ## 02 · Citas y referencias
-- [Citas en el texto](02-citas-y-referencias/apa7-citas.md)
+- [Tipos de citas (directa, indirecta, parentética, narrativa, corta, en bloque, especiales; APA y otros estilos)](02-citas-y-referencias/tipos-de-citas.md)
+- [Citas en el texto (APA 7)](02-citas-y-referencias/apa7-citas.md)
 - [Lista de referencias](02-citas-y-referencias/apa7-referencias.md)
+- [Referencias por tipo de fuente (catálogo ampliado)](02-citas-y-referencias/apa7-referencias-por-tipo.md)
 - [Errores frecuentes](02-citas-y-referencias/errores-frecuentes.md)
 - [Dónde buscar fuentes](02-citas-y-referencias/fuentes-y-busqueda.md)
 
@@ -28,6 +32,13 @@ Empezá por [AGENTS.md](AGENTS.md) (agentes), [SKILL.md](SKILL.md) (Agent Skill)
 - [Ensayo académico](03-estructuras/ensayo-academico.md)
 - [Trabajo universitario grande (TFG/tesis)](03-estructuras/trabajo-universitario-grande.md)
 - [Informe, reseña, monografía, póster](03-estructuras/informe-y-otros.md)
+- [Revisión de literatura (narrativa, sistemática)](03-estructuras/revision-de-literatura.md)
+- [Anteproyecto / propuesta / protocolo](03-estructuras/anteproyecto-y-propuesta.md)
+- [Artículo científico IMRyD](03-estructuras/articulo-cientifico-imryd.md)
+- [Estudio de caso](03-estructuras/estudio-de-caso.md)
+- [Análisis de texto y humanidades](03-estructuras/analisis-de-texto-y-humanidades.md)
+- [Negocios y técnicos (plan de negocios, informe técnico, documentación de software)](03-estructuras/negocios-y-tecnicos.md)
+- [Reflexivos y breves (reflexión, portafolio, resumen, síntesis, reseña)](03-estructuras/reflexivos-y-breves.md)
 
 ## 04 · Secciones
 - [Resumen y Abstract](04-secciones/resumen-y-abstract.md)
@@ -57,14 +68,17 @@ Empezá por [AGENTS.md](AGENTS.md) (agentes), [SKILL.md](SKILL.md) (Agent Skill)
 
 ## 08 · Agentes
 - [Flujo multiagente](08-agentes/flujo-multiagente.md)
-- Prompts: [planificador](08-agentes/prompts/1-planificador.md) · [investigador](08-agentes/prompts/2-investigador.md) · [redactor](08-agentes/prompts/3-redactor.md) · [citador](08-agentes/prompts/4-citador-apa.md) · [revisor](08-agentes/prompts/5-revisor.md) · [formateador](08-agentes/prompts/6-formateador.md)
+- Prompts: [planificador](08-agentes/prompts/1-planificador.md) · [investigador](08-agentes/prompts/2-investigador.md) · [redactor](08-agentes/prompts/3-redactor.md) · [citador](08-agentes/prompts/4-citador-apa.md) · [revisor](08-agentes/prompts/5-revisor.md) · [formateador](08-agentes/prompts/6-formateador.md) · [mentor](08-agentes/prompts/7-mentor.md)
 - [Prompt universal para chats web](PROMPT-UNIVERSAL.md)
 
 ## 09 · Análisis
 - [Análisis de los trabajos de referencia](09-analisis/analisis-trabajos.md)
 
 ## 11 · Integraciones con IA
-- [Resumen por modo](11-integraciones-ia/README.md) · [Chats](11-integraciones-ia/chats.md) · [Agentes](11-integraciones-ia/agentes.md) · [Modelos locales](11-integraciones-ia/modelos-locales.md)
+- [Resumen por modo](11-integraciones-ia/README.md) · [Chats](11-integraciones-ia/chats.md) · [Agentes](11-integraciones-ia/agentes.md) · [Modelos locales](11-integraciones-ia/modelos-locales.md) · [Herramientas externas](11-integraciones-ia/herramientas-externas.md)
+
+## 12 · Materias
+- [Cómo cambia la escritura según el área](12-materias/guia-por-area.md)
 
 ## Herramientas
 - [scripts/README.md](scripts/README.md) — md2docx.py (Markdown → .docx APA), fuentes.py (búsqueda de fuentes) y revisar.py (verificación automática)

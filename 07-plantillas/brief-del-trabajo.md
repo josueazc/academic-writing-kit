@@ -9,6 +9,7 @@ Copiá este archivo, llenalo (lo que sepas) y dáselo a la IA junto con tu tema 
 ```yaml
 tipo_de_trabajo:        # ensayo | proyecto de investigación | proyecto aplicado | artículo | informe | monografía | TFG/tesis | otro
 nivel:                  # curso y carrera
+materia_o_area:         # salud, derecho, ingeniería, educación, humanidades… (define estilo y convenciones)
 asignatura:
 institucion:
 escuela_o_departamento:
@@ -28,7 +29,8 @@ secciones_obligatorias: # pegá la rúbrica o la lista
 fuentes_minimas:        # cantidad / tipo (libros, revistas…)
 datos_propios:          # resultados de encuestas, entrevistas, pruebas (pegar o adjuntar)
 idioma_extra:           # abstract en inglés: sí/no
-entrega_en:             # .docx (md2docx) | Google Docs | PDF
+entrega_en:             # Word | Google Docs | LibreOffice | Pages | Overleaf | PDF
+modo:                   # redactar | mentor (que me guíe sin escribir por mí)
 uso_de_ia_permitido:    # qué permite el docente
 que_necesito_de_la_ia:  # esquema | redactar sección X | revisar | citar | formatear | todo
 ```
