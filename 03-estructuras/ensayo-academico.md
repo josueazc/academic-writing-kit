@@ -9,7 +9,7 @@ Texto argumentativo o expositivo-argumentativo donde se **defiende una tesis** c
 ## Tipos
 | Tipo | Propósito | Tesis típica |
 |---|---|---|
-| Argumentativo | Convencer | "La educación cívica debe incluir participación digital porque…" |
+| Argumentativo | Convencer | "La formación ciudadana debe incluir participación digital porque…" |
 | Expositivo / analítico | Explicar y analizar | "La turistificación en Guanacaste opera por tres mecanismos…" |
 | Crítico | Evaluar una obra/teoría | "El modelo X explica Y, pero falla en Z" |
 | Comparativo | Contrastar | "A y B coinciden en…, pero difieren en…" |

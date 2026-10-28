@@ -19,7 +19,7 @@ tema: integridad
 
 ## Buenas prácticas
 1. Leé cada fuente citada (al menos el fragmento usado).
-2. Guardá un registro: qué pediste a la IA y qué usaste (sirve como bitácora).
+2. Guardá un registro: qué pediste a la IA y qué usaste (sirve como registro de proceso).
 3. Reescribí con tu voz y agregá análisis propio: es lo que el docente evalúa.
 4. Si hay que declarar: "Se utilizó [herramienta] para [tarea] (p. ej., revisión ortográfica y de formato APA). El contenido y las fuentes fueron revisados por los autores."
-5. Las defensas orales de Expotec preguntan sobre el contenido: entendé lo que entregás.
+5. Entendé lo que entregás: cualquier evaluación oral o pregunta del docente lo va a poner a prueba.

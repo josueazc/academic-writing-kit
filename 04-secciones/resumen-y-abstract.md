@@ -5,7 +5,7 @@ seccion: resumen
 # Resumen y Abstract
 
 - Se escribe **al final**, cuando todo lo demás existe.
-- 150–250 palabras, un párrafo sin sangría (APA). Algunos colegios aceptan 3–5 párrafos: seguí la rúbrica.
+- 150–250 palabras, un párrafo sin sangría (APA). Si la institución pide otra extensión (p. ej., 200–500 palabras en algunos TFG), seguila.
 - Debe poder leerse solo: sin citas largas, sin abreviaturas sin definir, sin "en este trabajo se verá".
 
 ## Fórmula (una o dos oraciones por punto)

@@ -25,7 +25,7 @@ En Costa Rica cada universidad (UCR, TEC, UNA, UNED, privadas) tiene su **reglam
 | Objetivo específico | Variable | Definición conceptual | Definición operacional | Dimensiones/indicadores | Instrumento |
 |---|---|---|---|---|---|
 
-## Diferencias frente al colegio
+## Diferencias frente a un trabajo corto
 - Antecedentes con investigaciones previas (tesis, artículos) y vacío que se llena.
 - Instrumentos validados y descritos con detalle.
 - Mayor peso de fuentes primarias y revistas científicas; mínimo frecuente 25–50 referencias.

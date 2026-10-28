@@ -33,7 +33,7 @@ Usalo en tres pasadas: **contenido → citas → formato**. Un agente revisor de
 ## 4. Formato
 - [ ] Fuente, tamaño, interlineado, alineación y márgenes según rúbrica o APA.
 - [ ] Títulos con estilos Título 1–3 y niveles consistentes.
-- [ ] Portada completa (integrantes en orden alfabético si se pide).
+- [ ] Portada completa según APA o la plantilla de la institución.
 - [ ] Tabla de contenidos automática y actualizada.
 - [ ] Numeración de páginas correcta.
 - [ ] Tablas y figuras: número en negrita, título en cursiva, nota, mencionadas en el texto.

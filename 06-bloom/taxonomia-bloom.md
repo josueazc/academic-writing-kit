@@ -32,10 +32,10 @@ Un objetivo se ubica cruzando ambas: *"Evaluar (proceso) la usabilidad de la app
 1. **Redactar objetivos** ([../04-secciones/objetivos.md](../04-secciones/objetivos.md)): el general suele estar en *Analizar*, *Evaluar* o *Crear*; los específicos escalan (p. ej., Analizar → Evaluar → Crear → Evaluar).
 2. **Leer la consigna del docente**: el verbo dice qué nivel se espera. "Describa" ≠ "Analice" ≠ "Evalúe". Un trabajo que solo describe cuando se pidió analizar pierde puntos aunque esté bien escrito.
 3. **Autoevaluar el texto**: marcá cada párrafo del marco teórico o la discusión con su nivel. Si casi todo es *Recordar/Comprender*, falta análisis propio.
-4. **Preguntas de repaso para estudiar o para la defensa** (ver abajo).
+4. **Preguntas de autoevaluación** para comprobar que el texto cubre todos los niveles pedidos (ver abajo).
 5. **Rúbricas**: el revisor puede puntuar "profundidad cognitiva" según el nivel dominante.
 
-## Preguntas modelo por nivel (para la defensa oral o para estudiar)
+## Preguntas de autoevaluación por nivel
 | Nivel | Pregunta |
 |---|---|
 | Recordar | ¿Qué es la turistificación? |

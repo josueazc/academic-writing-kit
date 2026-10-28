@@ -4,7 +4,7 @@ seccion: justificacion
 ---
 # Justificación
 
-Responde **por qué vale la pena** la investigación. ~300 palabras en colegio; 1–3 páginas en universidad.
+Responde **por qué vale la pena** la investigación. 300–600 palabras en trabajos cortos; 1–3 páginas en tesis.
 
 ## Criterios (usá al menos 4, un párrafo por criterio o agrupados)
 | Criterio | Pregunta |
@@ -17,7 +17,7 @@ Responde **por qué vale la pena** la investigación. ~300 palabras en colegio; 
 | Viabilidad | ¿Hay acceso a datos, tiempo, recursos? |
 | Novedad | ¿Qué tiene de distinto frente a lo que existe? |
 
-La rúbrica de Cívica pide además: razones de elección del tema, el procedimiento metodológico y lo que se pretende descubrir.
+Si la rúbrica pide elementos extra (p. ej., método o resultados esperados), agregalos como párrafos propios.
 
 ## Tono
 Argumentativo con datos, no publicitario. ❌ "X es el futuro del turismo costarricense." ✔ "X ofrece a los comercios locales un canal gratuito de visibilidad en una provincia donde el 80 % de los comercios costeros pertenece a extranjeros (Sibaja, 2023)."

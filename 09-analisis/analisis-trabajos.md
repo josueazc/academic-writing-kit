@@ -6,6 +6,8 @@ nota: los originales no se incluyen; se omiten nombres y carnés
 ---
 # Análisis de los trabajos de referencia
 
+> Material histórico: de aquí salieron las reglas y los errores frecuentes de la base. Las reglas vigentes están en `01-formato/` a `05-redaccion/`; la base ya no asume un formato de colegio.
+
 ## Resumen de cada trabajo
 | # | Trabajo | Año | Págs. | Tipo | Formato detectado |
 |---|---|---|---|---|---|
@@ -18,7 +20,7 @@ nota: los originales no se incluyen; se omiten nombres y carnés
 | 7 | Noticia científica (Biología y Química) | 2026 | 10 | Divulgación | APA 7 estudiante estricto: doble espacio, izquierda, nº arriba-derecha, portada APA, cita en bloque correcta |
 | 8 | Artículo de Español (Cloudflare) | 2026 | 17 | Divulgación técnica | APA 7 estricto, figuras con nota, referencias extensas |
 
-## Patrones (lo que la base adopta como "perfil colegio")
+## Patrones observados
 - Times New Roman 12 domina; interlineado 1.5 en Expotec y doble en APA estricto.
 - Justificado en proyectos de TIC; izquierda en trabajos de 2026 con APA estricto.
 - Portada institucional con colegio, dirección regional, departamento, especialidad, proyecto, estudiantes con carné, profesor, sección y evento.

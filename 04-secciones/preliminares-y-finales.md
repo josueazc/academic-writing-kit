@@ -2,7 +2,7 @@
 tipo: guia
 seccion: otras
 ---
-# Agradecimientos, anexos, glosario, cronograma y bitácora
+# Agradecimientos, anexos, glosario, cronograma y registro de trabajo
 
 ## Agradecimientos
 Opcional, breve (≤ 1 página), sin citas. Primero instituciones y colaboradores del proyecto, luego personas. Sangría y tono formal.
@@ -19,5 +19,5 @@ Orden alfabético; término en negrita + definición breve con fuente si no es p
 ## Cronograma
 Tabla APA: Actividad | Responsable | Fecha inicio | Fecha fin | Estado. O diagrama de Gantt como figura.
 
-## Bitácora (rúbrica de Cívica)
-Cuadro con integrantes en orden alfabético por apellido, igual que en la portada, y lo que hizo cada uno con fechas.
+## Registro de trabajo (si lo piden)
+Tabla: Integrante | Aportes | Fechas. Integrantes en el mismo orden que en la portada.

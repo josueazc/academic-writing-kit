@@ -20,4 +20,4 @@ Criterios: abierta (no de sí/no), delimitada (lugar y tiempo), investigable con
 ✔ "¿Qué características debe tener un gestor de inventario web gratuito para responder a las necesidades de las PyMEs costarricenses en 2024?"
 
 ## Extensión
-Colegio: 1 página. Universidad: 2–4 páginas con antecedentes.
+Trabajo corto: 1 página. Tesis o TFG: 2–4 páginas con antecedentes.

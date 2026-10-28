@@ -11,7 +11,7 @@ La clave es **modificar estilos**, no formatear a mano. Así la tabla de conteni
 2. **Inicio → Estilos → Normal → Modificar**: fuente Times New Roman 12; Formato → Párrafo: sangría especial "Primera línea" 1.27 cm, espaciado anterior/posterior 0 pt, interlineado Doble (o 1.5), alineación Izquierda (o Justificada si lo piden). Marcar "Nuevos documentos basados en esta plantilla" si querés reutilizar.
 3. **Título 1**: Normal + negrita, centrado, sin sangría, color automático (negro), 12 pt. **Título 2**: negrita, izquierda, sin sangría. **Título 3**: negrita cursiva, izquierda. Título 4/5: aplicá manualmente negrita (y cursiva) al inicio del párrafo.
 4. Para cada Título: Párrafo → Líneas y saltos → "Conservar con el siguiente". Para Título 1 además "Salto de página anterior".
-5. **Número de página**: Insertar → Número de página → Principio de página → Derecha (APA) o Final de página → Derecha (perfil colegio). Si la portada no se numera: Diseño de encabezado → "Primera página diferente".
+5. **Número de página**: Insertar → Número de página → Principio de página → Derecha (APA) o donde indique la institución. Si la portada no se numera: Diseño de encabezado → "Primera página diferente".
 6. **Referencias**: crear estilo "Referencias" basado en Normal, sangría Francesa 1.27 cm.
 7. **Tabla de contenido**: Referencias → Tabla de contenido → Tabla personalizada → 3 niveles.
 8. **Títulos de tabla/figura**: Referencias → Insertar título (permite generar "Lista de figuras").

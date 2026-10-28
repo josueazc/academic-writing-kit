@@ -16,7 +16,7 @@ APA 7 distingue **trabajo de estudiante** y **trabajo profesional** (para public
 | Fuente | Times New Roman 12, Calibri 11, Arial 11, Georgia 11, Lucida Sans Unicode 10 o Computer Modern 10 | Una sola fuente en todo el texto. En figuras se permite sans serif de 8–14 pt. |
 | Interlineado | **Doble** en todo (portada, resumen, texto, citas en bloque, referencias) | Excepciones: tablas y figuras pueden ir a 1–1.5; notas al pie a sencillo. |
 | Espaciado entre párrafos | 0 pt antes y después | No dejes líneas en blanco entre párrafos. |
-| Alineación | Izquierda, borde derecho irregular | **No justificar** en APA puro. Muchos colegios y universidades latinoamericanas piden justificado: si lo piden, obedecé. |
+| Alineación | Izquierda, borde derecho irregular | **No justificar** en APA puro. Muchas universidades latinoamericanas piden justificado: si lo piden, obedecé. |
 | Sangría | Primera línea 1.27 cm (0.5") | Usá la regla/estilo, nunca Tab ni espacios. |
 | Número de página | Arriba a la derecha, desde la portada (pág. 1) | |
 | Encabezado (running head) | **No** en estudiante | Solo en profesional o si el docente lo pide (TÍTULO CORTO EN MAYÚSCULAS, ≤ 50 caracteres, izquierda). |

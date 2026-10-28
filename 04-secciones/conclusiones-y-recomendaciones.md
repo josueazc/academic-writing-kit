@@ -5,7 +5,7 @@ seccion: conclusiones
 # Conclusiones y recomendaciones
 
 ## Conclusiones
-- Organizadas **por objetivo específico** (subtítulo por objetivo). Mínimo 2 por objetivo o lo que pida la rúbrica (Cívica: 6, 3 por tema).
+- Organizadas **por objetivo específico** (subtítulo por objetivo). Mínimo 2 por objetivo o lo que pida la rúbrica.
 - Cada conclusión responde: ¿se cumplió el objetivo? ¿qué se encontró? ¿qué significa?
 - Basadas en resultados del trabajo, **no** en información nueva ni en citas nuevas.
 - Redacción: "Se determinó que…", "Se comprobó que…", "Los resultados evidencian…".

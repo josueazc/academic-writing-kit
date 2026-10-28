@@ -1,19 +1,18 @@
 ---
 tipo: plantilla
-para: proyecto de investigación / Expotec
+para: proyecto de investigación o aplicado
 ---
 <!-- Plantilla en Markdown. Cada título indica su nivel APA entre corchetes; borralos al pasar a Word. -->
 
-[PORTADA]
-[COMPLETAR: Nombre de la institución]
-[COMPLETAR: Dirección Regional]
-[COMPLETAR: Departamento]
-[COMPLETAR: Especialidad / asignatura]
-**[COMPLETAR: Nombre del proyecto]**
-[COMPLETAR: Integrantes en orden alfabético por primer apellido, con carné]
-[COMPLETAR: Profesor(a)]
-[COMPLETAR: Sección]
-[COMPLETAR: Fecha o evento]
+[PORTADA APA o plantilla de la institución]
+**[COMPLETAR: Título del trabajo]**
+[COMPLETAR: Autores]
+[COMPLETAR: Escuela o departamento, Universidad]
+[COMPLETAR: Código y nombre del curso]
+[COMPLETAR: Docente]
+[COMPLETAR: Fecha]
+
+> Para generar el .docx directamente usá el formato de [ejemplo-md2docx.md](ejemplo-md2docx.md).
 
 [SALTO DE PÁGINA] **Tabla de Contenidos** — generar automáticamente
 

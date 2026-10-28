@@ -16,3 +16,5 @@ Entregá `fuentes.md` con una ficha por fuente:
 - Idea clave (paráfrasis propia, 2–3 líneas):
 - Cita textual útil (≤ 40 palabras) + página/párrafo:
 ```
+
+Si podés ejecutar código: `python3 scripts/fuentes.py buscar "<tema>" -n 15 --desde 2015 --formato md` y `python3 scripts/fuentes.py doi <DOI>` para la referencia exacta.

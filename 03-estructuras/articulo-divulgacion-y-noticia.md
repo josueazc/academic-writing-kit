@@ -1,6 +1,5 @@
 ---
 tipo: estructura
-ejemplos: Noticia científica (Biología/Química 2026), Artículo de Español 2026
 ---
 # Artículo de divulgación / noticia científica
 

@@ -20,11 +20,11 @@ Todo centrado, doble espacio, número de página arriba a la derecha.
    15 de mayo de 2026
 ```
 - Título: conciso, sin abreviaturas, en negrita; puede ocupar 1–2 líneas.
-- Autores: nombre completo, sin "Integrantes:" ni carné (salvo que la institución lo pida).
+- Autores: nombre completo, sin etiquetas como "Integrantes:" (salvo que la institución lo pida).
 - Fecha en formato del país: "15 de mayo de 2026".
 
-## Portada institucional
-Ver [perfil-colegio-tecnico-cr.md](perfil-colegio-tecnico-cr.md#portada-institucional-variante-a).
+## Portada de la institución
+Si la universidad tiene plantilla oficial de portada (TFG, tesis), esa reemplaza a la de APA. Ver [perfiles/universidades-cr.md](perfiles/universidades-cr.md).
 
 ## Tabla de contenidos
 - No es obligatoria en APA, pero casi todos los docentes la piden en trabajos largos.

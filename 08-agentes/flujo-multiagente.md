@@ -24,7 +24,7 @@ Brief + rúbrica
 [5] Revisor (Bloom + rúbrica + estilo) ──► reporte con cambios
    │
    ▼
-[6] Formateador ──► .docx / instrucciones de Word-Docs
+[6] Formateador ──► trabajo.md ──► scripts/md2docx.py ──► trabajo.docx
    │
    ▼
 Humano: lee, ajusta, verifica fuentes, entrega
@@ -34,11 +34,11 @@ Humano: lee, ajusta, verifica fuentes, entrega
 | # | Rol | Entrada | Salida | Archivos de la base que usa |
 |---|---|---|---|---|
 | 1 | Planificador | brief, rúbrica | `esquema.md` | 03-estructuras, 04-secciones/objetivos, 06-bloom |
-| 2 | Investigador | esquema | `fuentes.md` con fichas | 04-secciones/marco-teorico, 02-citas |
+| 2 | Investigador | esquema | `fuentes.md` con fichas | scripts/fuentes.py, 02-citas/fuentes-y-busqueda |
 | 3 | Redactor | esquema, fuentes | `borrador.md` | 04-secciones, 05-redaccion |
 | 4 | Citador | borrador, fuentes | `borrador.md` + `referencias.md` | 02-citas-y-referencias |
 | 5 | Revisor | borrador, rúbrica | `revision.md` (checklist + cambios) | 05-redaccion/checklist, 06-bloom |
-| 6 | Formateador | borrador final | .docx o guía de formato | 01-formato |
+| 6 | Formateador | borrador final | `trabajo.md` + `.docx` | 01-formato, scripts/md2docx.py |
 
 ## Reglas de traspaso
 - Cada agente escribe **solo** su archivo de salida y no reescribe el de otro.
@@ -53,7 +53,7 @@ Humano: lee, ajusta, verifica fuentes, entrega
 
 ## Estructura de carpeta por trabajo
 ```
-trabajos/2026-05-bioquimica/
+trabajos/2026-11-ensayo/
   brief.md
   rubrica.md
   esquema.md

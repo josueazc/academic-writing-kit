@@ -4,7 +4,7 @@ seccion: metodologia
 ---
 # Marco metodológico
 
-Explica **cómo** se cumplió cada objetivo. En la rúbrica de Cívica es la sección que más vale (12/50).
+Explica **cómo** se cumplió cada objetivo. Suele ser la sección con más peso en cualquier rúbrica de investigación.
 
 ## Componentes
 1. **Enfoque**: cualitativo (comprender percepciones, sin medir), cuantitativo (medir, estadística) o mixto. Justificá la elección.
