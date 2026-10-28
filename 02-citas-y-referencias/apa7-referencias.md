@@ -14,6 +14,8 @@ tema: referencias
 - Sin "Recuperado de" (salvo contenido que cambia y no se archiva, con fecha de consulta).
 - Cursiva: la obra independiente (libro, informe, página web, título de la revista y su volumen).
 
+> Catálogo ampliado con 60+ tipos de fuente (leyes, sentencias, podcasts, redes sociales, software, datasets, normas, patentes…): [apa7-referencias-por-tipo.md](apa7-referencias-por-tipo.md).
+
 ## Plantillas en español
 
 **Artículo de revista**

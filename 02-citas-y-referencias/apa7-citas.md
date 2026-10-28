@@ -4,6 +4,8 @@ tema: citas
 ---
 # APA 7 — citas en el texto
 
+> Guía completa de todos los tipos (directa/indirecta, parentética/narrativa, corta/en bloque, casos especiales y equivalencias en otros estilos): [tipos-de-citas.md](tipos-de-citas.md).
+
 Sistema autor-fecha. Cada cita en el texto ↔ una entrada en Referencias (salvo comunicaciones personales).
 
 ## Parentética vs. narrativa
