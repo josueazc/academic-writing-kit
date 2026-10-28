@@ -98,6 +98,32 @@ def apa_desde_openalex(w):
 
 
 # ------------------------------------------------------------------ comandos
+def dedup(res):
+    """Quita duplicados por DOI o por título normalizado."""
+    vistos, out = set(), []
+    for r in res:
+        key = (r.get("doi") or "").lower().replace("https://doi.org/", "") or \
+            "".join(ch for ch in r["apa"].lower() if ch.isalnum())[:80]
+        if key in vistos:
+            continue
+        vistos.add(key)
+        out.append(r)
+    return out
+
+
+def buscar_todas(q, n, desde, idioma, solo_abiertos):
+    res = []
+    try:
+        res += buscar(q, n, desde, idioma, solo_abiertos)
+    except Exception as e:  # noqa: BLE001
+        print(f"OpenAlex falló: {e}", file=sys.stderr)
+    try:
+        res += buscar_crossref(q, n, desde)
+    except Exception as e:  # noqa: BLE001
+        print(f"Crossref falló: {e}", file=sys.stderr)
+    return dedup(res)
+
+
 def buscar(q, n, desde, idioma, solo_abiertos):
     filtros = []
     if desde:
@@ -167,6 +193,7 @@ def main():
     b.add_argument("--idioma", help="código ISO: es, en, pt…")
     b.add_argument("--abiertos", action="store_true", help="solo acceso abierto")
     b.add_argument("--formato", choices=["texto", "md", "json"], default="texto")
+    b.add_argument("--todas", action="store_true", help="combinar OpenAlex y Crossref y quitar duplicados")
     d = sub.add_parser("doi", help="referencia APA desde un DOI")
     d.add_argument("doi")
     args = ap.parse_args()
@@ -174,7 +201,8 @@ def main():
     if args.cmd == "doi":
         print(doi_apa(args.doi))
         return
-    res = buscar(args.consulta, args.n, args.desde, args.idioma, args.abiertos)
+    fn = buscar_todas if args.todas else buscar
+    res = fn(args.consulta, args.n, args.desde, args.idioma, args.abiertos)
     if args.formato == "json":
         print(json.dumps(res, ensure_ascii=False, indent=2))
         return

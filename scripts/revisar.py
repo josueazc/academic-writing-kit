@@ -30,6 +30,8 @@ YEAR = r"(?:1[5-9]\d\d|20\d\d)[a-z]?|s\.\s?f\.?"
 REF_TITLES = ("referencias", "bibliografia", "referencias bibliograficas", "fuentes consultadas")
 END_TITLES = ("anexos", "anexo", "apendices", "apendice", "apéndices")
 CONNECTORS = {"de", "del", "la", "las", "los", "y", "e", "&", "para", "el", "en"}
+QUOTE = re.compile(r'[“"«]([^”"»]+?)[”"»]')
+LOCATOR = re.compile(r"\b(p|pp|párr|parr|cap|art|inc)\.\s*\d|secci[oó]n\s|diapositiva\s\d|\d{1,2}:\d{2}", re.I)
 PENDING = re.compile(r"\[(?i:COMPLETAR|VERIFICAR|FUENTE|FALTA)[^\]]*\]|\bTODO\b|\bXXX\b")
 ARTIFACTS = [(r"\\%", "«\\%» (escape de Markdown/LaTeX)"), (r"\*\*", "«**» (negrita de Markdown sin convertir)"),
              (r"(^|\s)#{1,6}\s", "«#» (título de Markdown sin convertir)"), (r"\\_", "«\\_»")]
@@ -281,6 +283,7 @@ def review(blocks, rubrica=None, palabras=None, es_md=False):
     # pendientes, artefactos, muletillas, oraciones
     body_text = []
     mul_count = {}
+    quoted_words = [0]
     long_sent = 0
     for title, _, paras in sections:
         for p in paras:
@@ -290,6 +293,19 @@ def review(blocks, rubrica=None, palabras=None, es_md=False):
             for pat, desc in (ARTIFACTS[:1] if es_md else ARTIFACTS):
                 if re.search(pat, p):
                     H["IMPORTANTE"].append(f"Artefacto {desc} en «{title}».")
+            for q in QUOTE.finditer(p):
+                qw = words(q.group(1))
+                if qw < 4:
+                    continue  # término entre comillas, no cita
+                quoted_words[0] += qw
+                antes = re.split(r"(?<=[.!?])\s+(?=[A-ZÁÉÍÓÚÑ¿¡])", p[:q.start()])[-1]  # misma oración, antes de la cita
+                despues = p[q.end():q.end() + 90]
+                cierre = despues.find(")")
+                despues = despues[:cierre + 1] if cierre != -1 else despues
+                if not (LOCATOR.search(antes) or LOCATOR.search(despues)):
+                    H["IMPORTANTE"].append(f"Cita textual sin página o localizador en «{title}»: «{q.group(1)[:60]}…» → agregar (p. X) o (párr. X).")
+                if qw >= 40:
+                    H["IMPORTANTE"].append(f"Cita textual de {qw} palabras entre comillas en «{title}»: con 40 o más va en bloque, sin comillas.")
             low = " " + p.lower() + " "
             for mm in MULETILLAS:
                 n = len(re.findall(r"(?<!\w)" + re.escape(mm) + r"(?!\w)", low))
@@ -308,6 +324,8 @@ def review(blocks, rubrica=None, palabras=None, es_md=False):
         sev = "IMPORTANTE" if dens > 4 else "MENOR"
         H[sev].append(f"Frases típicas de IA ({dens:.1f} por cada 1000 palabras): " +
                       ", ".join(f"«{k}» ×{v}" for k, v in top[:12]) + ". Ver 05-redaccion/muletillas-de-ia.md.")
+    if total and quoted_words[0] / total > 0.2:
+        H["MENOR"].append(f"Citas textuales = {quoted_words[0] / total:.0%} del texto: parafraseá más (ideal < 20 % en ciencias sociales).")
     if long_sent:
         H["MENOR"].append(f"{long_sent} oraciones de más de 40 palabras: partirlas.")
 

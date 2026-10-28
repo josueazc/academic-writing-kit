@@ -94,3 +94,8 @@ Lee .md o .docx (cualquier .docx con estilos de título de Word, no solo los de 
 Sale con código 1 si hay críticos. No juzga la calidad del argumento ni si la fuente dice lo que se afirma: eso es trabajo del [revisor](../08-agentes/prompts/5-revisor.md).
 
 Ideas tomadas de [rubric-driven](https://github.com/JosephBano/rubric-driven) y [RefMatch](https://github.com/zhongzhengshen/RefMatch-Skill) (MIT); implementación propia sin dependencias.
+
+## Novedades
+- `md2docx.py`: `numerar_titulos: true` numera títulos (1., 1.1, 1.1.1) para ingeniería, informes técnicos e IEEE (no numera Resumen, Referencias ni Anexos). El .docx incluye además los estilos que usa Pandoc (`Body Text`, `First Paragraph`, `Bibliography`), así que sirve como `--reference-doc` ([pandoc-y-quarto.md](../01-formato/pandoc-y-quarto.md)).
+- `fuentes.py buscar … --todas`: combina OpenAlex y Crossref y quita duplicados por DOI.
+- `revisar.py`: detecta citas textuales sin página o párrafo, citas de 40+ palabras entre comillas (deben ir en bloque) y exceso de citas textuales (> 20 % del texto).

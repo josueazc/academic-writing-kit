@@ -32,9 +32,13 @@ DEFAULTS = {
     "toc": False,
     "repetir_titulo": True,
     "salto_por_seccion": False,         # True = cada título de nivel 1 en página nueva (tesis)
+    "numerar_titulos": False,           # True = 1, 1.1, 1.1.1 (ingeniería, informes técnicos, IEEE)
     "papel": "carta",                   # carta | a4
     "idioma": "es-CR",
 }
+
+UNNUMBERED = {"resumen", "abstract", "referencias", "bibliografía", "bibliografia", "anexos", "apéndices",
+              "apendices", "agradecimientos", "dedicatoria", "tabla de contenidos", "índice", "indice"}
 
 PAGE_BREAK_TITLES = {"resumen", "abstract", "referencias", "bibliografía", "bibliografia",
                      "anexos", "apéndices", "apendices", "tabla de contenidos", "índice"}
@@ -161,6 +165,7 @@ class Doc:
         self.body = []
         self.images = []  # (rid, filename, bytes)
         self.first_body_heading = True
+        self.counters = [0, 0, 0, 0, 0]
 
     # estilos de párrafo
     def ind_first(self):
@@ -169,13 +174,22 @@ class Doc:
     def align(self):
         return "both" if str(self.m["alineacion"]).startswith("just") else "left"
 
+    def number(self, level, text):
+        """Prefijo 1, 1.1, 1.1.1 si numerar_titulos está activo (no numera resumen, referencias, anexos…)."""
+        if not self.m["numerar_titulos"] or level > 3 or text.strip().lower() in UNNUMBERED:
+            return text
+        self.counters[level - 1] += 1
+        for k in range(level, len(self.counters)):
+            self.counters[k] = 0
+        return ".".join(str(c) for c in self.counters[:level]) + ("." if level == 1 else "") + " " + text
+
     def heading(self, level, text, force_break=False):
         brk = force_break or (self.m["salto_por_seccion"] and level == 1 and not self.first_body_heading)
         if level == 1:
             self.first_body_heading = False
             if text.strip().lower() in PAGE_BREAK_TITLES:
                 brk = True
-        self.body.append(para(runs(text), style=f"Heading{level}", page_break=brk))
+        self.body.append(para(runs(self.number(level, text)), style=f"Heading{level}", page_break=brk))
 
     def run_in(self, level, title, text):
         """Niveles 4 y 5: título en la misma línea que el párrafo."""
@@ -330,7 +344,7 @@ class Doc:
                         self.body.append(para(runs(str(self.m["titulo"]), bold=True),
                                               style="TituloSinNivel", page_break=brk))
                         self.first_body_heading = False
-                        if lower not in ("introducción", "introduccion"):
+                        if lower not in ("introducción", "introduccion") or self.m["numerar_titulos"]:
                             self.heading(1, text)
                     else:
                         self.heading(1, text, force_break=brk)
@@ -428,7 +442,7 @@ class Doc:
                     f'<w:basedOn w:val="{based}"/><w:qFormat/><w:pPr>{ppr}{ol}</w:pPr><w:rPr>{rpr}</w:rPr></w:style>')
 
         heads = [
-            style("Heading1", "heading 1", f'<w:keepNext/><w:ind w:firstLine="0"/><w:jc w:val="center"/>', "<w:b/>", outline=0),
+            style("Heading1", "heading 1", f'<w:keepNext/><w:ind w:firstLine="0"/><w:jc w:val="{"left" if m["numerar_titulos"] else "center"}"/>', "<w:b/>", outline=0),
             style("Heading2", "heading 2", '<w:keepNext/><w:ind w:firstLine="0"/><w:jc w:val="left"/>', "<w:b/>", outline=1),
             style("Heading3", "heading 3", '<w:keepNext/><w:ind w:firstLine="0"/><w:jc w:val="left"/>', "<w:b/><w:i/>", outline=2),
             style("Heading4", "heading 4", f'<w:ind w:firstLine="{ind}"/>', "", outline=3),
@@ -438,6 +452,11 @@ class Doc:
             style("Portada", "Portada", '<w:ind w:firstLine="0"/><w:jc w:val="center"/>'),
             style("TituloSinNivel", "Título sin nivel", '<w:ind w:firstLine="0"/><w:jc w:val="center"/>', "<w:b/>"),
             style("Referencia", "Referencia", f'<w:ind w:left="{ind}" w:hanging="{ind}"/><w:jc w:val="left"/>'),
+            # nombres que usa Pandoc cuando este .docx se pasa como --reference-doc
+            style("BodyText", "Body Text", ""),
+            style("FirstParagraph", "First Paragraph", ""),
+            style("Bibliography", "Bibliography", f'<w:ind w:left="{ind}" w:hanging="{ind}"/><w:jc w:val="left"/>'),
+            style("BlockText", "Block Text", f'<w:ind w:left="{ind}" w:firstLine="0"/>'),
             style("CitaBloque", "Cita en bloque", f'<w:ind w:left="{ind}" w:firstLine="0"/>'),
             style("RotuloNumero", "Rótulo número", '<w:keepNext/><w:ind w:firstLine="0"/><w:jc w:val="left"/>', "<w:b/>"),
             style("RotuloTitulo", "Rótulo título", '<w:keepNext/><w:ind w:firstLine="0"/><w:jc w:val="left"/>', "<w:i/>"),
