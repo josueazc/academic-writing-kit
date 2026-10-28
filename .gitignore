@@ -1,0 +1,8 @@
+.DS_Store
+.obsidian/workspace*.json
+.obsidian/cache
+.trash/
+# Trabajos personales: no se publican
+trabajos/
+*.docx
+*.pdf
