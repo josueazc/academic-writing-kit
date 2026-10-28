@@ -361,13 +361,30 @@ def review(blocks, rubrica=None, palabras=None, es_md=False):
     return H, stats, rub_rows
 
 
-def parse_rubric(path):
-    rows, header = [], None
+def rubric_lines(path):
+    """Filas de la rúbrica como listas de celdas, desde Markdown o desde la primera tabla de un .docx."""
+    if path.lower().endswith(".docx"):
+        root = ET.fromstring(zipfile.ZipFile(path).read("word/document.xml"))
+        for tbl in root.iter(W + "tbl"):
+            rows = []
+            for tr in tbl.iter(W + "tr"):
+                cells = [" ".join("".join(t.text or "" for t in p.iter(W + "t")) for p in tc.iter(W + "p")).strip()
+                         for tc in tr.findall(W + "tc")]
+                rows.append(cells)
+            if len(rows) > 1:
+                return rows
+        return []
+    rows = []
     for line in open(path, encoding="utf-8"):
         s = line.strip()
-        if not s.startswith("|"):
-            continue
-        cells = [c.strip() for c in s.strip("|").split("|")]
+        if s.startswith("|"):
+            rows.append([c.strip() for c in s.strip("|").split("|")])
+    return rows
+
+
+def parse_rubric(path):
+    rows, header = [], None
+    for cells in rubric_lines(path):
         if all(re.fullmatch(r":?-{2,}:?", c) for c in cells if c):
             continue
         if header is None:
@@ -400,7 +417,28 @@ def find_section(c, por_seccion):
     return best if score >= 0.5 else None
 
 
-def report(path, H, stats, rub_rows):
+def compare(prev_path, H):
+    """Compara con un reporte anterior de revisar.py: qué se resolvió, qué es nuevo y qué sigue."""
+    prev = set()
+    for line in open(prev_path, encoding="utf-8"):
+        if line.startswith("- ") and not line.startswith("- _"):
+            prev.add(line[2:].strip())
+    key = lambda s: re.sub(r"\d+([.,]\d+)?", "#", s)  # noqa: E731 — ignora cambios de cantidades
+    now = {h for v in H.values() for h in v}
+    pk, nk = {key(h): h for h in prev}, {key(h): h for h in now}
+    resueltos = {pk[k] for k in pk.keys() - nk.keys()}
+    nuevos = {nk[k] for k in nk.keys() - pk.keys()}
+    siguen = pk.keys() & nk.keys()
+    out = ["## Comparación con la revisión anterior", "",
+           f"✅ Resueltos: {len(resueltos)} · 🆕 Nuevos: {len(nuevos)} · ⏳ Siguen: {len(siguen)}", ""]
+    if resueltos:
+        out += ["**Resueltos**"] + [f"- ~~{h}~~" for h in sorted(resueltos)] + [""]
+    if nuevos:
+        out += ["**Nuevos**"] + [f"- {h}" for h in sorted(nuevos)] + [""]
+    return out
+
+
+def report(path, H, stats, rub_rows, anterior=None):
     out = [f"# Revisión de `{os.path.basename(path)}`", "",
            f"Cuerpo: **{stats['palabras']} palabras** · {len(stats['secciones'])} secciones · "
            f"{stats['citas']} citas · {stats['referencias']} referencias", ""]
@@ -412,6 +450,8 @@ def report(path, H, stats, rub_rows):
             out.append(f"## {icon} {sev.capitalize()}")
             out += [f"- {h}" for h in dict.fromkeys(H[sev])]
             out.append("")
+    if anterior:
+        out += compare(anterior, H)
     if rub_rows:
         out += ["## Rúbrica", "", "| ID | Criterio | Pts | Sección | Palabras | Esperadas |", "|---|---|---|---|---|---|"]
         for c, sec, got, exp in rub_rows:
@@ -426,14 +466,15 @@ def report(path, H, stats, rub_rows):
 def main():
     ap = argparse.ArgumentParser(description="Revisión automática de un trabajo académico (.md o .docx)")
     ap.add_argument("archivo")
-    ap.add_argument("--rubrica", help="Markdown con una tabla: ID | Criterio | Puntaje | Sección (opcional)")
+    ap.add_argument("--rubrica", help="Markdown con una tabla (ID | Criterio | Puntaje | Sección) o el .docx del docente (primera tabla)")
+    ap.add_argument("--anterior", help="reporte .md de una revisión anterior, para ver qué se resolvió")
     ap.add_argument("--palabras", type=int, help="extensión pedida (palabras del cuerpo)")
     ap.add_argument("-o", "--salida", help="guardar el reporte en este archivo .md")
     a = ap.parse_args()
     es_md = not a.archivo.lower().endswith(".docx")
     blocks = read_md(a.archivo) if es_md else read_docx(a.archivo)
     H, stats, rub = review(blocks, a.rubrica, a.palabras, es_md)
-    rep = report(a.archivo, H, stats, rub)
+    rep = report(a.archivo, H, stats, rub, a.anterior)
     if a.salida:
         os.makedirs(os.path.dirname(os.path.abspath(a.salida)), exist_ok=True)
         open(a.salida, "w", encoding="utf-8").write(rep + "\n")

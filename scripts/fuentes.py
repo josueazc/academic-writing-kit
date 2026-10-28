@@ -174,6 +174,36 @@ def buscar_crossref(q, n, desde):
     return res
 
 
+def descargar(res, carpeta):
+    """Descarga los PDF de acceso abierto (solo si el servidor entrega un PDF real)."""
+    import os
+    import re
+    os.makedirs(carpeta, exist_ok=True)
+    ok = 0
+    for r in res:
+        url = r.get("pdf")
+        if not url:
+            continue
+        autor = r["apa"].split(",")[0]
+        tit = r["apa"].split("). ", 1)[-1][:45]
+        nombre = re.sub(r"[^\w-]+", "-", f"{autor}-{r.get('anio')}-{tit}").strip("-") + ".pdf"
+        destino = os.path.join(carpeta, nombre)
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "application/pdf"})
+            with urllib.request.urlopen(req, timeout=40) as resp:
+                data = resp.read()
+            if not data.startswith(b"%PDF"):
+                print(f"  sin PDF directo (página web): {url}", file=sys.stderr)
+                continue
+            with open(destino, "wb") as fh:
+                fh.write(data)
+            ok += 1
+            print(f"  descargado: {destino}", file=sys.stderr)
+        except Exception as e:  # noqa: BLE001
+            print(f"  no se pudo descargar {url}: {type(e).__name__}", file=sys.stderr)
+    print(f"{ok} PDF descargados en {carpeta}", file=sys.stderr)
+
+
 def doi_apa(doi):
     doi = doi.replace("https://doi.org/", "").replace("http://doi.org/", "").strip()
     url = "https://doi.org/" + urllib.parse.quote(doi, safe="/")
@@ -194,6 +224,7 @@ def main():
     b.add_argument("--abiertos", action="store_true", help="solo acceso abierto")
     b.add_argument("--formato", choices=["texto", "md", "json"], default="texto")
     b.add_argument("--todas", action="store_true", help="combinar OpenAlex y Crossref y quitar duplicados")
+    b.add_argument("--descargar", metavar="CARPETA", help="descargar los PDF de acceso abierto a esta carpeta")
     d = sub.add_parser("doi", help="referencia APA desde un DOI")
     d.add_argument("doi")
     args = ap.parse_args()
@@ -203,6 +234,8 @@ def main():
         return
     fn = buscar_todas if args.todas else buscar
     res = fn(args.consulta, args.n, args.desde, args.idioma, args.abiertos)
+    if args.descargar:
+        descargar(res, args.descargar)
     if args.formato == "json":
         print(json.dumps(res, ensure_ascii=False, indent=2))
         return
