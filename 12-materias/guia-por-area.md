@@ -4,6 +4,17 @@ tema: materias
 ---
 # Cómo cambia la escritura según la materia
 
+## Catálogo detallado (más de 200 materias)
+| Archivo | Áreas |
+|---|---|
+| [salud.md](salud.md) | Medicina, enfermería, nutrición, farmacia, odontología, terapias, veterinaria, salud pública, bioética… |
+| [ciencias-y-matematicas.md](ciencias-y-matematicas.md) | Biología, química, física, astronomía, geología, matemáticas, estadística, ciencia de datos… |
+| [ingenierias-y-tecnologia.md](ingenierias-y-tecnologia.md) | Todas las ingenierías, software, ciberseguridad, IA, UX, videojuegos… |
+| [sociales-economicas-y-juridicas.md](sociales-economicas-y-juridicas.md) | Sociología, antropología, psicología, política, economía, administración, contabilidad, derecho… |
+| [educacion-humanidades-y-artes.md](educacion-humanidades-y-artes.md) | Educación, filosofía, historia, literatura, teología, comunicación, artes, diseño, arquitectura… |
+| [agro-ambiente-deporte-y-oficios.md](agro-ambiente-deporte-y-oficios.md) | Agronomía, ambiente, deporte, eSports, gastronomía, cosmetología, mecánica, oficios técnicos… |
+| [raras-emergentes-y-absurdas.md](raras-emergentes-y-absurdas.md) | Estudios de videojuegos, zombis, superhéroes, memes, pseudociencias como objeto de estudio, IA, cripto, magia, circo… y qué hacer si tu materia no aparece |
+
 La IA debe identificar el área del trabajo y aplicar sus convenciones. **Siempre gana lo que diga el docente o la escuela.**
 
 ## Resumen rápido
