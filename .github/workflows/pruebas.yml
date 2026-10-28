@@ -1,0 +1,32 @@
+name: Pruebas
+on:
+  push:
+  pull_request:
+jobs:
+  pruebas:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.9", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Pruebas de las herramientas
+        run: python -m unittest discover -s tests -v
+      - name: Enlaces internos
+        run: |
+          python - <<'PY'
+          import glob, os, re, sys
+          rotos = []
+          for f in glob.glob("**/*.md", recursive=True):
+              for m in re.finditer(r"\]\(([^)#\s]+)(#[^)]*)?\)", open(f, encoding="utf-8").read()):
+                  t = m.group(1)
+                  if t.startswith("http") or t in ("ruta.md", "imagen.png"):
+                      continue
+                  if not os.path.exists(os.path.normpath(os.path.join(os.path.dirname(f), t))):
+                      rotos.append(f"{f} -> {t}")
+          print("\n".join(rotos) or "Sin enlaces rotos")
+          sys.exit(1 if rotos else 0)
+          PY
