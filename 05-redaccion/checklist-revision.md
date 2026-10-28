@@ -4,7 +4,7 @@ tema: revision
 ---
 # Checklist de revisión antes de entregar
 
-Usalo en tres pasadas: **contenido → citas → formato**. Antes, corré `python3 scripts/revisar.py trabajo.md` (o el .docx): verifica automáticamente citas↔referencias, pendientes, artefactos, muletillas de IA y cobertura de la rúbrica. Lo que queda abajo es lo que un script no puede juzgar.
+Usalo en tres pasadas: **contenido → citas → formato**. Antes, corré `python3 scripts/revisar.py trabajo.md` (o el .docx): verifica automáticamente citas↔referencias, forma APA de cada referencia, pendientes, artefactos, muletillas de IA, cobertura de la rúbrica, saltos de nivel de título, verbos de los objetivos, cobertura de cada objetivo en metodología y conclusiones, datos o fuentes nuevas en las conclusiones y, con un .docx, el formato de página. Da además una matriz de coherencia por objetivo. Lo que queda abajo es lo que un script no puede juzgar: completalo con el veredicto por objetivo del [revisor](../08-agentes/prompts/5-revisor.md).
 
 ## 1. Rúbrica y estructura
 - [ ] Están todas las secciones que pide la rúbrica, en su orden.
@@ -12,6 +12,9 @@ Usalo en tres pasadas: **contenido → citas → formato**. Antes, corré `pytho
 - [ ] Coherencia: problema → pregunta → objetivos → metodología → conclusiones → recomendaciones (un hilo por objetivo).
 - [ ] Objetivos con verbos medibles y sin repetir ([Bloom](../06-bloom/taxonomia-bloom.md)).
 - [ ] Conclusiones sin información nueva; recomendaciones dirigidas a actores concretos.
+- [ ] Si el verbo es *analizar* o superior, el texto relaciona, contrasta o explica causas: no solo describe.
+- [ ] Los objetivos específicos, juntos, logran el general; ninguno lo supera.
+- [ ] El método de cada objetivo sirve para su verbo (evaluar → criterios; comparar → categorías; crear → proceso y validación).
 
 ## 2. Redacción
 - [ ] Registro académico; sin coloquialismos ni primera persona mezclada.

@@ -82,6 +82,12 @@ Lee .md o .docx (cualquier .docx con estilos de título de Word, no solo los de 
 | Artefactos (`\%`, `**`, `#`) en el .docx | Importante |
 | Muletillas de IA (importante si superan 4 por cada 1000 palabras) | Menor / Importante |
 | Apellidos casi iguales · oraciones de más de 40 palabras | Menor |
+| Objetivos: verbo no medible, verbos repetidos, objetivo específico sin procedimiento en la metodología o sin conclusión | Importante |
+| Cita o cifra que aparece por primera vez en Conclusiones | Importante |
+| Verbo *analizar* o superior y desarrollo con pocos conectores de análisis (posible texto descriptivo) | Importante (pista) |
+| Salto de nivel de título (del 1 al 3) · un solo subtítulo dentro de una sección | Importante / Menor |
+| Forma APA de cada referencia: fecha, «Apellido, A.», «et al.», DOI viejo, «Recuperado de», cursivas (.md), punto final | Importante / Menor |
+| (.docx) márgenes, fuente y tamaño, interlineado, espacio entre párrafos, sangrías, sangría francesa, número de página, títulos hechos con negrita | Importante / Menor |
 
 **Rúbrica:** un Markdown con una tabla. Columnas reconocidas: `ID`, `Criterio`, `Puntaje`/`Puntos`/`Peso`, y opcional `Sección` (si no está, se empareja por palabras del título). Criterios de ortografía, formato, APA o referencias se marcan como transversales.
 ```markdown
@@ -91,7 +97,25 @@ Lee .md o .docx (cualquier .docx con estilos de título de Word, no solo los de 
 | C2 | Marco teórico con autores actuales | 20 | |
 | C3 | Referencias en APA 7 | 5 | |
 ```
-Sale con código 1 si hay críticos. No juzga la calidad del argumento ni si la fuente dice lo que se afirma: eso es trabajo del [revisor](../08-agentes/prompts/5-revisor.md).
+Sale con código 1 si hay críticos. El reporte incluye una **matriz de coherencia por objetivo** (verbo, nivel de Bloom, si aparece en metodología y en conclusiones).
+
+**Qué no puede decidir:** si el texto realmente analiza, si el método sirve para cada objetivo, si los específicos cubren el general o si la conclusión sale del desarrollo. Esas son pistas; el veredicto lo da el [revisor](../08-agentes/prompts/5-revisor.md), que es obligatorio. Tampoco juzga si la fuente dice lo que se afirma (`verificar_afirmaciones.py`).
+
+Los objetivos se leen del texto (frase "objetivo general…" y la lista numerada tras "objetivos específicos", o secciones con esos títulos) o del encabezado:
+```yaml
+objetivo_general: Analizar …
+objetivos:
+  - Comparar …
+  - Clasificar …
+```
+Opciones para .docx según la rúbrica: `--fuente Arial --interlineado 1.5 --margen 3 --justificado`.
+
+### Por separado
+```bash
+python3 scripts/coherencia.py trabajo.md        # objetivos, cobertura, conclusiones, títulos y matriz
+python3 scripts/apa_referencias.py trabajo.md   # forma APA de cada referencia
+python3 scripts/formato_docx.py trabajo.docx    # formato de página de cualquier .docx (Word, Google Docs, LibreOffice)
+```
 
 Ideas tomadas de [rubric-driven](https://github.com/JosephBano/rubric-driven) y [RefMatch](https://github.com/zhongzhengshen/RefMatch-Skill) (MIT); implementación propia sin dependencias.
 

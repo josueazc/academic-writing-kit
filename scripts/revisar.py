@@ -9,6 +9,10 @@ Comprueba, con código y no "a ojo":
   - frases típicas de texto generado por IA (lista en 05-redaccion/muletillas-de-ia.md)
   - oraciones demasiado largas y extensión por sección
   - (opcional) cobertura de una rúbrica y extensión según el peso de cada criterio
+  - sintaxis APA 7 de cada referencia (apa_referencias.py)
+  - objetivos, cobertura por objetivo, conclusiones con información nueva, saltos de título y
+    matriz de coherencia (coherencia.py: pistas para el revisor, no un veredicto)
+  - en .docx, el formato: márgenes, fuente, interlineado, sangrías, número de página (formato_docx.py)
 
 Sin dependencias. Uso:
     python3 scripts/revisar.py trabajo.md
@@ -390,7 +394,12 @@ def review(blocks, rubrica=None, palabras=None, es_md=False, secciones=None):
         clave = norm(s)
         if not any(clave in tt or tt in clave for tt in titulos if tt):
             H["CRÍTICO"].append(f"Falta la sección exigida «{s}».")
-    stats = {"palabras": total, "citas": len(cites), "referencias": len(refs), "secciones": por_seccion}
+    import apa_referencias
+    import coherencia
+    apa_referencias.revisar(refs_raw, H, es_md)
+    matriz, objetivos = coherencia.revisar(blocks, H)
+    stats = {"palabras": total, "citas": len(cites), "referencias": len(refs), "secciones": por_seccion,
+             "matriz": matriz, "objetivos": objetivos}
     return H, stats, rub_rows
 
 
@@ -520,6 +529,9 @@ def report(path, H, stats, rub_rows, anterior=None):
             out.append("")
     if anterior:
         out += compare(anterior, H)
+    if stats.get("objetivos"):
+        import coherencia
+        out += coherencia.reporte_matriz(stats["matriz"], stats["objetivos"])
     if rub_rows:
         out += ["## Rúbrica", "", "| ID | Criterio | Pts | Sección | Palabras | Esperadas |", "|---|---|---|---|---|---|"]
         for c, sec, got, exp in rub_rows:
@@ -527,7 +539,7 @@ def report(path, H, stats, rub_rows, anterior=None):
         out.append("")
     out += ["## Extensión por sección", "", "| Sección | Nivel | Palabras |", "|---|---|---|"]
     out += [f"| {t} | {lv} | {w} |" for t, lv, w in stats["secciones"]]
-    out += ["", "> Revisión automática: confirma formato y consistencia, no la calidad del argumento ni que las fuentes digan lo que se afirma. Eso lo revisa una persona (o el agente revisor)."]
+    out += ["", "> Revisión automática: confirma formato y consistencia y da pistas de coherencia. No juzga si el texto analiza, si el método sirve para cada objetivo ni si las fuentes dicen lo que se afirma: eso lo decide el revisor (08-agentes/prompts/5-revisor.md) con la matriz de arriba."]
     return "\n".join(out)
 
 
@@ -540,12 +552,21 @@ def main():
     ap.add_argument("--ortografia", action="store_true",
                     help="revisar ortografía con LanguageTool (ENVÍA el texto a api.languagetool.org)")
     ap.add_argument("--palabras", type=int, help="extensión pedida (palabras del cuerpo)")
+    ap.add_argument("--fuente", help="(.docx) fuente que pide la rúbrica; por defecto las de APA 7")
+    ap.add_argument("--interlineado", type=float, default=2.0, help="(.docx) interlineado pedido: 1, 1.5 o 2")
+    ap.add_argument("--margen", type=float, default=2.54, help="(.docx) margen pedido en cm")
+    ap.add_argument("--justificado", action="store_true", help="(.docx) la institución pide texto justificado")
     ap.add_argument("-o", "--salida", help="guardar el reporte en este archivo .md")
     a = ap.parse_args()
     es_md = not a.archivo.lower().endswith(".docx")
     blocks = read_md(a.archivo) if es_md else read_docx(a.archivo)
     extra = [s.strip() for s in a.secciones.split(",")] if a.secciones else None
     H, stats, rub = review(blocks, a.rubrica, a.palabras, es_md, extra)
+    if not es_md:
+        import formato_docx
+        HF, _ = formato_docx.validar(a.archivo, a.fuente, None, a.interlineado, a.margen, a.justificado)
+        for sev, hs in HF.items():
+            H[sev] += [f"Formato: {h}" for h in hs]
     if a.ortografia:
         ortografia(blocks, H)
     rep = report(a.archivo, H, stats, rub, a.anterior)

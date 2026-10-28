@@ -23,7 +23,7 @@ Antes de planear o redactar, hacé el [cuestionario inicial](07-plantillas/cuest
 5. **Fuentes**: si podés ejecutar código, usá `python3 scripts/fuentes.py buscar "<tema>"` (OpenAlex/Crossref); si tenés navegación, buscá en los índices de [02-citas-y-referencias/fuentes-y-busqueda.md](02-citas-y-referencias/fuentes-y-busqueda.md). Abrí cada fuente antes de usarla.
 6. **Redactá sección por sección** con `04-secciones/` y [05-redaccion/estilo-academico.md](05-redaccion/estilo-academico.md).
 7. **Citá** según `02-citas-y-referencias/`: elegí el tipo de cita adecuado ([tipos-de-citas.md](02-citas-y-referencias/tipos-de-citas.md): directa/indirecta, parentética/narrativa, corta/en bloque) y la referencia por tipo de fuente ([apa7-referencias-por-tipo.md](02-citas-y-referencias/apa7-referencias-por-tipo.md)). Toda cita ↔ referencia; toda cita directa con página.
-8. **Revisá**: ejecutá `python3 scripts/verificar_referencias.py trabajo.md` (comprueba que cada DOI y URL exista y corresponda a la referencia; eliminá o corregí toda referencia crítica) y `python3 scripts/revisar.py trabajo.md [--rubrica rubrica.md|.docx] [--palabras N] [--anterior revision-previa.md]`, corregí todo lo crítico y completá con el [revisor](08-agentes/prompts/5-revisor.md) y el [checklist](05-redaccion/checklist-revision.md). Evitá las [muletillas de IA](05-redaccion/muletillas-de-ia.md).
+8. **Revisá**: ejecutá `python3 scripts/verificar_referencias.py trabajo.md` (comprueba que cada DOI y URL exista y corresponda a la referencia; eliminá o corregí toda referencia crítica) y `python3 scripts/revisar.py trabajo.md [--rubrica rubrica.md|.docx] [--palabras N] [--anterior revision-previa.md]`, corregí todo lo crítico. **Después, siempre**, aplicá el [revisor](08-agentes/prompts/5-revisor.md): su *veredicto por objetivo* (nivel de Bloom logrado frente al verbo, cobertura del general, método adecuado, conclusiones que responden sin datos nuevos) es obligatorio, porque esas cosas no las puede decidir un script. Separá en la revisión lo de **formato** (APA, títulos, citas) de lo de **sentido** (coherencia). Cerrá con el [checklist](05-redaccion/checklist-revision.md). Evitá las [muletillas de IA](05-redaccion/muletillas-de-ia.md).
 9. **Generá el documento**: escribí `trabajo.md` con el frontmatter de [scripts/README.md](scripts/README.md) (`modo: completo` para trabajos completos, `secciones:` con lo acordado) y ejecutá `python3 scripts/md2docx.py trabajo.md --pdf`. Para gráficos con datos reales: `scripts/figuras.py`. Antes de entregar: `python3 scripts/evaluar.py trabajo.md --palabras N --red`. Si no podés ejecutar código, entregá ese Markdown y decile al usuario el comando. Si el usuario trabaja en Google Docs, LibreOffice, Pages u Overleaf, indicale los ajustes de [01-formato/procesadores-de-texto.md](01-formato/procesadores-de-texto.md).
 
 **Otros modos** (según lo que pida el usuario):
@@ -49,8 +49,9 @@ Antes de planear o redactar, hacé el [cuestionario inicial](07-plantillas/cuest
 ## Entrega
 1. `trabajo.md` (fuente) y `trabajo.docx` (si pudiste ejecutar el script).
 2. Reporte de `revisar.py` (o, si no pudiste ejecutarlo, lista de `[COMPLETAR]` y `[VERIFICAR]` pendientes).
-3. Conteo de palabras por sección.
-4. Si hubo rúbrica: autoevaluación criterio por criterio.
+3. **Veredicto por objetivo** del revisor (tabla de `08-agentes/prompts/5-revisor.md`), con evidencia por celda.
+4. Conteo de palabras por sección.
+5. Si hubo rúbrica: autoevaluación criterio por criterio.
 
 ## Trabajar en paralelo
 Ver [08-agentes/flujo-multiagente.md](08-agentes/flujo-multiagente.md). Integraciones por herramienta en [11-integraciones-ia/](11-integraciones-ia/README.md). Índice completo: [00-indice.md](00-indice.md).

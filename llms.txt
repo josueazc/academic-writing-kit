@@ -1,17 +1,37 @@
 # Escritura académica
 
-> Base de conocimiento en Markdown para que cualquier IA redacte, cite (APA 7) y formatee trabajos académicos en español, con generador de .docx y buscador de fuentes.
+> Base de conocimiento en Markdown para que cualquier IA redacte, cite (APA 7) y formatee trabajos académicos en español, con generador de .docx, buscador de fuentes y revisión automática de formato y coherencia.
 
-## Instrucciones
-- [AGENTS.md](AGENTS.md): reglas para agentes
-- [PROMPT-UNIVERSAL.md](PROMPT-UNIVERSAL.md): versión compacta para chats
+Si solo tenés este enlace y no podés seguir rutas relativas, abrí las URL directas (texto plano). Orden: 1) AGENTS.md, 2) la guía de cada paso cuando llegues a él, 3) el revisor al terminar (obligatorio).
+
+## Instrucciones (leer primero)
+- [AGENTS.md](https://raw.githubusercontent.com/josueazc/academic-writing-kit/main/AGENTS.md): reglas y flujo para agentes
+- [PROMPT-UNIVERSAL.md](https://raw.githubusercontent.com/josueazc/academic-writing-kit/main/PROMPT-UNIVERSAL.md): versión compacta para chats
+- [00-indice.md](https://raw.githubusercontent.com/josueazc/academic-writing-kit/main/00-indice.md): índice completo
+
+## Al planear (objetivos y estructura)
+- [06-bloom/taxonomia-bloom.md](https://raw.githubusercontent.com/josueazc/academic-writing-kit/main/06-bloom/taxonomia-bloom.md): verbos y niveles; describir ≠ analizar
+- [04-secciones/objetivos.md](https://raw.githubusercontent.com/josueazc/academic-writing-kit/main/04-secciones/objetivos.md): general y específicos que lo cubren
+- [08-agentes/prompts/1-planificador.md](https://raw.githubusercontent.com/josueazc/academic-writing-kit/main/08-agentes/prompts/1-planificador.md): perspectivas, objetivos, esquema y tabla de coherencia
+- [01-formato/adaptador-de-rubricas.md](https://raw.githubusercontent.com/josueazc/academic-writing-kit/main/01-formato/adaptador-de-rubricas.md): cualquier rúbrica a secciones y pesos
+- [03-estructuras/trabajo-escrito-completo.md](https://raw.githubusercontent.com/josueazc/academic-writing-kit/main/03-estructuras/trabajo-escrito-completo.md)
+
+## Al redactar
+- [04-secciones/marco-metodologico.md](https://raw.githubusercontent.com/josueazc/academic-writing-kit/main/04-secciones/marco-metodologico.md): un procedimiento por objetivo
+- [04-secciones/conclusiones-y-recomendaciones.md](https://raw.githubusercontent.com/josueazc/academic-writing-kit/main/04-secciones/conclusiones-y-recomendaciones.md): por objetivo, sin información nueva
+- [05-redaccion/estilo-academico.md](https://raw.githubusercontent.com/josueazc/academic-writing-kit/main/05-redaccion/estilo-academico.md)
 
 ## Formato y citas
-- [00-indice.md](00-indice.md): índice completo
-- [01-formato/apa7-formato-pagina.md](01-formato/apa7-formato-pagina.md)
-- [02-citas-y-referencias/apa7-referencias.md](02-citas-y-referencias/apa7-referencias.md)
-- [02-citas-y-referencias/fuentes-y-busqueda.md](02-citas-y-referencias/fuentes-y-busqueda.md)
+- [01-formato/apa7-formato-pagina.md](https://raw.githubusercontent.com/josueazc/academic-writing-kit/main/01-formato/apa7-formato-pagina.md)
+- [01-formato/apa7-niveles-titulos.md](https://raw.githubusercontent.com/josueazc/academic-writing-kit/main/01-formato/apa7-niveles-titulos.md)
+- [02-citas-y-referencias/tipos-de-citas.md](https://raw.githubusercontent.com/josueazc/academic-writing-kit/main/02-citas-y-referencias/tipos-de-citas.md)
+- [02-citas-y-referencias/apa7-referencias.md](https://raw.githubusercontent.com/josueazc/academic-writing-kit/main/02-citas-y-referencias/apa7-referencias.md)
+- [02-citas-y-referencias/fuentes-y-busqueda.md](https://raw.githubusercontent.com/josueazc/academic-writing-kit/main/02-citas-y-referencias/fuentes-y-busqueda.md)
+
+## Al revisar (obligatorio)
+- [08-agentes/prompts/5-revisor.md](https://raw.githubusercontent.com/josueazc/academic-writing-kit/main/08-agentes/prompts/5-revisor.md): veredicto por objetivo (sentido) separado del formato
+- [05-redaccion/checklist-revision.md](https://raw.githubusercontent.com/josueazc/academic-writing-kit/main/05-redaccion/checklist-revision.md)
 
 ## Herramientas
-- [SKILL.md](SKILL.md): entrada como Agent Skill
-- [scripts/README.md](scripts/README.md): md2docx.py, fuentes.py y revisar.py
+- [SKILL.md](https://raw.githubusercontent.com/josueazc/academic-writing-kit/main/SKILL.md): entrada como Agent Skill
+- [scripts/README.md](https://raw.githubusercontent.com/josueazc/academic-writing-kit/main/scripts/README.md): md2docx.py, fuentes.py, revisar.py, coherencia.py, apa_referencias.py, formato_docx.py

@@ -83,7 +83,7 @@ Empezá por [AGENTS.md](AGENTS.md) (agentes), [SKILL.md](SKILL.md) (Agent Skill)
 - [Salud](12-materias/salud.md) · [Ciencias y matemáticas](12-materias/ciencias-y-matematicas.md) · [Ingenierías y tecnología](12-materias/ingenierias-y-tecnologia.md) · [Sociales, económicas y jurídicas](12-materias/sociales-economicas-y-juridicas.md) · [Educación, humanidades y artes](12-materias/educacion-humanidades-y-artes.md) · [Agro, ambiente, deporte y oficios](12-materias/agro-ambiente-deporte-y-oficios.md) · [Raras, emergentes y absurdas](12-materias/raras-emergentes-y-absurdas.md)
 
 ## Herramientas
-- [scripts/README.md](scripts/README.md) — md2docx.py (Markdown → .docx APA), fuentes.py (búsqueda y descarga de fuentes), revisar.py (revisión automática), verificar_referencias.py (¿existen las fuentes?), verificar_afirmaciones.py (¿respaldan lo que se afirma?), figuras.py (gráficos), evaluar.py (puntaje 0–100) y tareas.py (seguimiento de entregas)
+- [scripts/README.md](scripts/README.md) — md2docx.py (Markdown → .docx APA), fuentes.py (búsqueda y descarga de fuentes), revisar.py (revisión automática de citas, formato y coherencia por objetivo; usa coherencia.py, apa_referencias.py y formato_docx.py), verificar_referencias.py (¿existen las fuentes?), verificar_afirmaciones.py (¿respaldan lo que se afirma?), figuras.py (gráficos), evaluar.py (puntaje 0–100) y tareas.py (seguimiento de entregas)
 
 ## Evals
 - [Comparar IAs con tareas fijas](evals/README.md) · [Tareas](evals/tareas.md)

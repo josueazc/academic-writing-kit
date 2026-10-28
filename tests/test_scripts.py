@@ -1,5 +1,6 @@
 """Pruebas de las herramientas (sin red). Ejecutar: python3 -m unittest discover tests"""
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -167,6 +168,109 @@ class TestRevisar(unittest.TestCase):
         H, stats, _ = revisar.review(revisar.read_docx(out))
         self.assertEqual(stats["referencias"], self.stats["referencias"])
         self.assertIn("Cita sin referencia: «Gómez, 2019»", "\n".join(H["CRÍTICO"]))
+
+
+INCOHERENTE = """---
+titulo: Prueba
+---
+# Introducción
+El objetivo general es comprender la participación juvenil en Costa Rica.
+
+Los objetivos específicos son:
+
+1. Analizar la participación electoral de la juventud costarricense.
+2. Analizar el uso de redes sociales por parte de jóvenes.
+3. Diseñar una campaña de comunicación sobre votación.
+# Metodología
+Se revisaron documentos sobre participación electoral juvenil y campañas de comunicación sobre votación.
+### Instrumentos
+Matriz documental.
+# Desarrollo
+""" + "La juventud vota poco y usa redes sociales todos los días. Los partidos publican mensajes en redes. " * 40 + """
+# Conclusiones
+Se determinó que la participación electoral juvenil fue del 37 % (Pérez, 2021).
+# Referencias
+Pérez, J. (2021). *Juventud*. Editorial.
+"""
+
+
+class TestCoherencia(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        md = os.path.join(self.tmp.name, "c.md")
+        open(md, "w", encoding="utf-8").write(INCOHERENTE)
+        H, self.stats, _ = revisar.review(revisar.read_md(md), es_md=True)
+        self.todo = "\n".join(h for v in H.values() for h in v)
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def test_objetivos(self):
+        self.assertIn("verbo no medible «comprender»", self.todo)
+        self.assertIn("Verbo repetido entre objetivos específicos: «analizar»", self.todo)
+        self.assertEqual([m["verbo"] for m in self.stats["matriz"]], ["analizar", "analizar", "disenar"])
+
+    def test_cobertura_y_conclusiones(self):
+        self.assertIn("objetivo específico 2 no aparece en la metodología", self.todo)
+        self.assertIn("objetivo específico 3 no tiene conclusión", self.todo)
+        self.assertIn("Cita nueva en Conclusiones: «Perez, 2021»", self.todo)
+        self.assertIn("Cifras que aparecen por primera vez en Conclusiones: 37%", self.todo)
+
+    def test_descripcion_cuando_se_pide_analizar(self):
+        md = os.path.join(self.tmp.name, "a.md")
+        open(md, "w", encoding="utf-8").write(INCOHERENTE.replace("comprender la participación", "analizar la participación"))
+        H, _, _ = revisar.review(revisar.read_md(md), es_md=True)
+        self.assertIn("puede estar describiendo en vez de analizar", "\n".join(H["IMPORTANTE"]))
+
+    def test_titulos(self):
+        self.assertIn("Salto de nivel de título: «Instrumentos» es nivel 3", self.todo)
+
+    def test_trabajo_coherente_sin_avisos(self):
+        H, stats, _ = revisar.review(revisar.read_md(EJEMPLO), es_md=True)
+        todo = "\n".join(h for v in H.values() for h in v)
+        self.assertNotIn("Salto de nivel", todo)
+        self.assertNotIn("no aparece en la metodología", todo)
+
+
+class TestApaReferencias(unittest.TestCase):
+    def test_sintaxis(self):
+        import apa_referencias
+        malos = {
+            "Gómez, A., et al. (2020). Título. *Revista, 3*(2), 10-20. doi:10.1/x": ("et al.", "DOI con formato viejo", "guion"),
+            "Mora, L. (2019). Un libro sin cursiva. Editorial": ("Sin cursiva", "no termina en punto"),
+            "Rojas, P. (5 de mayo de 2021). *Nota*. https://x.cr.": ("Fecha fuera de formato", "Punto final después de la URL"),
+        }
+        for ref, esperados in malos.items():
+            todo = " ".join(m for _, m in apa_referencias.revisar_una(ref))
+            for e in esperados:
+                self.assertIn(e, todo, ref)
+        bien = "Bennett, W. L., & Segerberg, A. (2012). The logic of connective action. *Information, Communication & Society, 15*(5), 739–768. https://doi.org/10.1080/1369118X.2012.661661"
+        self.assertEqual(apa_referencias.revisar_una(bien), [])
+
+
+class TestFormatoDocx(unittest.TestCase):
+    def test_docx_del_kit_y_docx_mal_formateado(self):
+        import formato_docx
+        with tempfile.TemporaryDirectory() as d:
+            out = os.path.join(d, "x.docx")
+            self.assertEqual(run(os.path.join(SCRIPTS, "md2docx.py"), EJEMPLO, "-o", out).returncode, 0)
+            H, datos = formato_docx.validar(out)
+            self.assertEqual(H["IMPORTANTE"] + H["CRÍTICO"], [], H)
+            self.assertEqual(datos["interlineado"], {2.0: datos["parrafos"]})
+            mal = os.path.join(d, "mal.docx")
+            with zipfile.ZipFile(out) as zin, zipfile.ZipFile(mal, "w") as zout:
+                for it in zin.infolist():
+                    x = zin.read(it.filename)
+                    if it.filename == "word/styles.xml":
+                        x = x.decode().replace('w:ascii="Times New Roman"', 'w:ascii="Comic Sans MS"').replace('w:line="480"', 'w:line="360"').encode()
+                    if it.filename == "word/document.xml":
+                        x = x.decode().replace('w:top="1440"', 'w:top="1701"').encode()
+                    if not re.match(r"word/(header|footer)\d*\.xml", it.filename):
+                        zout.writestr(it, x)
+            H, _ = formato_docx.validar(mal)
+            todo = "\n".join(H["IMPORTANTE"])
+            for e in ("Márgenes distintos", "Comic Sans MS", "Interlineado del texto: 1.5", "No hay número de página"):
+                self.assertIn(e, todo)
 
 
 class TestTareas(unittest.TestCase):
