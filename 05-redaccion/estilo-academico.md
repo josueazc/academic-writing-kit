@@ -47,5 +47,8 @@ tema: redaccion
 - Comillas: elegir un tipo («», "") y no mezclar.
 - Raya (—) para incisos; guion (-) para palabras compuestas; semirraya (–) para rangos (pp. 12–15).
 
+## Muletillas de IA
+Ver [muletillas-de-ia.md](muletillas-de-ia.md): frases de relleno y patrones que delatan un texto generado sin revisar.
+
 ## Revisar al final
 Leé en voz alta. Si te quedás sin aire, la oración es demasiado larga.

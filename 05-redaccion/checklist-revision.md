@@ -4,7 +4,7 @@ tema: revision
 ---
 # Checklist de revisión antes de entregar
 
-Usalo en tres pasadas: **contenido → citas → formato**. Un agente revisor debe devolver este checklist marcado.
+Usalo en tres pasadas: **contenido → citas → formato**. Antes, corré `python3 scripts/revisar.py trabajo.md` (o el .docx): verifica automáticamente citas↔referencias, pendientes, artefactos, muletillas de IA y cobertura de la rúbrica. Lo que queda abajo es lo que un script no puede juzgar.
 
 ## 1. Rúbrica y estructura
 - [ ] Están todas las secciones que pide la rúbrica, en su orden.

@@ -21,7 +21,7 @@ Brief + rúbrica
 [4] Citador APA ──► revisa cita↔referencia, arma la lista
    │
    ▼
-[5] Revisor (Bloom + rúbrica + estilo) ──► reporte con cambios
+[5] scripts/revisar.py ──► Revisor (Bloom + rúbrica + estilo) ──► revisiones/AAAA-MM-DD.md
    │
    ▼
 [6] Formateador ──► trabajo.md ──► scripts/md2docx.py ──► trabajo.docx
@@ -37,7 +37,7 @@ Humano: lee, ajusta, verifica fuentes, entrega
 | 2 | Investigador | esquema | `fuentes.md` con fichas | scripts/fuentes.py, 02-citas/fuentes-y-busqueda |
 | 3 | Redactor | esquema, fuentes | `borrador.md` | 04-secciones, 05-redaccion |
 | 4 | Citador | borrador, fuentes | `borrador.md` + `referencias.md` | 02-citas-y-referencias |
-| 5 | Revisor | borrador, rúbrica | `revision.md` (checklist + cambios) | 05-redaccion/checklist, 06-bloom |
+| 5 | Revisor | borrador, rúbrica, reporte de revisar.py | `revisiones/AAAA-MM-DD-revision.md` (Crítico/Importante/Menor) | scripts/revisar.py, 05-redaccion/checklist y muletillas, 06-bloom |
 | 6 | Formateador | borrador final | `trabajo.md` + `.docx` | 01-formato, scripts/md2docx.py |
 
 ## Reglas de traspaso
@@ -59,7 +59,7 @@ trabajos/2026-11-ensayo/
   esquema.md
   fuentes.md
   borrador.md
-  revision.md
+  revisiones/
   final.docx
 ```
 (La carpeta `trabajos/` está en `.gitignore` para no publicar trabajos personales.)
