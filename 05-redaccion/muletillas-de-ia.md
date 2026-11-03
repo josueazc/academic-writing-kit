@@ -33,6 +33,8 @@ crucial, fundamental, esencial, innegable, transformador, revolucionario, robust
 - **Simetría perfecta**: todos los párrafos del mismo largo y con la misma estructura.
 - **Seguridad excesiva**: afirmaciones absolutas sin cita ("está demostrado que…").
 - **Títulos con dos puntos** en todas las secciones ("Turismo: un motor económico").
+- **Descargos en cada párrafo**: "no se afirma que…", "no constituye…", "no equivale a…", "propuesta propia no validada". La prudencia es buena, repetida suena a texto que se cubre. Los límites van una vez, en Limitaciones. `revisar.py` avisa si pasan de 2,5 por cada 1000 palabras.
+- **Chips de cita del chat**: al copiar desde ChatGPT o Perplexity quedan "NIST", "EUR-Lex +1" o "hai.stanford.edu" pegados al texto. `revisar.py` los busca.
 
 ## Cómo corregir
 1. Borrá la frase de relleno y leé si la oración pierde algo (casi nunca).

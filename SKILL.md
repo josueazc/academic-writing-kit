@@ -8,7 +8,7 @@ description: Redacta, cita (APA 7, MLA, Chicago, Vancouver, IEEE), formatea para
 Base de conocimiento + herramientas para convertir un tema o información en un trabajo académico completo, citado y en Word. Las reglas completas están en [AGENTS.md](AGENTS.md); este archivo es la entrada corta. Cargá cada guía **solo cuando la necesites**.
 
 ## Paso 0 — Preguntar primero
-Antes de escribir, hacé el cuestionario de `07-plantillas/cuestionario-inicial.md` (usá preguntas con opciones si tu herramienta las tiene): tipo de trabajo, ¿trabajo escrito completo?, formato, secciones a incluir o quitar, extensión y datos de portada (o leé `mi-perfil.yaml`). Un **trabajo escrito completo** lleva portada completa con los datos del usuario, tabla de contenidos, número de página en el pie, objetivos, marco teórico, marco metodológico, conclusiones, recomendaciones, referencias y anexos (`03-estructuras/trabajo-escrito-completo.md`).
+Antes de escribir, hacé el cuestionario de `07-plantillas/cuestionario-inicial.md` (usá preguntas con opciones si tu herramienta las tiene): tipo de trabajo, ¿trabajo escrito completo?, formato, secciones a incluir o quitar, extensión y datos de portada (o leé `mi-perfil.yaml`). Un **trabajo escrito completo** lleva portada completa con los datos del usuario, tabla de contenidos, número de página en el pie, objetivos, marco teórico, marco metodológico, conclusiones, recomendaciones, referencias y anexos (`03-estructuras/trabajo-escrito-completo.md`). Si el usuario solo da el tema y no responde, usá los valores por defecto del cuestionario y decí cuáles; en la portada, `[COMPLETAR: …]`, nunca "muestra" ni "hecho con IA".
 
 ## Dónde guardar
 En `trabajos/AAAA-MM-<tema>/` dentro de la carpeta del usuario, nunca dentro de la carpeta de esta skill.
@@ -31,6 +31,7 @@ Mentor (`7-mentor`), revisión por pares (`8-revision-por-pares`), responder cor
 - La rúbrica o reglamento del usuario manda sobre APA 7.
 - Impersonal, registro académico, sin muletillas de IA (`05-redaccion/muletillas-de-ia.md`).
 - Conclusiones y recomendaciones por objetivo, sin información nueva.
+- Cada sección de contenido con citas; los límites una sola vez, en Limitaciones, no como descargo en cada párrafo; sin chips de cita copiados del chat.
 
 ## Dónde está cada cosa
 Índice completo: [00-indice.md](00-indice.md).

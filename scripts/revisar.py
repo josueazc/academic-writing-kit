@@ -7,6 +7,8 @@ Comprueba, con código y no "a ojo":
   - marcadores pendientes: [COMPLETAR], [VERIFICAR], [FUENTE], TODO
   - artefactos de copiar desde una IA (\\%, **, ##)
   - frases típicas de texto generado por IA (lista en 05-redaccion/muletillas-de-ia.md)
+  - lo que sale con un prompt básico: descargos repetidos, portada de "muestra", chips de cita
+    pegados desde el chat, secciones de contenido sin ninguna cita y pocas fuentes o de un solo autor
   - oraciones demasiado largas y extensión por sección
   - (opcional) cobertura de una rúbrica y extensión según el peso de cada criterio
   - sintaxis APA 7 de cada referencia (apa_referencias.py)
@@ -53,6 +55,23 @@ MULETILLAS = [
     "aprovechar al máximo", "a medida que avanzamos", "en el vertiginoso", "el tapiz", "la intersección entre",
     "innegable", "revolucionario", "holístico", "sinergia",
 ]
+
+# Descargos que se acumulan cuando la IA se cubre en cada párrafo (05-redaccion/muletillas-de-ia.md)
+DESCARGOS = [
+    "no se afirma", "no se presenta como", "no se atribuye", "no se asigna", "no constituye", "no demuestra",
+    "no demostrar", "no permite concluir", "no permite determinar", "no permitir", "no equivale", "no pretende",
+    "propuesta propia", "no validada", "sin atribución causal", "no ha implementado", "requiere evaluación",
+    "necesitaría probarse", "no presenta resultados propios", "debe conservarse",
+]
+PORTADA_MUESTRA = re.compile(r"muestra elaborada|trabajo de demostraci[oó]n|demostraci[oó]n sin afiliaci[oó]n|"
+                             r"elaborad[oa] con (?:asistencia de )?(?:la )?(?:inteligencia artificial|IA)\b", re.I)
+KIT = re.compile(r"academic-writing-kit|escritura-academica|Josu[eé] Azofeifa", re.I)
+# chips de la interfaz del chat que quedan al copiar: «… (NIST, 2023). NIST», «EUR-Lex +1 La regulación…», «hai.stanford.edu»
+CHIP = re.compile(r"(?:^|\s)(?:[\w-]+\.)+(?:com|org|edu|gov|int|net|io)\s*$|\s\+\d\s+[A-ZÁÉÍÓÚÑ]|^[A-Z][\w-]+(?: [A-Z][\w-]+)? \+\d\b|"
+                  r"[.)]\s+[A-Z][\w-]+(?: [A-Z][\w-]+)?\s*$|"
+                  r"\.\s+(?:[A-Z]{2,}[\w-]*|[A-Z][\w-]+ [A-Z][\w-]+) (?:Este|Esta|Estos|Estas|Esto|El|La|Los|Las|En|Por|Con|Asimismo|Además) ")
+COLABORADORES = re.compile(r"\b[A-ZÁÉÍÓÚÑ][\wáéíóúñ'’-]+ y (?:colaboradores|cols?\.)", re.I)
+SIN_CITA_OK = r"resumen|abstract|introduc|planteamiento|problema|pregunta|objetivo|justific|metod|m[eé]todo|enfoque|tipo de|fuentes|t[eé]cnica|procedimiento|limitac|discus|conclus|recomend|propuesta|secuencia|aplicaci[oó]n gradual|evaluaci[oó]n del proceso|perspectivas"
 
 
 # ---------------------------------------------------------------- utilidades
@@ -417,9 +436,55 @@ def review(blocks, rubrica=None, palabras=None, es_md=False, secciones=None):
     import coherencia
     apa_referencias.revisar(refs_raw, H, es_md)
     matriz, objetivos = coherencia.revisar(blocks, H)
+    prompt_basico(blocks, sections, refs, total, H)
     stats = {"palabras": total, "citas": len(cites), "referencias": len(refs), "secciones": por_seccion,
              "matriz": matriz, "objetivos": objetivos}
     return H, stats, rub_rows
+
+
+def prompt_basico(blocks, sections, refs, total, H):
+    """Fallas típicas cuando el usuario solo da el tema y la IA no hizo las preguntas del Paso 0."""
+    portada = " ".join(text for kind, _, text in blocks if kind == "meta")
+    primeros = " ".join(text for kind, _, text in blocks[:12] if kind == "p")  # portada de un .docx
+    if PORTADA_MUESTRA.search(portada) or PORTADA_MUESTRA.search(primeros):
+        H["IMPORTANTE"].append("La portada dice que es una muestra o que la hizo una IA: los datos que falten van como "
+                               "[COMPLETAR: …] y la declaración de uso de IA, si hace falta, en una nota aparte.")
+    cuerpo = [p for _, _, ps in sections for p in ps]
+    if any(KIT.search(p) for p in cuerpo):
+        H["IMPORTANTE"].append("El texto menciona el kit o a su autor: el trabajo es del usuario; quitá esa mención.")
+    for title, _, paras in sections:
+        for p in paras:
+            s = p.strip()
+            m = None if s.startswith(("|", "*", "!")) else CHIP.search(s)
+            if m:
+                H["IMPORTANTE"].append(f"Posible chip de cita pegado desde el chat en «{title}»: «…{m.group(0).strip()}…». Borralo; la cita va en (Autor, año).")
+                break
+        if any(COLABORADORES.search(p) for p in paras):
+            H["MENOR"].append(f"«y colaboradores» en «{title}»: en APA 7 es «et al.» desde la primera cita.")
+    low = " ".join(p.lower() for p in cuerpo)
+    n = sum(len(re.findall(r"(?<!\w)" + re.escape(d), low)) for d in DESCARGOS)
+    dens = n / max(total, 1) * 1000
+    if dens > 2.5:
+        H["IMPORTANTE"].append(f"Descargos repetidos ({n}, {dens:.1f} por cada 1000 palabras: «no se afirma», «no constituye», "
+                               "«no equivale»…): los límites van una vez, en Limitaciones; el resto del texto afirma lo que la evidencia sostiene.")
+    for title, _, paras in sections:
+        texto = " ".join(paras)
+        if words(texto) >= 150 and not re.search(SIN_CITA_OK, norm(title)) and not (PAREN.search(texto) or NARR.search(texto)):
+            H["IMPORTANTE"].append(f"«{title}» tiene {words(texto)} palabras y ninguna cita: cada sección de contenido se apoya en fuentes.")
+    if refs and total >= 2500 and len(refs) < 8:
+        H["IMPORTANTE"].append(f"Solo {len(refs)} referencias para {total} palabras: un trabajo de esta extensión suele necesitar 8 o más.")
+    if len(refs) >= 4:
+        autores = {}
+        for r in refs:
+            autores[norm(r["lead"])] = autores.get(norm(r["lead"]), 0) + 1
+        quien, veces = max(autores.items(), key=lambda x: x[1])
+        if veces / len(refs) >= 0.4:
+            H["IMPORTANTE"].append(f"{veces} de {len(refs)} referencias son de «{quien.title()}»: diversificá las fuentes.")
+    h1 = [norm(text) for kind, level, text in blocks if kind == "h" and level == 1]
+    teo = next((i for i, t in enumerate(h1) if "marco teorico" in t), None)
+    met = next((i for i, t in enumerate(h1) if "metodolog" in t), None)
+    if teo is not None and met is not None and met - teo > 2:
+        H["IMPORTANTE"].append("El marco metodológico aparece después del desarrollo: va antes, justo después del marco teórico.")
 
 
 def veredicto_guardado(archivo, salida=None):

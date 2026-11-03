@@ -34,6 +34,20 @@ uso: lo hace la IA ANTES de escribir cualquier trabajo
 | Informe técnico | Portada · Tabla de contenidos · Resumen · Introducción y alcance · Objetivos · Marco teórico/normativo · Metodología · Resultados · Análisis · Conclusiones · Recomendaciones · Referencias · Anexos |
 | Estudio de caso | Portada · Tabla de contenidos · Introducción · Descripción del caso · Problema · Marco teórico · Análisis · Alternativas · Recomendación · Plan de implementación · Conclusiones · Referencias · Anexos |
 
+## Si el usuario no responde
+Con un prompt básico ("haceme un trabajo sobre X") muchas personas no contestan las preguntas o piden que la IA decida. Entonces se sigue con estos valores, se dice al inicio de la respuesta cuáles se usaron y se ofrece cambiarlos:
+
+| Dato | Valor por defecto |
+|---|---|
+| Tipo | Proyecto de investigación documental (revisión de literatura si el tema es una pregunta sobre evidencia) |
+| Completo o solo texto | Trabajo escrito completo |
+| Formato | APA 7 de estudiante |
+| Secciones | Las de la tabla de abajo para ese tipo |
+| Extensión | ~3000 palabras |
+| Fuentes | 10 o más; la mayoría académicas (artículos revisados por pares, libros, informes institucionales); ninguna fuente ni autor con más del 30 %; al menos una regional si el tema toca un país |
+| Portada | `[COMPLETAR: …]` en cada dato. Nunca "muestra", "demostración" ni "elaborado con IA" |
+| Tema | Delimitado a una pregunta concreta: un tema enciclopédico ("la inteligencia artificial") se acota antes de escribir |
+
 ## Al terminar las preguntas
 - Guardá los datos de portada en `mi-perfil.yaml` (si el usuario acepta) para no volver a preguntarlos.
 - Escribí el `brief.md` del trabajo con todas las respuestas.

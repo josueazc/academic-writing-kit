@@ -375,6 +375,50 @@ class TestPaquetesNavegador(unittest.TestCase):
             self.assertIn(script, codigo)
 
 
+class TestPromptBasico(unittest.TestCase):
+    """Fallas encontradas en trabajos hechos con el prompt básico (evals/prompt-basico-2026-10.md)."""
+
+    def revisar(self, texto):
+        with tempfile.TemporaryDirectory() as d:
+            md = os.path.join(d, "t.md")
+            with open(md, "w", encoding="utf-8") as f:
+                f.write(texto)
+            H, _, _ = revisar.review(revisar.read_md(md), es_md=True)
+        return " ".join(H["CRÍTICO"] + H["IMPORTANTE"] + H["MENOR"])
+
+    def test_portada_de_muestra_y_mencion_del_kit(self):
+        todo = self.revisar("---\ntitulo: X\nautores: [Muestra elaborada con inteligencia artificial]\n---\n# Introducción\n"
+                            "Texto (Ana, 2020). Generado como demostración de academic-writing-kit.\n# Referencias\nAna, A. (2020). *T*. E.\n")
+        self.assertIn("muestra", todo)
+        self.assertIn("menciona el kit", todo)
+
+    def test_chips_de_cita_y_colaboradores(self):
+        todo = self.revisar("# Introducción\nEl marco es voluntario (Tabassi, 2023). NIST Este marco orienta. Vaswani y colaboradores (2017) "
+                            "presentaron otra idea.\n# Referencias\nTabassi, E. (2023). *AI RMF*. NIST.\nVaswani, A. (2017). *Attention*. NeurIPS.\n")
+        self.assertIn("NIST Este", todo)
+        self.assertIn("et al.", todo)
+
+    def test_descargos_repetidos(self):
+        frase = "La guía orienta el diseño (Ana, 2020); no constituye una medición y no equivale a eficacia, y no se afirma otra cosa. "
+        self.assertIn("Descargos repetidos", self.revisar("# Introducción\n" + frase * 12 + "\n# Referencias\nAna, A. (2020). *T*. E.\n"))
+
+    def test_seccion_sin_citas_pocas_fuentes_y_orden(self):
+        relleno = "La tecnología cambia procesos en hospitales y escuelas de muchas maneras distintas. " * 230
+        todo = self.revisar("# Introducción\nIntro (Miao, 2023).\n# Marco teórico\nTeoría (Miao, 2024).\n# Aplicaciones en salud\n" + relleno +
+                            "\n# Desafíos\nRiesgos (Miao, 2024a).\n# Marco metodológico\nSe revisaron documentos.\n# Referencias\n"
+                            "Miao, F. (2023). *Guía*. UNESCO.\nMiao, F. (2024). *Marco*. UNESCO.\nMiao, F. (2024a). *Otro*. UNESCO.\nBastani, H. (2025). *T*. PNAS.\n")
+        self.assertIn("«Aplicaciones en salud» tiene", todo)
+        self.assertIn("Solo 4 referencias", todo)
+        self.assertIn("diversificá", todo)
+        self.assertIn("marco metodológico aparece después", todo)
+
+    def test_ejemplo_del_kit_sin_avisos_nuevos(self):
+        H, _, _ = revisar.review(revisar.read_md(EJEMPLO), es_md=True)
+        todo = " ".join(H["CRÍTICO"] + H["IMPORTANTE"])
+        for aviso in ("chip", "Descargos", "ninguna cita", "diversificá", "muestra", "menciona el kit"):
+            self.assertNotIn(aviso, todo)
+
+
 class TestTareas(unittest.TestCase):
     def test_fechas(self):
         import tareas
