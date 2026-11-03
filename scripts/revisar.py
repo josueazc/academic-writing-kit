@@ -467,9 +467,13 @@ def prompt_basico(blocks, sections, refs, total, H):
     if dens > 2.5:
         H["IMPORTANTE"].append(f"Descargos repetidos ({n}, {dens:.1f} por cada 1000 palabras: «no se afirma», «no constituye», "
                                "«no equivale»…): los límites van una vez, en Limitaciones; el resto del texto afirma lo que la evidencia sostiene.")
-    for title, _, paras in sections:
+    madre = ""
+    for title, level, paras in sections:
+        if level <= 1:
+            madre = title
         texto = " ".join(paras)
-        if words(texto) >= 150 and not re.search(SIN_CITA_OK, norm(title)) and not (PAREN.search(texto) or NARR.search(texto)):
+        exenta = re.search(SIN_CITA_OK, norm(title)) or re.search(r"objetivo|metod|m[eé]todo|conclus|recomend", norm(madre))  # subsecciones del método, etc.
+        if words(texto) >= 100 and not exenta and not (PAREN.search(texto) or NARR.search(texto)):
             H["IMPORTANTE"].append(f"«{title}» tiene {words(texto)} palabras y ninguna cita: cada sección de contenido se apoya en fuentes.")
     if refs and total >= 2500 and len(refs) < 8:
         H["IMPORTANTE"].append(f"Solo {len(refs)} referencias para {total} palabras: un trabajo de esta extensión suele necesitar 8 o más.")
