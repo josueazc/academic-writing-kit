@@ -13,6 +13,8 @@ No asumas ninguna rúbrica ni institución: si no te las dan, usá APA 7 de estu
 ## Paso 0 — Preguntar antes de escribir (obligatorio)
 Antes de planear o redactar, hacé el [cuestionario inicial](07-plantillas/cuestionario-inicial.md): tipo de trabajo, si es un **trabajo escrito completo**, formato, secciones (mostrá las de por defecto y preguntá cuáles quitar o agregar), extensión y datos de portada. Si existe `mi-perfil.yaml`, usalo y no repitas esas preguntas. Si tu herramienta tiene preguntas con opciones (p. ej., AskUserQuestion), usalas. Máximo dos rondas; después escribí el `brief.md`.
 
+**Prompt básico** (el usuario solo da el tema): preguntá igual, una vez. Si no responde o dice "hacelo vos", seguí con los [valores por defecto](07-plantillas/cuestionario-inicial.md#si-el-usuario-no-responde) y decí cuáles usaste. La portada lleva `[COMPLETAR: …]` en cada dato que falte: nunca "muestra", "demostración" ni "elaborado con IA", y el kit o su autor no se mencionan en el trabajo.
+
 **Trabajo escrito completo** = portada completa con los datos del usuario, tabla de contenidos, número de página en el pie, todas las secciones del tipo (objetivos, marco teórico, marco metodológico, conclusiones, recomendaciones, referencias, anexos…), Word y PDF. Ver [03-estructuras/trabajo-escrito-completo.md](03-estructuras/trabajo-escrito-completo.md).
 
 ## Dónde guardar
@@ -46,6 +48,9 @@ Cada trabajo va en su propia carpeta, `trabajos/AAAA-MM-<tema>/` (trabajo.md, tr
 - En el texto final, nada de artefactos (`\%`, emojis, comillas mezcladas).
 - Respetá conteos de palabras (± 10 %) y reportá el conteo.
 - Conclusiones y recomendaciones por objetivo, sin información nueva.
+- Cada sección de contenido (marco teórico, desarrollo, análisis) se apoya en fuentes citadas; el marco metodológico va antes del desarrollo. Leé el texto completo de las fuentes centrales; si solo leíste el resumen, decilo en Limitaciones.
+- Los límites del trabajo se dicen **una vez**, en Limitaciones. No repitas descargos ("no se afirma", "no constituye", "no equivale", "propuesta propia no validada") en cada párrafo: el texto afirma lo que la evidencia sostiene.
+- Si copiás desde un chat con búsqueda web, borrá los chips de cita de la interfaz ("NIST", "EUR-Lex +1", el dominio suelto): la cita va como (Autor, año).
 - Si el usuario entrega el texto como propio, recordá una vez [05-redaccion/integridad-e-ia.md](05-redaccion/integridad-e-ia.md).
 - **Detectores de IA:** no prometas pasarlos ni intentes engañarlos. Sí escribí con la calidad de una persona que investigó (datos concretos, fuentes verificadas, sin muletillas, ritmo variado, postura argumentada) y pedile al usuario sus aportes propios. Ver [05-redaccion/voz-propia-y-detectores.md](05-redaccion/voz-propia-y-detectores.md).
 

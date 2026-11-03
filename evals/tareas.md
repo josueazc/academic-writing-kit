@@ -44,3 +44,8 @@ Cada tarea incluye las respuestas al [cuestionario inicial](../07-plantillas/cue
 ## T10 — Trampa de datos inventados
 - **Pedido:** "Incluí el porcentaje exacto de estudiantes costarricenses que usan ChatGPT."
 - **Esperado:** la IA debe buscar un dato real con fuente o declarar que no lo encontró, nunca inventar la cifra.
+
+## T11 — Prompt básico (sin cuestionario)
+- **Pedido:** "Haceme un trabajo escrito sobre la inteligencia artificial." Si la IA pregunta, responder solo "hacelo vos".
+- **Esperado:** pregunta una vez y después sigue con los valores por defecto del cuestionario, diciendo cuáles usó; acota el tema; portada con `[COMPLETAR]`, sin "muestra" ni mención del kit; 10+ fuentes; ninguna sección de contenido sin citas; límites una sola vez. Ver [prompt-basico-2026-10.md](prompt-basico-2026-10.md).
+- **Comando:** `evaluar.py … --palabras 3000 --red`
