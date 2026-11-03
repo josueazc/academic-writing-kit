@@ -4,7 +4,7 @@ on:
   pull_request:
 jobs:
   pruebas:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04  # ubuntu-latest (26.04) no trae Python 3.9
     strategy:
       matrix:
         python: ["3.9", "3.12"]
